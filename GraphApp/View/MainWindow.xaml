@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphApp"
+		xmlns:model="clr-namespace:GraphApp.Model"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -26,9 +27,10 @@
 
 			<Grid Grid.Column="0">
 				<StackPanel>
-					<Button Grid.Row="0" Margin="0,5,0,0" Content="Создать"/>
-					<Button Grid.Row="1" Margin="0,5,0,0" Content="Соединить"/>
-					<Button Grid.Row="2" Margin="0,5,0,0" Content="Удлаить"/>
+					<Button Grid.Row="0" Margin="0,5,0,0" Content="Курсор" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Default}"/>
+					<Button Grid.Row="0" Margin="0,5,0,0" Content="Создать" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Create}"/>
+					<Button Grid.Row="1" Margin="0,5,0,0" Content="Соединить" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Connect}"/>
+					<Button Grid.Row="2" Margin="0,5,0,0" Content="Удлаить" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Delete}"/>
 				</StackPanel>
 			</Grid>
 			

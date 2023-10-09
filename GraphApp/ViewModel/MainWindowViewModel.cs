@@ -1,4 +1,5 @@
-﻿using GraphApp.Model;
+﻿using GraphApp.Command;
+using GraphApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,51 @@ namespace GraphApp.ViewModel
     class MainWindowViewModel
     {
         /// <summary>
-        /// Режим мыши.
+        /// Команда изменения режима мыши.
         /// </summary>
-        public MouseMode MouseMode { get; set; }
-    }
+        private RelayCommand _changeMouseMode;
+
+		/// <summary>
+		/// Режим мыши.
+		/// </summary>
+		private MouseMode _mouseMode { get; set; }
+
+        /// <summary>
+        /// Свойство команды изменения режима мыши.
+        /// </summary>
+        public RelayCommand ChangeMouseMode
+        {
+            get
+            {
+                return _changeMouseMode;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Команда является пустой.");
+                }
+
+                _changeMouseMode = value;
+            }
+        }
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        public MainWindowViewModel()
+        {
+            ChangeMouseMode = new RelayCommand(SetMouseMode);
+        }
+
+        /// <summary>
+        /// Изменение режима мыши.
+        /// </summary>
+        /// <param name="mode">Режим мыши.</param>
+        private void SetMouseMode(object mode) 
+        {
+			_mouseMode = (MouseMode)mode;
+        }
+
+	}
 }
