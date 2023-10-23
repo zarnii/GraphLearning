@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp
+namespace GraphApp.Model
 {
 	/// <summary>
 	/// Вершина графа.
@@ -36,19 +31,9 @@ namespace ConsoleApp
 		private int _number;
 
 		/// <summary>
-		/// Связи вершины.
+		/// Обработчик удаления вершины.
 		/// </summary>
-		private List<Vertex> _connections = new List<Vertex>();
-
-		/// <summary>
-		/// Оповещение подписчиков о необходимости удаления вершины из связей.
-		/// </summary>
-		public delegate void NotifyConnection(Vertex vertex);
-
-		/// <summary>
-		/// Событие удаления вершины.
-		/// </summary>
-		public event NotifyConnection OnDelete;
+		private Action<Vertex> _onDelete;
 
 		/// <summary>
 		/// Событие изменения свойства.
@@ -109,19 +94,25 @@ namespace ConsoleApp
 		}
 
 		/// <summary>
-		/// Связи вершины.
+		/// Обработчик удаления вершины.
 		/// </summary>
-		public List<Vertex> Connections
+		public Action<Vertex> OnDelete
 		{
 			get
 			{
-				return _connections;
+				return _onDelete;
 			}
-			private set
+			set
 			{
-				_connections = value;
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустой обработчик удаления вершины.");
+				}
+
+				_onDelete = value;
 			}
 		}
+
 		#endregion
 
 		#region constructors
@@ -152,45 +143,20 @@ namespace ConsoleApp
 
 		#region public methods
 		/// <summary>
-		/// Добавбление вершины.
-		/// </summary>
-		/// <param name="vertex">Вершина.</param>
-		/// <exception cref="ArgumentNullException">Добавляемая вершина является null</exception>
-		public void AddConnection(Vertex vertex)
-		{
-			if (vertex == null)
-			{
-				throw new ArgumentNullException(nameof(vertex), "Добавляемая вершина является null");
-			}
-
-			vertex.OnDelete += DeleteConnection;
-			_connections.Add(vertex);
-		}
-
-		/// <summary>
 		/// Удаление вершины.
 		/// </summary>/
 		public void Delete()
 		{
-			OnDelete?.Invoke(this);
+			_onDelete?.Invoke(this);
 		}
 		#endregion
 
 		#region private methods
 		/// <summary>
-		/// Удаление вершины из списка связей.
-		/// </summary>
-		/// <param name="vertex">Цдаляемая вершина.</param>
-		private void DeleteConnection(Vertex vertex)
-		{
-			_connections.Remove(vertex);
-		}
-
-		/// <summary>
 		/// Оповещение подписчиков о изменении свойства.
 		/// </summary>
 		/// <param name="propertyName"></param>
-		private void OnPropertyChanged([CallerMemberName]string propertyName = "")
+		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}

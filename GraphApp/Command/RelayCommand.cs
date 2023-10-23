@@ -24,12 +24,14 @@ namespace GraphApp.Command
 		private Func<object, bool> _canExecute;
 		#endregion
 
+
 		#region events
 		/// <summary>
 		/// Изменение условий, указывающий, может ли команда выполняться.
 		/// </summary>
 		public event EventHandler? CanExecuteChanged;
 		#endregion
+
 
 		#region constructor
 		/// <summary>
