@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace GraphApp.Model
 {
 	/// <summary>
 	/// Связь врешин.
 	/// </summary>
-	public class Connection
+	public class Connection: INotifyPropertyChanged
 	{
 		#region fields
 		/// <summary>
@@ -17,7 +19,13 @@ namespace GraphApp.Model
 		/// <summary>
 		/// Обработчик удаления соединения.
 		/// </summary>
-		private Action<Connection> _deleteConncection;
+		private Action<Connection> _onDelete;
+
+
+		/// <summary>
+		/// Событие изменения свойства.
+		/// </summary>
+		public event PropertyChangedEventHandler? PropertyChanged;
 		#endregion
 
 
@@ -51,20 +59,15 @@ namespace GraphApp.Model
 		/// <summary>
 		/// Обработчик удаления соединения.
 		/// </summary>
-		public Action<Connection> DeleteConncection
+		public Action<Connection> OnDelete
 		{
 			get
 			{
-				return _deleteConncection;
+				return _onDelete;
 			}
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException(nameof(value), "Пустой обработчик удаления связи.");
-				}
-
-				_deleteConncection = value;
+				_onDelete = value;
 			}
 		}
 
@@ -80,6 +83,7 @@ namespace GraphApp.Model
 		public ConnectionType ConnectionType { get; set; }
 		#endregion
 
+
 		#region constructor
 		/// <summary>
 		/// Конструктор.
@@ -89,12 +93,12 @@ namespace GraphApp.Model
 		/// <param name="connectionType">Тип соединения.</param>
 		public Connection((Vertex, Vertex) connectedVertices, double weight = 0, ConnectionType connectionType = ConnectionType.Unidirectional)
 		{
-			ConnectedVertices = connectedVertices;
+			ConnectedVertices = connectedVertices; 
 			Weight = weight;
 			ConnectionType = connectionType;
 
-			ConnectedVertices.Item1.OnDelete += OnVertexDeleted;
-			ConnectedVertices.Item2.OnDelete += OnVertexDeleted;
+			ConnectedVertices.Item1.OnDelete += Delete;
+			ConnectedVertices.Item2.OnDelete += Delete;
 		}
 		#endregion
 
@@ -103,21 +107,24 @@ namespace GraphApp.Model
 		/// <summary>
 		/// Удаление связи.
 		/// </summary>
-		public void Delete()
+		public void Delete(Vertex vertex)
 		{
-			_deleteConncection?.Invoke(this);
+			ConnectedVertices.Item1.OnDelete -= Delete;
+			ConnectedVertices.Item2.OnDelete -= Delete;
+
+			OnDelete?.Invoke(this);
 		}
 		#endregion
 
 
 		#region private methods
 		/// <summary>
-		/// При удалении вершины.
+		/// Оповещение подписчиков об изменении свойств.
 		/// </summary>
-		/// <param name="vertex">Удаляемая вершина.</param>
-		private void OnVertexDeleted(Vertex vertex)
+		/// <param name="propertyName">Имя измененого свойства.</param>
+		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
 		{
-			_deleteConncection?.Invoke(this);
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 		#endregion
 	}

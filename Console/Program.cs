@@ -4,18 +4,18 @@ var vertexList = new List<Vertex>();
 var connectionList = new List<Connection>();
 
 var vertexHeandler = new VertexHeandler(vertexList);
-var connectionsHeandler = new ConnectionHeandler(connectionList);
+var connectionHeandler = new ConnectionHeandler(connectionList);
 
-vertexHeandler.AddVertex(new Vertex((1, 1), 1));
-vertexHeandler.AddVertex(new Vertex((2, 2), 2));
-vertexHeandler.AddVertex(new Vertex((3, 3), 3));
 
-connectionsHeandler.AddConnection(new Connection(
-	(vertexList[0], vertexList[1]),
-	20,
-	ConnectionType.Unidirectional
-));
+var vertex1 = new Vertex((1, 1), 1);
+var vertex2 = new Vertex((2, 2), 2);
 
-connectionList[0].Delete();
+vertexHeandler.AddVertex(vertex1);
+vertexHeandler.AddVertex(vertex2);
+
+var conn = new Connection((vertex1, vertex2));
+
+connectionHeandler.AddConnection(conn);
+vertexList[0].Delete();
 
 Console.ReadKey();

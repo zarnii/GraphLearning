@@ -59,7 +59,7 @@ namespace GraphApp.Model
 		public void AddConnection(Connection connection)
 		{
 			Connections.Add(connection);
-			connection.DeleteConncection += DeleteConnection;
+			connection.OnDelete += DeleteConnection;
 		}
 		#endregion
 
@@ -71,7 +71,8 @@ namespace GraphApp.Model
 		/// <param name="connection">Удаляемая связь.</param>
 		private void DeleteConnection(Connection connection)
 		{
-			_connectionsList.Remove(connection);
+			Connections.Remove(connection);
+			connection.OnDelete -= DeleteConnection;
 		}
 		#endregion
 	}

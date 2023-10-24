@@ -70,7 +70,8 @@ namespace GraphApp.Model
 		/// <param name="vertex">Удаляемая вершина.</param>
 		private void DeleteVertex(Vertex vertex)
 		{
-			_vertexList.Remove(vertex);
+			VertexList.Remove(vertex);
+			vertex.OnDelete -= DeleteVertex;
 		}
 		#endregion
 	}

@@ -104,11 +104,6 @@ namespace GraphApp.Model
 			}
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException(nameof(value), "Пустой обработчик удаления вершины.");
-				}
-
 				_onDelete = value;
 			}
 		}
@@ -155,7 +150,7 @@ namespace GraphApp.Model
 		/// <summary>
 		/// Оповещение подписчиков о изменении свойства.
 		/// </summary>
-		/// <param name="propertyName"></param>
+		/// <param name="propertyName">Имя измененного свойства</param>
 		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
