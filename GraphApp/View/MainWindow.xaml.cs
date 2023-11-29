@@ -13,5 +13,11 @@ namespace GraphApp
 			InitializeComponent();
 			DataContext = new MainWindowViewModel();
 		}
+
+		// Скорее всего не правильно.
+		private void Canvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			((MainWindowViewModel)DataContext).ClickOnCanvas?.Execute(e.GetPosition(this));
+		}
 	}
 }

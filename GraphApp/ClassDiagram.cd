@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GraphApp.Model.Connection">
+    <Position X="3.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAIAAAAAAKgCEAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Model\Connection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GraphApp.Model.Vertex">
+    <Position X="6" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAIAAQAAABAIECAAAQAgAEAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Model\Vertex.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GraphApp.Model.VertexHeandler">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAABAQAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\VertexHeandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GraphApp.Model.ConnectionHeandler">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAJAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Model\ConnectionHeandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="GraphApp.Model.ConnectionType">
+    <Position X="1" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAgAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ConnectionType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GraphApp.Model.MouseMode">
+    <Position X="9" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIIAAAAEAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\MouseMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
