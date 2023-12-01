@@ -7,18 +7,18 @@ namespace GraphApp.Model
 	/// <summary>
 	/// Вершина графа.
 	/// </summary>
-	public class Vertex : INotifyPropertyChanged
+	public class Vertex
 	{
 		#region field
 		/// <summary>
 		/// X координата вершины.
 		/// </summary>
-		private int _x;
+		private double _x;
 
 		/// <summary>
 		/// Y координата вершины.
 		/// </summary>
-		private int _y;
+		private double _y;
 
 		/// <summary>
 		/// Название вершины.
@@ -45,7 +45,7 @@ namespace GraphApp.Model
 		/// <summary>
 		/// Координаты вершины.
 		/// </summary>
-		public (int, int) Сoordinates
+		public (double, double) Сoordinates
 		{
 			get
 			{
@@ -108,6 +108,11 @@ namespace GraphApp.Model
 			}
 		}
 
+
+		/// <summary>
+		/// Визуальное представление вершины.
+		/// </summary>
+		public VisualVertex VisualVertex { get; set; }
 		#endregion
 
 		#region constructors
@@ -118,7 +123,7 @@ namespace GraphApp.Model
 		/// <param name="y">Y координата вершины.</param>
 		/// <param name="number">Номер вершины на поле.</param>
 		/// <param name="name">Имя вершины.</param>
-		public Vertex(int x, int y, int number, string name = "default")
+		public Vertex(double x, double y, int number, string name = "default")
 		{
 			_x = x;
 			_y = y;
@@ -132,14 +137,14 @@ namespace GraphApp.Model
 		/// <param name="coordinates">Кортеж координат x,y.</param>
 		/// <param name="number">Номер вершины на поле.</param>
 		/// <param name="name">Имя вершины.</param>
-		public Vertex((int, int) coordinates, int number, string name = "default")
+		public Vertex((double, double) coordinates, int number, string name = "default")
 			: this(coordinates.Item1, coordinates.Item2, number, name) { }
 		#endregion
 
 		#region public methods
 		/// <summary>
 		/// Удаление вершины.
-		/// </summary>/
+		/// </summary>
 		public void Delete()
 		{
 			_onDelete?.Invoke(this);
@@ -147,14 +152,6 @@ namespace GraphApp.Model
 		#endregion
 
 		#region private methods
-		/// <summary>
-		/// Оповещение подписчиков о изменении свойства.
-		/// </summary>
-		/// <param name="propertyName">Имя измененного свойства</param>
-		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
 		#endregion
 	}
 }

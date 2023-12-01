@@ -10,7 +10,7 @@ namespace GraphApp.Command
 	/// <summary>
 	/// Команда.
 	/// </summary>
-	class RelayCommand : ICommand
+	public class RelayCommand : ICommand
 	{
 		#region private field
 		/// <summary>

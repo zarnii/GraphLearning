@@ -1,5 +1,8 @@
 ﻿using GraphApp.ViewModel;
 using System.Windows;
+using System.Windows.Shapes;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace GraphApp
 {
@@ -8,16 +11,17 @@ namespace GraphApp
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+
 		public MainWindow()
 		{
 			InitializeComponent();
 			DataContext = new MainWindowViewModel();
 		}
 
-		// Скорее всего не правильно.
-		private void Canvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			((MainWindowViewModel)DataContext).ClickOnCanvas?.Execute(e.GetPosition(this));
+			var point = e.GetPosition((Rectangle)sender);
+			((MainWindowViewModel)DataContext).ClickOnField?.Execute(point);
 		}
 	}
 }

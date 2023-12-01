@@ -7,6 +7,7 @@
 		xmlns:model="clr-namespace:GraphApp.Model"
 		xmlns:commands="clr-namespace:GraphApp.Command"
         mc:Ignorable="d"
+		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         Title="MainWindow" Height="450" Width="800">
 
 	<Grid>
@@ -30,14 +31,36 @@
 					<Button Grid.Row="0" Margin="0,5,0,0" Content="Курсор" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Default}"/>
 					<Button Grid.Row="0" Margin="0,5,0,0" Content="Создать" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Create}"/>
 					<Button Grid.Row="1" Margin="0,5,0,0" Content="Соединить" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Connect}"/>
-					<Button Grid.Row="2" Margin="0,5,0,0" Content="Удлаить" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Delete}"/>
+					<Button Grid.Row="2" Margin="0,5,0,0" Content="Удалить" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Delete}"/>
 				</StackPanel>
 			</Grid>
 
 			<Grid Grid.Column="1">
-				<Canvas Background="BlanchedAlmond" MouseLeftButtonDown="Canvas_MouseLeftButtonDown">
-					
-				</Canvas>
+				<Rectangle Fill="Beige" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"/>
+				<ItemsControl ItemsSource="{Binding Vertices}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Canvas/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemContainerStyle>
+						<Style>
+							<Setter Property="Canvas.Left" Value="{Binding X}"/>
+							<Setter Property="Canvas.Top" Value="{Binding Y}"/>
+						</Style>
+					</ItemsControl.ItemContainerStyle>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Ellipse Width="{Binding Width}" Height="{Binding Height}" Fill="Black">
+								<i:Interaction.Triggers>
+									<i:EventTrigger EventName="PreviewMouseDown">
+										<i:InvokeCommandAction Command="{Binding Path=DataContext.ClickOnVertex, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
+									</i:EventTrigger>
+								</i:Interaction.Triggers>
+							</Ellipse>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 			</Grid>
 		</Grid>
 

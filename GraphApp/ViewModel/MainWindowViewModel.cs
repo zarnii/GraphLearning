@@ -1,44 +1,47 @@
 ﻿using GraphApp.Command;
 using GraphApp.Model;
-using GraphApp.Strategy;
 using System;
-using System.Collections.Generic;
-using System.Windows.Input;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Media;
 
 namespace GraphApp.ViewModel
 {
 	/// <summary>
 	/// Модель представления главного окна.
 	/// </summary>
-	class MainWindowViewModel
+	public class MainWindowViewModel
 	{
 		#region fields
+		/// <summary>
+		/// Ширина вершины по умолчанию.
+		/// </summary>
+		private int _defaultVertexWidth = 20;
+
+		/// <summary>
+		/// Высота вершины по умолчанию.
+		/// </summary>
+		private int _defaultVertexHeight = 20;
+
 		/// <summary>
 		/// Команда изменения режима мыши.
 		/// </summary>
 		private RelayCommand _changeMouseMode;
 
+		/// <summary>
+		/// Команда добавыления вершины.
+		/// </summary>
+		private RelayCommand _clickOnField;
 
 		/// <summary>
-		/// Команда нажатия на Canvas.
+		/// Команда нажатия на вершину.
 		/// </summary>
-		private RelayCommand _clickOnCanvas;
-
+		private RelayCommand _clickOnVertex;
 
 		/// <summary>
 		/// Режим мыши.
 		/// </summary>
-		private MouseMode _mouseMode { get; set; }
-
-
-		/// <summary>
-		/// Маппинг алгоритмов и режима мыши.
-		/// </summary>
-		private Dictionary<MouseMode, Algorithm> _algorithmMap = new Dictionary<MouseMode, Algorithm>()
-		{
-			{ MouseMode.Create, new CreateVertexAlgorithm() }
-		};
-
+		private static MouseMode _mouseMode;
 		#endregion
 
 
@@ -63,55 +66,53 @@ namespace GraphApp.ViewModel
 			}
 		}
 
-
 		/// <summary>
-		/// Команда нажатия на на Canvas.
+		/// Команда добавления вершины.
 		/// </summary>
-		public RelayCommand ClickOnCanvas
+		public RelayCommand ClickOnField
 		{
 			get
 			{
-				return _clickOnCanvas;
+				return _clickOnField;
 			}
 			set
 			{
 				if (value == null)
 				{
-					throw new ArgumentNullException("Пустая комманда.");
+					throw new ArgumentNullException(nameof(value), "Пустая команда нажатия на поле.");
 				}
 
-				_clickOnCanvas = value;
+				_clickOnField = value;
 			}
 		}
 
-
 		/// <summary>
-		/// Лист связей.
+		/// Команда нажатия на вершину.
 		/// </summary>
-		public List<Connection> ConnectionsList { get; set; }
+		public RelayCommand ClickOnVertex
+		{
+			get
+			{
+				return _clickOnVertex;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда нажатия на вершину.");
+				}
 
+				_clickOnVertex = value;
+			}
+		}
+
+		public VisualVertex SelectedVertex { get; set; }
 
 		/// <summary>
 		/// Лист вершин.
 		/// </summary>
-		public List<Vertex> VertexList { get; set; }
-
-
-		/// <summary>
-		/// Обработчик вершин.
-		/// </summary>
-		public VertexHeandler VertexHeandler { get; set; }
-
-
-		/// <summary>
-		/// Обработчик связей.
-		/// </summary>
-		public ConnectionHeandler ConnectionHeandler { get; set; }
-
-
-		public MouseEventArgs MouseInfo { get; set; }
+		public ObservableCollection<VisualVertex> Vertices { get; set; }
 		#endregion
-
 
 		#region constructor
 		/// <summary>
@@ -119,14 +120,11 @@ namespace GraphApp.ViewModel
 		/// </summary>
 		public MainWindowViewModel()
 		{
-			VertexList = new List<Vertex>();
-			ConnectionsList = new List<Connection>();
-
-			VertexHeandler = new VertexHeandler(VertexList);
-			ConnectionHeandler = new ConnectionHeandler(ConnectionsList);
+			Vertices = new ObservableCollection<VisualVertex>();
 
 			ChangeMouseMode = new RelayCommand(SetMouseMode);
-			ClickOnCanvas = new RelayCommand(ClickOnCanvasCommand);
+			ClickOnField = new RelayCommand(ClickOnFieldCommand);
+			ClickOnVertex = new RelayCommand(ClickOnVertexCommand);
 		}
 		#endregion
 
@@ -145,14 +143,43 @@ namespace GraphApp.ViewModel
 			_mouseMode = (MouseMode)mode;
 		}
 
-
 		/// <summary>
-		/// Обработка нажатий на поле Canvas.
+		/// Команда нажатия на поле.
 		/// </summary>
 		/// <param name="parameter">Параметр.</param>
-		private void ClickOnCanvasCommand(object parameter)
+		private void ClickOnFieldCommand(object parameter)
 		{
-			_algorithmMap[_mouseMode].Execute(parameter);
+			if (_mouseMode == MouseMode.Create)
+			{
+				AddVertexCommand((Point)parameter);
+			}
+		}
+
+		/// <summary>
+		/// Команда нажатия на вершину.
+		/// </summary>
+		/// <param name="parameter"></param>
+		private void ClickOnVertexCommand(object parameter)
+		{
+			if (_mouseMode == MouseMode.Delete)
+			{
+				Vertices.Remove((VisualVertex)parameter);
+			}
+		}
+
+		/// <summary>
+		/// Команда добавление новой вершины.
+		/// </summary>
+		/// <param name="parameter">Координаты верпшины.</param>
+		private void AddVertexCommand(Point point)
+		{
+			Vertices.Add(new VisualVertex(
+				(point.X - _defaultVertexWidth / 2, point.Y - _defaultVertexHeight / 2),
+				_defaultVertexWidth,
+				_defaultVertexHeight,
+				Vertices.Count + 1,
+				Colors.Black
+			));
 		}
 		#endregion
 
