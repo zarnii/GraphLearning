@@ -34,11 +34,6 @@ namespace GraphApp.Model
 		/// Обработчик удаления вершины.
 		/// </summary>
 		private Action<Vertex> _onDelete;
-
-		/// <summary>
-		/// Событие изменения свойства.
-		/// </summary>
-		public event PropertyChangedEventHandler? PropertyChanged;
 		#endregion
 
 		#region properties
@@ -107,12 +102,6 @@ namespace GraphApp.Model
 				_onDelete = value;
 			}
 		}
-
-
-		/// <summary>
-		/// Визуальное представление вершины.
-		/// </summary>
-		public VisualVertex VisualVertex { get; set; }
 		#endregion
 
 		#region constructors

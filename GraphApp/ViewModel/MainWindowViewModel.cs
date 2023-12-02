@@ -1,8 +1,11 @@
 ﻿using GraphApp.Command;
 using GraphApp.Model;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace GraphApp.ViewModel
@@ -39,11 +42,15 @@ namespace GraphApp.ViewModel
 		private RelayCommand _clickOnVertex;
 
 		/// <summary>
+		/// Команда нажатия на связь.
+		/// </summary>
+		private RelayCommand _clickOnConnection;
+
+		/// <summary>
 		/// Режим мыши.
 		/// </summary>
 		private static MouseMode _mouseMode;
 		#endregion
-
 
 		#region properties
 		/// <summary>
@@ -106,12 +113,37 @@ namespace GraphApp.ViewModel
 			}
 		}
 
-		public VisualVertex SelectedVertex { get; set; }
+		/// <summary>
+		/// Команда нажатия на связь.
+		/// </summary>
+		public RelayCommand ClickOnConnection
+		{
+			get
+			{
+				return _clickOnConnection;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда нажатия на связь.");
+				}
+
+				_clickOnConnection = value;
+			}
+		}
+
+		/// <summary>
+		/// Выбранные вершины
+		/// </summary>
+		public List<VisualVertex> SelectedVertices { get; set; }
 
 		/// <summary>
 		/// Лист вершин.
 		/// </summary>
 		public ObservableCollection<VisualVertex> Vertices { get; set; }
+
+		public ObservableCollection<VisualConnection> Connections { get; set; }
 		#endregion
 
 		#region constructor
@@ -121,17 +153,26 @@ namespace GraphApp.ViewModel
 		public MainWindowViewModel()
 		{
 			Vertices = new ObservableCollection<VisualVertex>();
+			Connections = new ObservableCollection<VisualConnection>();
+			SelectedVertices = new List<VisualVertex>();
 
 			ChangeMouseMode = new RelayCommand(SetMouseMode);
 			ClickOnField = new RelayCommand(ClickOnFieldCommand);
 			ClickOnVertex = new RelayCommand(ClickOnVertexCommand);
+			ClickOnConnection = new RelayCommand(ClickOnConnectionCommand);
+
+			AddVertex(new Point(200, 200));
+			AddVertex(new Point(100, 100));
+			AddVertex(new Point(100, 200));
+
+			AddConnection((Vertices[0], Vertices[1]));
+
+			AddConnection((Vertices[0], Vertices[2]));
 		}
 		#endregion
 
-
 		#region public methods
 		#endregion
-
 
 		#region private methods
 		/// <summary>
@@ -151,7 +192,7 @@ namespace GraphApp.ViewModel
 		{
 			if (_mouseMode == MouseMode.Create)
 			{
-				AddVertexCommand((Point)parameter);
+				AddVertex((Point)parameter);
 			}
 		}
 
@@ -163,15 +204,40 @@ namespace GraphApp.ViewModel
 		{
 			if (_mouseMode == MouseMode.Delete)
 			{
-				Vertices.Remove((VisualVertex)parameter);
+				DeleteVertex((VisualVertex)parameter);
+			}
+			else if(_mouseMode == MouseMode.Connect)
+			{
+				if (SelectedVertices.Count < 2) 
+				{
+					SelectedVertices.Add((VisualVertex)parameter);
+				}
+
+				if (SelectedVertices.Count == 2)
+				{
+					AddConnection((SelectedVertices[0], SelectedVertices[1]));
+					SelectedVertices.Clear();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Команда нажатия на связь.
+		/// </summary>
+		/// <param name="parameter"></param>
+		private void ClickOnConnectionCommand(object parameter)
+		{
+			if (_mouseMode == MouseMode.Delete)
+			{
+				DeleteConnection((VisualConnection)parameter);
 			}
 		}
 
 		/// <summary>
 		/// Команда добавление новой вершины.
 		/// </summary>
-		/// <param name="parameter">Координаты верпшины.</param>
-		private void AddVertexCommand(Point point)
+		/// <param name="point">Координаты вершины.</param>
+		private void AddVertex(Point point)
 		{
 			Vertices.Add(new VisualVertex(
 				(point.X - _defaultVertexWidth / 2, point.Y - _defaultVertexHeight / 2),
@@ -181,7 +247,37 @@ namespace GraphApp.ViewModel
 				Colors.Black
 			));
 		}
-		#endregion
 
+		/// <summary>
+		/// Удаление вершины.
+		/// </summary>
+		/// <param name="vertex"></param>
+		private void DeleteVertex(VisualVertex vertex)
+		{
+			vertex.Delete();
+			Vertices.Remove(vertex);
+		}
+
+		/// <summary>
+		/// Создание связи.
+		/// </summary>
+		/// <param name="connectedVertices">Соеденяемые вершины.</param>
+		private void AddConnection((VisualVertex, VisualVertex) connectedVertices)
+		{
+			var connection = new VisualConnection(connectedVertices);
+			connection.SetOnDelete(DeleteConnection);
+
+			Connections.Add(connection);
+		}
+
+		/// <summary>
+		/// Удаление связи.
+		/// </summary>
+		/// <param name="connection"></param>
+		private void DeleteConnection(VisualConnection connection)
+		{
+			Connections.Remove(connection);
+		}
+		#endregion
 	}
 }

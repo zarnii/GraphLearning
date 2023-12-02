@@ -144,6 +144,9 @@ namespace GraphApp.Model
 			}
 		}
 
+
+		public Action OnDelete { get; set; }
+
 		/// <summary>
 		/// Событие изменения свойства.
 		/// </summary>
@@ -191,6 +194,16 @@ namespace GraphApp.Model
 		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+		#endregion
+
+		#region public methods
+		/// <summary>
+		/// Оповещение подписчиков об удалении вершины.
+		/// </summary>
+		public void Delete()
+		{
+			OnDelete?.Invoke();
 		}
 		#endregion
 	}

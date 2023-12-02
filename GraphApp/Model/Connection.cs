@@ -1,33 +1,18 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace GraphApp.Model
 {
 	/// <summary>
 	/// Связь врешин.
 	/// </summary>
-	public class Connection: INotifyPropertyChanged
+	public class Connection
 	{
 		#region fields
 		/// <summary>
 		/// Связанные вершины.
 		/// </summary>
 		private (Vertex, Vertex) _connectedVertices;
-
-
-		/// <summary>
-		/// Обработчик удаления соединения.
-		/// </summary>
-		private Action<Connection> _onDelete;
-
-
-		/// <summary>
-		/// Событие изменения свойства.
-		/// </summary>
-		public event PropertyChangedEventHandler? PropertyChanged;
 		#endregion
-
 
 		#region properties
 		/// <summary>
@@ -55,23 +40,6 @@ namespace GraphApp.Model
 			}
 		}
 
-
-		/// <summary>
-		/// Обработчик удаления соединения.
-		/// </summary>
-		public Action<Connection> OnDelete
-		{
-			get
-			{
-				return _onDelete;
-			}
-			set
-			{
-				_onDelete = value;
-			}
-		}
-
-
 		/// <summary>
 		/// Вес соединения.
 		/// </summary>
@@ -83,7 +51,6 @@ namespace GraphApp.Model
 		public ConnectionType ConnectionType { get; set; }
 		#endregion
 
-
 		#region constructor
 		/// <summary>
 		/// Конструктор.
@@ -93,39 +60,16 @@ namespace GraphApp.Model
 		/// <param name="connectionType">Тип соединения.</param>
 		public Connection((Vertex, Vertex) connectedVertices, double weight = 0, ConnectionType connectionType = ConnectionType.Unidirectional)
 		{
-			ConnectedVertices = connectedVertices; 
+			ConnectedVertices = connectedVertices;
 			Weight = weight;
 			ConnectionType = connectionType;
-
-			ConnectedVertices.Item1.OnDelete += Delete;
-			ConnectedVertices.Item2.OnDelete += Delete;
 		}
 		#endregion
-
 
 		#region public methods
-		/// <summary>
-		/// Удаление связи.
-		/// </summary>
-		public void Delete(Vertex vertex)
-		{
-			ConnectedVertices.Item1.OnDelete -= Delete;
-			ConnectedVertices.Item2.OnDelete -= Delete;
-
-			OnDelete?.Invoke(this);
-		}
 		#endregion
 
-
 		#region private methods
-		/// <summary>
-		/// Оповещение подписчиков об изменении свойств.
-		/// </summary>
-		/// <param name="propertyName">Имя измененого свойства.</param>
-		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
 		#endregion
 	}
 }
