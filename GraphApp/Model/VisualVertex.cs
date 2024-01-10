@@ -8,7 +8,7 @@ namespace GraphApp.Model
 	/// <summary>
 	/// Визуальная вершина, отвечающая за отрисовку на поле Canvas.
 	/// </summary>
-	public class VisualVertex: INotifyPropertyChanged
+	public class VisualVertex : INotifyPropertyChanged
 	{
 		#region fields
 		/// <summary>
@@ -78,6 +78,11 @@ namespace GraphApp.Model
 			{
 				return _vertex.Сoordinates.Item1;
 			}
+			set
+			{
+				_vertex.X = value;
+				OnPropertyChanged(nameof(X));
+			}
 		}
 
 		/// <summary>
@@ -88,6 +93,11 @@ namespace GraphApp.Model
 			get
 			{
 				return _vertex.Сoordinates.Item2;
+			}
+			set
+			{
+				_vertex.Y = value;
+				OnPropertyChanged(nameof(Y));
 			}
 		}
 
@@ -144,7 +154,6 @@ namespace GraphApp.Model
 			}
 		}
 
-
 		public Action OnDelete { get; set; }
 
 		/// <summary>
@@ -164,7 +173,7 @@ namespace GraphApp.Model
 		/// <param name="name">Название.</param>
 		public VisualVertex(double x, double y, int width, int height, int number, Color color, string name = "default")
 		{
-			_vertex = new Vertex(x, y , number, name);
+			_vertex = new Vertex(x, y, number, name);
 			Width = width;
 			Height = height;
 			Color = new SolidColorBrush(color);

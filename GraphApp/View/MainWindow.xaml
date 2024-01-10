@@ -3,9 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GraphApp"
 		xmlns:model="clr-namespace:GraphApp.Model"
-		xmlns:commands="clr-namespace:GraphApp.Command"
         mc:Ignorable="d"
 		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         Title="MainWindow" Height="450" Width="800">
@@ -36,31 +34,8 @@
 			</Grid>
 
 			<Grid Grid.Column="1">
+				
 				<Rectangle Fill="Beige" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"/>
-				<ItemsControl ItemsSource="{Binding Vertices}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<Canvas/>
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemContainerStyle>
-						<Style>
-							<Setter Property="Canvas.Left" Value="{Binding X}"/>
-							<Setter Property="Canvas.Top" Value="{Binding Y}"/>
-						</Style>
-					</ItemsControl.ItemContainerStyle>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Ellipse Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Color}">
-								<i:Interaction.Triggers>
-									<i:EventTrigger EventName="PreviewMouseDown">
-										<i:InvokeCommandAction Command="{Binding Path=DataContext.ClickOnVertex, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
-									</i:EventTrigger>
-								</i:Interaction.Triggers>
-							</Ellipse>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
 				<ItemsControl ItemsSource="{Binding Connections}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
@@ -79,9 +54,37 @@
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
+				<ItemsControl ItemsSource="{Binding Vertices}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Canvas/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemContainerStyle>
+						<Style>
+							<Setter Property="Canvas.Left" Value="{Binding X}"/>
+							<Setter Property="Canvas.Top" Value="{Binding Y}"/>
+						</Style>
+					</ItemsControl.ItemContainerStyle>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Thumb DragDelta="Thumb_DragDelta">
+								<Thumb.Template>
+									<ControlTemplate>
+										<Ellipse Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Color}">
+											<i:Interaction.Triggers>
+												<i:EventTrigger EventName="PreviewMouseDown">
+													<i:InvokeCommandAction Command="{Binding Path=DataContext.ClickOnVertex, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
+												</i:EventTrigger>
+											</i:Interaction.Triggers>
+										</Ellipse>
+									</ControlTemplate>
+								</Thumb.Template>
+							</Thumb>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 			</Grid>
 		</Grid>
-
-
 	</Grid>
 </Window>

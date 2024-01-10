@@ -3,9 +3,7 @@ using GraphApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reflection.Metadata;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace GraphApp.ViewModel
@@ -27,6 +25,11 @@ namespace GraphApp.ViewModel
 		private int _defaultVertexHeight = 20;
 
 		/// <summary>
+		/// Цвет вершины по умолчанию.
+		/// </summary>
+		private Color _defaultVertexColor = Colors.Red;
+
+		/// <summary>
 		/// Команда изменения режима мыши.
 		/// </summary>
 		private RelayCommand _changeMouseMode;
@@ -45,6 +48,11 @@ namespace GraphApp.ViewModel
 		/// Команда нажатия на связь.
 		/// </summary>
 		private RelayCommand _clickOnConnection;
+
+		/// <summary>
+		/// Команда перемещения вершины.
+		/// </summary>
+		private RelayCommand _moveVertex;
 
 		/// <summary>
 		/// Режим мыши.
@@ -134,6 +142,26 @@ namespace GraphApp.ViewModel
 		}
 
 		/// <summary>
+		/// Команда перемещения вершины.
+		/// </summary>
+		public RelayCommand MoveVertex
+		{
+			get
+			{
+				return _moveVertex;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("Пустая команда передмещения верин");
+				}
+
+				_moveVertex = value;
+			}
+		}
+
+		/// <summary>
 		/// Выбранные вершины
 		/// </summary>
 		public List<VisualVertex> SelectedVertices { get; set; }
@@ -143,6 +171,9 @@ namespace GraphApp.ViewModel
 		/// </summary>
 		public ObservableCollection<VisualVertex> Vertices { get; set; }
 
+		/// <summary>
+		/// Лист связей.
+		/// </summary>
 		public ObservableCollection<VisualConnection> Connections { get; set; }
 		#endregion
 
@@ -160,14 +191,18 @@ namespace GraphApp.ViewModel
 			ClickOnField = new RelayCommand(ClickOnFieldCommand);
 			ClickOnVertex = new RelayCommand(ClickOnVertexCommand);
 			ClickOnConnection = new RelayCommand(ClickOnConnectionCommand);
+			//MoveVertex = new RelayCommand(MoveVertexCommand); to-do
+
 
 			AddVertex(new Point(200, 200));
 			AddVertex(new Point(100, 100));
 			AddVertex(new Point(100, 200));
 
+
 			AddConnection((Vertices[0], Vertices[1]));
 
 			AddConnection((Vertices[0], Vertices[2]));
+
 		}
 		#endregion
 
@@ -199,16 +234,16 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда нажатия на вершину.
 		/// </summary>
-		/// <param name="parameter"></param>
+		/// <param name="parameter">Нажатая вершина.</param>
 		private void ClickOnVertexCommand(object parameter)
 		{
 			if (_mouseMode == MouseMode.Delete)
 			{
 				DeleteVertex((VisualVertex)parameter);
 			}
-			else if(_mouseMode == MouseMode.Connect)
+			else if (_mouseMode == MouseMode.Connect)
 			{
-				if (SelectedVertices.Count < 2) 
+				if (SelectedVertices.Count < 2)
 				{
 					SelectedVertices.Add((VisualVertex)parameter);
 				}
@@ -244,7 +279,7 @@ namespace GraphApp.ViewModel
 				_defaultVertexWidth,
 				_defaultVertexHeight,
 				Vertices.Count + 1,
-				Colors.Black
+				_defaultVertexColor
 			));
 		}
 
@@ -265,7 +300,7 @@ namespace GraphApp.ViewModel
 		private void AddConnection((VisualVertex, VisualVertex) connectedVertices)
 		{
 			var connection = new VisualConnection(connectedVertices);
-			connection.SetOnDelete(DeleteConnection);
+			connection.OnDelete += DeleteConnection;
 
 			Connections.Add(connection);
 		}
@@ -273,9 +308,10 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Удаление связи.
 		/// </summary>
-		/// <param name="connection"></param>
+		/// <param name="connection">Удаляемая связь.</param>
 		private void DeleteConnection(VisualConnection connection)
 		{
+			connection.OnDelete -= DeleteConnection;
 			Connections.Remove(connection);
 		}
 		#endregion

@@ -7,7 +7,7 @@ namespace GraphApp.Model
 	/// <summary>
 	/// Графическое соединение, отвечающая за отображение связей на поле.
 	/// </summary>
-	public class VisualConnection: INotifyPropertyChanged
+	public class VisualConnection : INotifyPropertyChanged
 	{
 		#region fields
 		/// <summary>
@@ -74,6 +74,9 @@ namespace GraphApp.Model
 			}
 		}
 
+		/// <summary>
+		/// Ссылка на выполняемую функцию при удалении. 
+		/// </summary>
 		public Action<VisualConnection> OnDelete { get; set; }
 
 		/// <summary>
@@ -159,18 +162,25 @@ namespace GraphApp.Model
 
 			ConnectedVertices.Item1.OnDelete += Delete;
 			ConnectedVertices.Item2.OnDelete += Delete;
+
+			ConnectedVertices.Item1.PropertyChanged += UpdateVertexCoords;
+			ConnectedVertices.Item2.PropertyChanged += UpdateVertexCoords;
 		}
 		#endregion
 
 		#region public methods
+		/// <summary>
+		/// Оповещение подписчиков о удалении связи.
+		/// </summary>
 		public void Delete()
 		{
-			OnDelete?.Invoke(this);
-		}
+			ConnectedVertices.Item1.OnDelete -= Delete;
+			ConnectedVertices.Item2.OnDelete -= Delete;
 
-		public void SetOnDelete(Action<VisualConnection> onDelete)
-		{
-			OnDelete += onDelete;
+			ConnectedVertices.Item1.PropertyChanged -= UpdateVertexCoords;
+			ConnectedVertices.Item2.PropertyChanged -= UpdateVertexCoords;
+
+			OnDelete?.Invoke(this);
 		}
 		#endregion
 
@@ -182,6 +192,37 @@ namespace GraphApp.Model
 		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		/// <summary>
+		/// Обновление свойства координат вершин.
+		/// </summary>
+		/// <param name="sender">Отправитель.</param>
+		/// <param name="e">Аргументы.</param>
+		private void UpdateVertexCoords(object sender, PropertyChangedEventArgs e)
+		{
+			if (sender == ConnectedVertices.Item1)
+			{
+				if (e.PropertyName == nameof(ConnectedVertices.Item1.Vertex.X))
+				{
+					OnPropertyChanged(nameof(X1));
+				}
+				else if (e.PropertyName == nameof(ConnectedVertices.Item1.Vertex.Y))
+				{
+					OnPropertyChanged(nameof(Y1));
+				}
+			}
+			else if (sender == ConnectedVertices.Item2)
+			{
+				if (e.PropertyName == nameof(ConnectedVertices.Item2.Vertex.X))
+				{
+					OnPropertyChanged(nameof(X2));
+				}
+				else if (e.PropertyName == nameof(ConnectedVertices.Item2.Vertex.Y))
+				{
+					OnPropertyChanged(nameof(Y2));
+				}
+			}
 		}
 		#endregion
 	}
