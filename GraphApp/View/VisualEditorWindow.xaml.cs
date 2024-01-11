@@ -1,31 +1,27 @@
-﻿using GraphApp.ViewModel;
+﻿using GraphApp.Model;
+using GraphApp.ViewModel;
 using System.Windows;
-using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using GraphApp.Model;
+using System.Windows.Shapes;
 
-namespace GraphApp
+namespace GraphApp.View
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Логика взаимодействия для VisualEditorWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class VisualEditorWindow : Page
 	{
 
-		public MainWindow()
+		public VisualEditorWindow()
 		{
 			InitializeComponent();
-			DataContext = new MainWindowViewModel();
-			var Vertices = (DataContext as MainWindowViewModel).Vertices;
+			DataContext = new VisualEditorViewModel();
 		}
-
 		private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			var point = e.GetPosition((Rectangle)sender);
-			((MainWindowViewModel)DataContext).ClickOnField?.Execute(point);
+			((VisualEditorViewModel)DataContext).ClickOnField?.Execute(point);
 		}
 
 		// Временно.

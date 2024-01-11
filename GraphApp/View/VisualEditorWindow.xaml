@@ -1,12 +1,14 @@
-﻿<Window x:Class="GraphApp.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:model="clr-namespace:GraphApp.Model"
-        mc:Ignorable="d"
-		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        Title="MainWindow" Height="450" Width="800">
+﻿<Page x:Class="GraphApp.View.VisualEditorWindow"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GraphApp.View"
+      mc:Ignorable="d" 
+	  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+	  xmlns:model="clr-namespace:GraphApp.Model"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="VisualEditorWindow">
 
 	<Grid>
 		<Grid.RowDefinitions>
@@ -34,7 +36,7 @@
 			</Grid>
 
 			<Grid Grid.Column="1">
-				
+
 				<Rectangle Fill="Beige" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"/>
 				<ItemsControl ItemsSource="{Binding Connections}">
 					<ItemsControl.ItemsPanel>
@@ -87,4 +89,4 @@
 			</Grid>
 		</Grid>
 	</Grid>
-</Window>
+</Page>

@@ -3,15 +3,15 @@ using GraphApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Media;
+using System.Windows;
 
 namespace GraphApp.ViewModel
 {
 	/// <summary>
-	/// Модель представления главного окна.
+	/// Модель представления страницы редактора.
 	/// </summary>
-	public class MainWindowViewModel
+	public class VisualEditorViewModel
 	{
 		#region fields
 		/// <summary>
@@ -181,7 +181,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
-		public MainWindowViewModel()
+		public VisualEditorViewModel()
 		{
 			Vertices = new ObservableCollection<VisualVertex>();
 			Connections = new ObservableCollection<VisualConnection>();
