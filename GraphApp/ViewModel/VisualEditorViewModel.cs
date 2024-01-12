@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 namespace GraphApp.ViewModel
 {
@@ -32,27 +35,27 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда изменения режима мыши.
 		/// </summary>
-		private RelayCommand _changeMouseMode;
+		private ICommand _changeMouseMode;
 
 		/// <summary>
 		/// Команда добавыления вершины.
 		/// </summary>
-		private RelayCommand _clickOnField;
+		private ICommand _clickOnField;
 
 		/// <summary>
 		/// Команда нажатия на вершину.
 		/// </summary>
-		private RelayCommand _clickOnVertex;
+		private ICommand _clickOnVertex;
 
 		/// <summary>
 		/// Команда нажатия на связь.
 		/// </summary>
-		private RelayCommand _clickOnConnection;
+		private ICommand _clickOnConnection;
 
 		/// <summary>
 		/// Команда перемещения вершины.
 		/// </summary>
-		private RelayCommand _moveVertex;
+		private ICommand _moveVertex;
 
 		/// <summary>
 		/// Режим мыши.
@@ -64,7 +67,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Свойство команды изменения режима мыши.
 		/// </summary>
-		public RelayCommand ChangeMouseMode
+		public ICommand ChangeMouseMode
 		{
 			get
 			{
@@ -84,7 +87,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда добавления вершины.
 		/// </summary>
-		public RelayCommand ClickOnField
+		public ICommand ClickOnField
 		{
 			get
 			{
@@ -104,7 +107,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда нажатия на вершину.
 		/// </summary>
-		public RelayCommand ClickOnVertex
+		public ICommand ClickOnVertex
 		{
 			get
 			{
@@ -124,7 +127,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда нажатия на связь.
 		/// </summary>
-		public RelayCommand ClickOnConnection
+		public ICommand ClickOnConnection
 		{
 			get
 			{
@@ -144,7 +147,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда перемещения вершины.
 		/// </summary>
-		public RelayCommand MoveVertex
+		public ICommand MoveVertex
 		{
 			get
 			{
@@ -191,7 +194,7 @@ namespace GraphApp.ViewModel
 			ClickOnField = new RelayCommand(ClickOnFieldCommand);
 			ClickOnVertex = new RelayCommand(ClickOnVertexCommand);
 			ClickOnConnection = new RelayCommand(ClickOnConnectionCommand);
-			//MoveVertex = new RelayCommand(MoveVertexCommand); to-do
+			MoveVertex = new RelayCommand(MoveVertexCommand);
 
 
 			AddVertex(new Point(200, 200));
@@ -222,13 +225,18 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда нажатия на поле.
 		/// </summary>
-		/// <param name="parameter">Параметр.</param>
+		/// <param name="parameter">Аргументы события.</param>
 		private void ClickOnFieldCommand(object parameter)
 		{
-			if (_mouseMode == MouseMode.Create)
+			if (_mouseMode != MouseMode.Create)
 			{
-				AddVertex((Point)parameter);
+				return;
 			}
+
+			var mbEventArgs = (MouseButtonEventArgs)parameter;
+			var point = mbEventArgs.GetPosition((Rectangle)mbEventArgs.OriginalSource);
+
+			AddVertex(point);
 		}
 
 		/// <summary>
@@ -313,6 +321,35 @@ namespace GraphApp.ViewModel
 		{
 			connection.OnDelete -= DeleteConnection;
 			Connections.Remove(connection);
+		}
+
+		/// <summary>
+		/// Нажатие на поле.
+		/// </summary>
+		/// <param name="parameter">Аргументы события.</param>
+		private void ClickOnRectangle(object parameter)
+		{
+			var mbEventArgs = (MouseButtonEventArgs)parameter;
+			var point = mbEventArgs.GetPosition((Rectangle)mbEventArgs.OriginalSource);
+			ClickOnField.Execute(point);
+		}
+
+		/// <summary>
+		/// Передвижение вершин.
+		/// </summary>
+		/// <param name="parameter">Аргументы события.</param>
+		private void MoveVertexCommand(object parameter)
+		{
+			if (_mouseMode != MouseMode.Default)
+			{
+				return;
+			}
+
+			var ddEventArgs = (DragDeltaEventArgs)parameter;
+			var vertex = (VisualVertex)((FrameworkElement)ddEventArgs.OriginalSource).DataContext;
+
+			vertex.X += ddEventArgs.HorizontalChange;
+			vertex.Y += ddEventArgs.VerticalChange;
 		}
 		#endregion
 	}

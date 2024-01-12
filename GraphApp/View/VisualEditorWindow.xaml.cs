@@ -18,18 +18,5 @@ namespace GraphApp.View
 			InitializeComponent();
 			DataContext = new VisualEditorViewModel();
 		}
-		private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			var point = e.GetPosition((Rectangle)sender);
-			((VisualEditorViewModel)DataContext).ClickOnField?.Execute(point);
-		}
-
-		// Временно.
-		private void Thumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-		{
-			var vertex = (VisualVertex)((FrameworkElement)sender).DataContext;
-			vertex.X += e.HorizontalChange;
-			vertex.Y += e.VerticalChange;
-		}
 	}
 }

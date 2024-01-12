@@ -36,8 +36,13 @@
 			</Grid>
 
 			<Grid Grid.Column="1">
-
-				<Rectangle Fill="Beige" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"/>
+				<Rectangle Fill="Beige">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="MouseLeftButtonDown">
+							<i:InvokeCommandAction Command="{Binding ClickOnField}" PassEventArgsToCommand="True"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</Rectangle>
 				<ItemsControl ItemsSource="{Binding Connections}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
@@ -70,18 +75,29 @@
 					</ItemsControl.ItemContainerStyle>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<Thumb DragDelta="Thumb_DragDelta">
+							<Thumb>
 								<Thumb.Template>
 									<ControlTemplate>
 										<Ellipse Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Color}">
 											<i:Interaction.Triggers>
 												<i:EventTrigger EventName="PreviewMouseDown">
-													<i:InvokeCommandAction Command="{Binding Path=DataContext.ClickOnVertex, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
+													<i:InvokeCommandAction 
+														Command="{Binding Path=DataContext.ClickOnVertex, 
+															RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
+														CommandParameter="{Binding}"/>
 												</i:EventTrigger>
 											</i:Interaction.Triggers>
 										</Ellipse>
 									</ControlTemplate>
 								</Thumb.Template>
+								<i:Interaction.Triggers>
+									<i:EventTrigger EventName="DragDelta">
+										<i:InvokeCommandAction 
+											Command="{Binding Path=DataContext.MoveVertex, 
+												RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+											PassEventArgsToCommand="True"/>
+									</i:EventTrigger>
+								</i:Interaction.Triggers>
 							</Thumb>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
