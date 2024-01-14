@@ -12,11 +12,9 @@ namespace GraphApp.View
 	/// </summary>
 	public partial class VisualEditorWindow : Page
 	{
-
 		public VisualEditorWindow()
 		{
 			InitializeComponent();
-			DataContext = new VisualEditorViewModel();
 		}
 	}
 }

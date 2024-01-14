@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using GraphApp.Command;
@@ -9,7 +10,7 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления главного окна.
 	/// </summary>
-	public class RootViewModel: INotifyPropertyChanged
+	public class RootViewModel: ViewModel, INotifyPropertyChanged
 	{
 		#region fields
 		/// <summary>
@@ -56,10 +57,10 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
-		public RootViewModel()
+		public RootViewModel(Func<Type, Page> pageFactory)
 		{
-			_visualEditor = new VisualEditorWindow();
-			_mainMenu = new MainMenuWindow();
+			_visualEditor = pageFactory.Invoke(typeof(VisualEditorWindow));
+			_mainMenu = pageFactory.Invoke(typeof(MainMenuWindow));
 
 			(_mainMenu.DataContext as MainMenuViewModel).OpenVisualEditor = new RelayCommand(SetVisualEditor);
 

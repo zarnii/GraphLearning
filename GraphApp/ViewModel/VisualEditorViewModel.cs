@@ -14,7 +14,7 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления страницы редактора.
 	/// </summary>
-	public class VisualEditorViewModel
+	public class VisualEditorViewModel: ViewModel
 	{
 		#region fields
 		/// <summary>

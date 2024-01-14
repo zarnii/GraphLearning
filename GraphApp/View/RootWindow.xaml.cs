@@ -1,5 +1,7 @@
 ﻿using GraphApp.ViewModel;
+using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace GraphApp
 {
@@ -11,7 +13,6 @@ namespace GraphApp
 		public RootWindow()
 		{
 			InitializeComponent();
-			DataContext = new RootViewModel();
 		}
 	}
 }

@@ -11,7 +11,6 @@ namespace GraphApp.View
 		public MainMenuWindow()
 		{
 			InitializeComponent();
-			DataContext = new MainMenuViewModel();
 		}
 	}
 }

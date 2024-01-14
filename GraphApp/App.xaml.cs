@@ -1,17 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GraphApp.View;
+using GraphApp.ViewModel;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace GraphApp
 {
 	/// <summary>
-	/// Interaction logic for App.xaml
+	/// Приложение.
 	/// </summary>
 	public partial class App : Application
 	{
+		/// <summary>
+		/// Поставщик сервисов.
+		/// </summary>
+		private readonly IServiceProvider _serviceProvider;
+
+		public App()
+		{
+			var serviceCollection = new ServiceCollection();
+
+			serviceCollection.AddSingleton<RootWindow>(serviceProvider =>
+				new RootWindow()
+				{
+					DataContext = serviceProvider.GetRequiredService<RootViewModel>()
+				}
+			);
+			serviceCollection.AddSingleton<MainMenuWindow>(serviceProvider =>
+				new MainMenuWindow()
+				{
+					DataContext = serviceProvider.GetRequiredService<MainMenuViewModel>()
+				}
+			);
+			serviceCollection.AddSingleton<VisualEditorWindow>(serviceProvider =>
+				new VisualEditorWindow()
+				{
+					DataContext = serviceProvider.GetRequiredService<VisualEditorViewModel>()
+				}
+
+			);
+
+			// Фабричная функция страниц.
+			serviceCollection.AddSingleton<Func<Type, Page>>(serviceProvider =>
+			{
+				return page => (Page)serviceProvider.GetRequiredService(page);
+			});
+			
+
+			serviceCollection.AddSingleton<RootViewModel>();
+			serviceCollection.AddSingleton<MainMenuViewModel>();
+			serviceCollection.AddSingleton<VisualEditorViewModel>();
+
+			_serviceProvider = serviceCollection.BuildServiceProvider();
+		}
+
+		/// <summary>
+		/// При старте приложения.
+		/// </summary>
+		/// <param name="e">Аргументы собития запуска.</param>
+		protected override void OnStartup(StartupEventArgs e)
+		{
+			var rootWindow = _serviceProvider.GetRequiredService<RootWindow>();
+			rootWindow.Show();
+
+			base.OnStartup(e);
+		}
 	}
 }
