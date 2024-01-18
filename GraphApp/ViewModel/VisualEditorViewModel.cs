@@ -87,6 +87,11 @@ namespace GraphApp.ViewModel
 		/// Обработчик данных.
 		/// </summary>
 		private IDataHeandlerService _dataHeandler;
+
+		/// <summary>
+		/// Маппер.
+		/// </summary>
+		private IMapper _mapper;
 		#endregion
 
 		#region properties
@@ -250,10 +255,12 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
-		public VisualEditorViewModel(IDataHeandlerService dataHeandler)
+		public VisualEditorViewModel(IDataHeandlerService dataHeandler, IMapper mapper)
 		{
 			_pathToFiles = ConfigurationManager.AppSettings["defaultSavePath"];
+
 			_dataHeandler = dataHeandler;
+			_mapper = mapper;
 
 			Vertices = new ObservableCollection<VisualVertex>();
 			Connections = new ObservableCollection<VisualConnection>();
@@ -440,29 +447,18 @@ namespace GraphApp.ViewModel
 		private void LoadGraphCommand(object parameter)
 		{
 			var data = _dataHeandler.Load("saves");
+			
+			foreach (var sVertex in data.Item1)
+			{
+				var vertex = _mapper.Map<Vertex>(sVertex, null);
 
-			var mapper = new Mapper();
-			mapper.CreateMap<SerializableVertex, Vertex>(MapToVertex);
-			mapper.CreateMap<SerializableConnection, Connection>(MapToConnection);
-
-			var result = mapper.Map<Vertex>(data.Item1[0]);
-			var result2 = mapper.Map<Connection>(data.Item2[0]);
-
-		}
-
-		private Vertex MapToVertex(object arg)
-		{
-			var sv = arg as SerializableVertex;
-			return new Vertex(sv.X, sv.Y, sv.Number, sv.Name);
-		}
-
-		private Connection MapToConnection(object arg)
-		{
-			var con = arg as SerializableConnection;
-			var firstVertex = Vertices.Where(v => v.Number == con.ConnectedVerticesNumber[0]).FirstOrDefault();
-			var secondVertex = Vertices.Where(v => v.Number == con.ConnectedVerticesNumber[1]).FirstOrDefault();
-
-			return new Connection((firstVertex.Vertex, secondVertex.Vertex), con.Weight, con.connectionType);
+				Vertices.Add(new VisualVertex(
+					vertex, 
+					_defaultVertexWidth, 
+					_defaultVertexHeight, 
+					_defaultVertexColor
+				));
+			}
 		}
 		#endregion
 	}

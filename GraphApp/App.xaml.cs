@@ -6,6 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using GraphApp.Model;
+using GraphApp.Model.Serializing;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GraphApp
 {
@@ -48,16 +52,18 @@ namespace GraphApp
 				return page => (Page)serviceProvider.GetRequiredService(page);
 			});
 
+
+			serviceCollection.AddSingleton<IMapper, Mapper>();
 			serviceCollection.AddSingleton<IDataSaver, DataSaverServices>();
 			serviceCollection.AddSingleton<IDataLoader, DataLoaderServices>();
 			serviceCollection.AddSingleton<IDataHeandlerService, DataHeandlerService>();
 			serviceCollection.AddSingleton<RootViewModel>();
 			serviceCollection.AddSingleton<MainMenuViewModel>();
-			serviceCollection.AddSingleton<VisualEditorViewModel>(serviceProvider =>
-				new VisualEditorViewModel(serviceProvider.GetRequiredService<IDataHeandlerService>())
-			);
+			serviceCollection.AddSingleton<VisualEditorViewModel>();
 
 			_serviceProvider = serviceCollection.BuildServiceProvider();
+
+			SettingMapper();
 		}
 
 		/// <summary>
@@ -70,6 +76,27 @@ namespace GraphApp
 			rootWindow.Show();
 
 			base.OnStartup(e);
+		}
+
+		private void SettingMapper()
+		{
+			var mapper = _serviceProvider.GetRequiredService<IMapper>();
+			mapper.CreateMap<SerializableVertex, Vertex>((tSource, param) =>
+			{
+				var sv = tSource as SerializableVertex;
+				return new Vertex(sv.X, sv.Y, sv.Number, sv.Name);
+			});
+
+			mapper.CreateMap<SerializableConnection, Connection>((tSource, param) =>
+			{
+				var sc = tSource as SerializableConnection;
+				var vertices = param as List<Vertex>;
+
+				var firstVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[0]).FirstOrDefault();
+				var secondVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[1]).FirstOrDefault();
+
+				return new Connection((firstVertex, secondVertex), sc.Weight, sc.connectionType);
+			});
 		}
 	}
 }
