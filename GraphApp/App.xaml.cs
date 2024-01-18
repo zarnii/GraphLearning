@@ -87,15 +87,15 @@ namespace GraphApp
 				return new Vertex(sv.X, sv.Y, sv.Number, sv.Name);
 			});
 
-			mapper.CreateMap<SerializableConnection, Connection>((tSource, param) =>
+			mapper.CreateMap<SerializableConnection, VisualConnection>((tSource, param) =>
 			{
 				var sc = tSource as SerializableConnection;
-				var vertices = param as List<Vertex>;
+				var vertices = param as List<VisualVertex>;
 
 				var firstVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[0]).FirstOrDefault();
 				var secondVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[1]).FirstOrDefault();
 
-				return new Connection((firstVertex, secondVertex), sc.Weight, sc.connectionType);
+				return new VisualConnection((firstVertex, secondVertex), sc.Weight, sc.connectionType);
 			});
 		}
 	}

@@ -459,6 +459,14 @@ namespace GraphApp.ViewModel
 					_defaultVertexColor
 				));
 			}
+
+			foreach (var sConnection in data.Item2)
+			{
+				var vertices = Vertices.ToList();
+				var connection = _mapper.Map<VisualConnection>(sConnection, vertices);
+				connection.OnDelete += DeleteConnection;
+				Connections.Add(connection);
+			}
 		}
 		#endregion
 	}
