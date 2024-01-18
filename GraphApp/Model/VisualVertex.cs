@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using System.Windows.Media;
 
 namespace GraphApp.Model
@@ -153,9 +154,13 @@ namespace GraphApp.Model
 				OnPropertyChanged(nameof(Color));
 			}
 		}
-
+		
+		/// <summary>
+		/// 
+		/// </summary>
 		public Action OnDelete { get; set; }
 
+		
 		/// <summary>
 		/// Событие изменения свойства.
 		/// </summary>
@@ -190,6 +195,21 @@ namespace GraphApp.Model
 		{
 			_vertex = new Vertex(coordinates, number, name);
 			Width = width;
+			Height = height;
+			Color = new SolidColorBrush(color);
+		}
+
+		/// <summary>
+		/// Конструктор.
+		/// </summary>
+		/// <param name="vertex">Вершина.</param>
+		/// <param name="width">Ширина.</param>
+		/// <param name="height">Высота.</param>
+		/// <param name="color">Цвет.</param>
+		public VisualVertex(Vertex vertex, int width, int height, Color color)
+		{
+			Vertex = vertex;
+			Width = width; 
 			Height = height;
 			Color = new SolidColorBrush(color);
 		}

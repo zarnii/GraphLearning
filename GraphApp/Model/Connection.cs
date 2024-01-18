@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace GraphApp.Model
 {
@@ -24,20 +25,6 @@ namespace GraphApp.Model
 			{
 				return _connectedVertices;
 			}
-			set
-			{
-				if (value.Item1 == null)
-				{
-					throw new ArgumentNullException(nameof(value.Item1), "Пустое значение картежа.");
-				}
-
-				if (value.Item1 == null)
-				{
-					throw new ArgumentNullException(nameof(value.Item2), "Пустое значение картежа.");
-				}
-
-				_connectedVertices = value;
-			}
 		}
 
 		/// <summary>
@@ -58,9 +45,10 @@ namespace GraphApp.Model
 		/// <param name="connectedVertices">Соеденяемые вершины.</param>
 		/// <param name="weight">Вес соединения.</param>
 		/// <param name="connectionType">Тип соединения.</param>
-		public Connection((Vertex, Vertex) connectedVertices, double weight = 0, ConnectionType connectionType = ConnectionType.Unidirectional)
+		public Connection((Vertex, Vertex) vertices, 
+			double weight = 0, ConnectionType connectionType = ConnectionType.Unidirectional)
 		{
-			ConnectedVertices = connectedVertices;
+			_connectedVertices = vertices;
 			Weight = weight;
 			ConnectionType = connectionType;
 		}

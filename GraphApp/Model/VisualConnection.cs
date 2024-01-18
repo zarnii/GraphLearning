@@ -74,6 +74,7 @@ namespace GraphApp.Model
 			}
 		}
 
+
 		/// <summary>
 		/// Ссылка на выполняемую функцию при удалении. 
 		/// </summary>
@@ -93,6 +94,7 @@ namespace GraphApp.Model
 				_connection.ConnectionType = value;
 			}
 		}
+
 
 		/// <summary>
 		/// X координата первой вершины.
@@ -155,7 +157,12 @@ namespace GraphApp.Model
 			double weight = 0,
 			ConnectionType connectionType = ConnectionType.Unidirectional)
 		{
-			_connection = new Connection((connectedVertices.Item1.Vertex, connectedVertices.Item2.Vertex), weight, connectionType);
+			_connection = new Connection(
+				(connectedVertices.Item1.Vertex, connectedVertices.Item2.Vertex),
+				weight,
+				connectionType
+			);
+
 			ConnectedVertices = connectedVertices;
 			Weight = weight;
 			ConnectionType = connectionType;

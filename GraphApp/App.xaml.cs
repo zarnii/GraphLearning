@@ -1,5 +1,7 @@
-﻿using GraphApp.View;
+﻿using GraphApp.Interfaces;
+using GraphApp.View;
 using GraphApp.ViewModel;
+using GraphApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
@@ -38,7 +40,6 @@ namespace GraphApp
 				{
 					DataContext = serviceProvider.GetRequiredService<VisualEditorViewModel>()
 				}
-
 			);
 
 			// Фабричная функция страниц.
@@ -46,11 +47,15 @@ namespace GraphApp
 			{
 				return page => (Page)serviceProvider.GetRequiredService(page);
 			});
-			
 
+			serviceCollection.AddSingleton<IDataSaver, DataSaverServices>();
+			serviceCollection.AddSingleton<IDataLoader, DataLoaderServices>();
+			serviceCollection.AddSingleton<IDataHeandlerService, DataHeandlerService>();
 			serviceCollection.AddSingleton<RootViewModel>();
 			serviceCollection.AddSingleton<MainMenuViewModel>();
-			serviceCollection.AddSingleton<VisualEditorViewModel>();
+			serviceCollection.AddSingleton<VisualEditorViewModel>(serviceProvider =>
+				new VisualEditorViewModel(serviceProvider.GetRequiredService<IDataHeandlerService>())
+			);
 
 			_serviceProvider = serviceCollection.BuildServiceProvider();
 		}

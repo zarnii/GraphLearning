@@ -1,20 +1,26 @@
 ﻿using GraphApp.Command;
+using GraphApp.Interfaces;
 using GraphApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
+using System.Linq;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.IO;
+using System.Configuration;
+using Microsoft.Win32;
+using GraphApp.Model.Serializing;
 
 namespace GraphApp.ViewModel
 {
 	/// <summary>
 	/// Модель представления страницы редактора.
 	/// </summary>
-	public class VisualEditorViewModel: ViewModel
+	public class VisualEditorViewModel
 	{
 		#region fields
 		/// <summary>
@@ -26,6 +32,11 @@ namespace GraphApp.ViewModel
 		/// Высота вершины по умолчанию.
 		/// </summary>
 		private int _defaultVertexHeight = 20;
+
+		/// <summary>
+		/// Пусть сохранения.
+		/// </summary>
+		private string _pathToFiles;
 
 		/// <summary>
 		/// Цвет вершины по умолчанию.
@@ -58,9 +69,24 @@ namespace GraphApp.ViewModel
 		private ICommand _moveVertex;
 
 		/// <summary>
+		/// Команда сохранения графа.
+		/// </summary>
+		private ICommand _saveGraph;
+
+		/// <summary>
+		/// Команда загрузки графа.
+		/// </summary>
+		private ICommand _loadGraph;
+
+		/// <summary>
 		/// Режим мыши.
 		/// </summary>
 		private static MouseMode _mouseMode;
+
+		/// <summary>
+		/// Обработчик данных.
+		/// </summary>
+		private IDataHeandlerService _dataHeandler;
 		#endregion
 
 		#region properties
@@ -165,6 +191,46 @@ namespace GraphApp.ViewModel
 		}
 
 		/// <summary>
+		/// Команда сохранения графа.
+		/// </summary>
+		public ICommand SaveGraph
+		{
+			get
+			{
+				return _saveGraph;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда сохранения графа.");
+				}
+
+				_saveGraph = value;
+			}
+		}
+
+		/// <summary>
+		/// Команда загрузки графа.
+		/// </summary>
+		public ICommand LoadGraph
+		{
+			get
+			{
+				return _loadGraph;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда загрузки графа.");
+				}
+
+				_loadGraph = value;
+			}
+		}
+
+		/// <summary>
 		/// Выбранные вершины
 		/// </summary>
 		public List<VisualVertex> SelectedVertices { get; set; }
@@ -184,8 +250,11 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
-		public VisualEditorViewModel()
+		public VisualEditorViewModel(IDataHeandlerService dataHeandler)
 		{
+			_pathToFiles = ConfigurationManager.AppSettings["defaultSavePath"];
+			_dataHeandler = dataHeandler;
+
 			Vertices = new ObservableCollection<VisualVertex>();
 			Connections = new ObservableCollection<VisualConnection>();
 			SelectedVertices = new List<VisualVertex>();
@@ -195,6 +264,8 @@ namespace GraphApp.ViewModel
 			ClickOnVertex = new RelayCommand(ClickOnVertexCommand);
 			ClickOnConnection = new RelayCommand(ClickOnConnectionCommand);
 			MoveVertex = new RelayCommand(MoveVertexCommand);
+			SaveGraph = new RelayCommand(SaveGraphCommand);
+			LoadGraph = new RelayCommand(LoadGraphCommand);
 
 
 			AddVertex(new Point(200, 200));
@@ -301,13 +372,16 @@ namespace GraphApp.ViewModel
 			Vertices.Remove(vertex);
 		}
 
+
 		/// <summary>
 		/// Создание связи.
 		/// </summary>
 		/// <param name="connectedVertices">Соеденяемые вершины.</param>
-		private void AddConnection((VisualVertex, VisualVertex) connectedVertices)
+		private void AddConnection((VisualVertex, VisualVertex) connectedVertices, 
+			double weight = 0, 
+			ConnectionType connectionType = ConnectionType.NonDirectional)
 		{
-			var connection = new VisualConnection(connectedVertices);
+			var connection = new VisualConnection(connectedVertices, weight, connectionType);
 			connection.OnDelete += DeleteConnection;
 
 			Connections.Add(connection);
@@ -321,17 +395,6 @@ namespace GraphApp.ViewModel
 		{
 			connection.OnDelete -= DeleteConnection;
 			Connections.Remove(connection);
-		}
-
-		/// <summary>
-		/// Нажатие на поле.
-		/// </summary>
-		/// <param name="parameter">Аргументы события.</param>
-		private void ClickOnRectangle(object parameter)
-		{
-			var mbEventArgs = (MouseButtonEventArgs)parameter;
-			var point = mbEventArgs.GetPosition((Rectangle)mbEventArgs.OriginalSource);
-			ClickOnField.Execute(point);
 		}
 
 		/// <summary>
@@ -350,6 +413,56 @@ namespace GraphApp.ViewModel
 
 			vertex.X += ddEventArgs.HorizontalChange;
 			vertex.Y += ddEventArgs.VerticalChange;
+		}
+
+		/// <summary>
+		/// Созранение графа.
+		/// </summary>
+		/// <param name="parameter"></param>
+		private void SaveGraphCommand(object parameter)
+		{
+			// Временно.
+			if (!Directory.Exists(_pathToFiles))
+			{
+				Directory.CreateDirectory(_pathToFiles);
+			}
+
+			var vertices = Vertices.Select(x => x.Vertex).ToList();
+			var connection = Connections.Select(x => x.Connection).ToList();
+
+			//_dataHeandler.Save(_pathToFiles, vertices, connection);
+		}
+
+		/// <summary>
+		/// Загрузка графа.
+		/// </summary>
+		/// <param name="parameter"></param>
+		private void LoadGraphCommand(object parameter)
+		{
+			var data = _dataHeandler.Load("saves");
+
+			var mapper = new Mapper();
+			mapper.CreateMap<SerializableVertex, Vertex>(MapToVertex);
+			mapper.CreateMap<SerializableConnection, Connection>(MapToConnection);
+
+			var result = mapper.Map<Vertex>(data.Item1[0]);
+			var result2 = mapper.Map<Connection>(data.Item2[0]);
+
+		}
+
+		private Vertex MapToVertex(object arg)
+		{
+			var sv = arg as SerializableVertex;
+			return new Vertex(sv.X, sv.Y, sv.Number, sv.Name);
+		}
+
+		private Connection MapToConnection(object arg)
+		{
+			var con = arg as SerializableConnection;
+			var firstVertex = Vertices.Where(v => v.Number == con.ConnectedVerticesNumber[0]).FirstOrDefault();
+			var secondVertex = Vertices.Where(v => v.Number == con.ConnectedVerticesNumber[1]).FirstOrDefault();
+
+			return new Connection((firstVertex.Vertex, secondVertex.Vertex), con.Weight, con.connectionType);
 		}
 		#endregion
 	}

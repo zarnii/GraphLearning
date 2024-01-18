@@ -7,7 +7,7 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления главного меню.
 	/// </summary>
-	public class MainMenuViewModel: ViewModel
+	public class MainMenuViewModel
 	{
 		/// <summary>
 		/// Команда открытия страницы редактора.

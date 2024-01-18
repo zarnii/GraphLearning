@@ -16,7 +16,12 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<Grid Grid.Row="0" Background="#FFBFBFBF"/>
+		<Grid Grid.Row="0" Background="#FFBFBFBF">
+			<StackPanel Orientation="Horizontal">
+				<Button Content="Save" Command="{Binding SaveGraph}" Width="100"/>
+				<Button Content="Load" Command="{Binding LoadGraph}" Width="100"/>
+			</StackPanel>
+		</Grid>
 
 		<Grid Grid.Row="1">
 			<Grid.ColumnDefinitions>

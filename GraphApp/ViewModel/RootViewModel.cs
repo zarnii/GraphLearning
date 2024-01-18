@@ -10,7 +10,7 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления главного окна.
 	/// </summary>
-	public class RootViewModel: ViewModel, INotifyPropertyChanged
+	public class RootViewModel: INotifyPropertyChanged
 	{
 		#region fields
 		/// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace GraphApp.Model
 {
@@ -56,12 +55,12 @@ namespace GraphApp.Model
 		public double X
 		{
 			get
-			{ 
-				return _x; 
+			{
+				return _x;
 			}
-			set 
-			{ 
-				_x = value; 
+			set
+			{
+				_x = value;
 			}
 		}
 
@@ -74,6 +73,21 @@ namespace GraphApp.Model
 			set
 			{
 				_y = value;
+			}
+		}
+
+		/// <summary>
+		/// Номер вершины на поле.
+		/// </summary>
+		public int Number
+		{
+			get
+			{
+				return _number;
+			}
+			set
+			{
+				_number = value;
 			}
 		}
 
@@ -94,36 +108,6 @@ namespace GraphApp.Model
 				}
 
 				_name = value;
-			}
-		}
-
-		/// <summary>
-		/// Номер вершины на поле.
-		/// </summary>
-		public int Number
-		{
-			get
-			{
-				return _number;
-			}
-			set
-			{
-				_number = value;
-			}
-		}
-
-		/// <summary>
-		/// Обработчик удаления вершины.
-		/// </summary>
-		public Action<Vertex> OnDelete
-		{
-			get
-			{
-				return _onDelete;
-			}
-			set
-			{
-				_onDelete = value;
 			}
 		}
 		#endregion
@@ -152,16 +136,12 @@ namespace GraphApp.Model
 		/// <param name="name">Имя вершины.</param>
 		public Vertex((double, double) coordinates, int number, string name = "default")
 			: this(coordinates.Item1, coordinates.Item2, number, name) { }
+
+		public Vertex()
+		{ }
 		#endregion
 
 		#region public methods
-		/// <summary>
-		/// Удаление вершины.
-		/// </summary>
-		public void Delete()
-		{
-			_onDelete?.Invoke(this);
-		}
 		#endregion
 
 		#region private methods
