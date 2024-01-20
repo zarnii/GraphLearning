@@ -56,18 +56,18 @@ namespace GraphApp.Services
 		/// </summary>
 		/// <param name="path">Пусть до данных.</param>
 		/// <returns>Лист вершин и связей.</returns>
-		public (List<SerializableVertex>, List<SerializableConnection>) Load(string path)
+		public (List<SerializableVertex>, List<SerializableConnection>) Load()
 		{
-			return _dataLoader.Load(path);
+			return _dataLoader.Load();
 		}
 
 		/// <summary>
 		/// Сохранение.
 		/// </summary>
 		/// <param name="path">Путь.</param>
-		public void Save(string path, List<SerializableVertex> vertices, List<SerializableConnection> connections)
+		public void Save(List<SerializableVertex> vertices, List<SerializableConnection> connections)
 		{
-			_dataSaver.Save(path, vertices, connections);
+			_dataSaver.Save(vertices, connections);
 		}
 		#endregion
 	}

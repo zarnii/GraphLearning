@@ -11,7 +11,7 @@ namespace GraphApp.Interfaces
 			where TSourse   : class
 			where TReceiver : class;
 
-		TReceiver Map<TReceiver>(object key, object param) 
+		TReceiver Map<TReceiver>(object soure, object param) 
 			where TReceiver : class;
 	}
 }

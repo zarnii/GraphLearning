@@ -157,6 +157,11 @@ namespace GraphApp.Model
 			double weight = 0,
 			ConnectionType connectionType = ConnectionType.Unidirectional)
 		{
+			if (connectedVertices.Item1 == null || connectedVertices.Item2 == null)
+			{
+				throw new ArgumentNullException(nameof(connectedVertices), "Пустая соеденяемая вершина.");
+			}
+
 			_connection = new Connection(
 				(connectedVertices.Item1.Vertex, connectedVertices.Item2.Vertex),
 				weight,

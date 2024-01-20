@@ -9,6 +9,6 @@
 
 		public double Weight { get; set; }
 
-		public ConnectionType connectionType { get; set; }
+		public ConnectionType ConnectionType { get; set; }
 	}
 }

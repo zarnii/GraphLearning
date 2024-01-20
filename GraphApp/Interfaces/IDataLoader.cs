@@ -10,6 +10,6 @@ namespace GraphApp.Interfaces
 	/// </summary>
 	public interface IDataLoader
 	{
-		(List<SerializableVertex>, List<SerializableConnection>) Load(string path);
+		(List<SerializableVertex>, List<SerializableConnection>) Load();
 	}
 }

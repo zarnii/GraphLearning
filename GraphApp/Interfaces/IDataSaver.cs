@@ -9,6 +9,6 @@ namespace GraphApp.Interfaces
 	/// </summary>
 	public interface IDataSaver
 	{
-		void Save(string path, List<SerializableVertex> vertices, List<SerializableConnection> connections);
+		void Save(List<SerializableVertex> vertices, List<SerializableConnection> connections);
 	}
 }

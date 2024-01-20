@@ -1,19 +1,18 @@
 ﻿using GraphApp.Command;
 using GraphApp.Interfaces;
 using GraphApp.Model;
+using GraphApp.Model.Exception;
+using GraphApp.Model.Serializing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.IO;
-using System.Configuration;
-using Microsoft.Win32;
-using GraphApp.Model.Serializing;
 
 namespace GraphApp.ViewModel
 {
@@ -384,8 +383,8 @@ namespace GraphApp.ViewModel
 		/// Создание связи.
 		/// </summary>
 		/// <param name="connectedVertices">Соеденяемые вершины.</param>
-		private void AddConnection((VisualVertex, VisualVertex) connectedVertices, 
-			double weight = 0, 
+		private void AddConnection((VisualVertex, VisualVertex) connectedVertices,
+			double weight = 0,
 			ConnectionType connectionType = ConnectionType.NonDirectional)
 		{
 			var connection = new VisualConnection(connectedVertices, weight, connectionType);
@@ -428,16 +427,20 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter"></param>
 		private void SaveGraphCommand(object parameter)
 		{
-			// Временно.
-			if (!Directory.Exists(_pathToFiles))
+			var vertices = new List<SerializableVertex>();
+			var connections = new List<SerializableConnection>();
+
+			foreach (var vertex in Vertices)
 			{
-				Directory.CreateDirectory(_pathToFiles);
+				vertices.Add(_mapper.Map<SerializableVertex>(vertex, null));
 			}
 
-			var vertices = Vertices.Select(x => x.Vertex).ToList();
-			var connection = Connections.Select(x => x.Connection).ToList();
+			foreach (var connection in Connections)
+			{
+				connections.Add(_mapper.Map<SerializableConnection>(connection, null));
+			}
 
-			//_dataHeandler.Save(_pathToFiles, vertices, connection);
+			_dataHeandler.Save(vertices, connections);
 		}
 
 		/// <summary>
@@ -446,27 +449,45 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter"></param>
 		private void LoadGraphCommand(object parameter)
 		{
-			var data = _dataHeandler.Load("saves");
+			var data = _dataHeandler.Load();
+
+			if (data.Item1 == null || data.Item2 == null)
+			{
+				return;
+			}
+
+			Vertices.Clear();
+			Connections.Clear();
+
+			try
+			{
+				foreach (var sVertex in data.Item1)
+				{
+					var vertex = _mapper.Map<VisualVertex>(sVertex, null);
+					Vertices.Add(vertex);
+				}
+
+				foreach (var sConnection in data.Item2)
+				{
+					var vertices = Vertices.ToList();
+					var connection = _mapper.Map<VisualConnection>(sConnection, vertices);
+					connection.OnDelete += DeleteConnection;
+					Connections.Add(connection);
+				}
+			}
+			catch(LoadDataException ex)
+			{
+				MessageBox.Show(
+					"Произошла оишбка при загрузки графа, возможно файл был отредактирован", 
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+				);
+
+				Vertices.Clear();
+				Connections.Clear();
+			}
 			
-			foreach (var sVertex in data.Item1)
-			{
-				var vertex = _mapper.Map<Vertex>(sVertex, null);
-
-				Vertices.Add(new VisualVertex(
-					vertex, 
-					_defaultVertexWidth, 
-					_defaultVertexHeight, 
-					_defaultVertexColor
-				));
-			}
-
-			foreach (var sConnection in data.Item2)
-			{
-				var vertices = Vertices.ToList();
-				var connection = _mapper.Map<VisualConnection>(sConnection, vertices);
-				connection.OnDelete += DeleteConnection;
-				Connections.Add(connection);
-			}
 		}
 		#endregion
 	}

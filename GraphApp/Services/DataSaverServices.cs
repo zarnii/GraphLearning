@@ -1,6 +1,7 @@
 ﻿using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Model.Serializing;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -13,21 +14,32 @@ namespace GraphApp.Services
 	/// </summary>
 	public class DataSaverServices : IDataSaver
 	{
+		private readonly SaveFileDialog _saveFile;
+
+		public DataSaverServices()
+		{
+			_saveFile = new SaveFileDialog();
+			_saveFile.Filter = "Json files (*.json)|*.json";
+		}
+
 		/// <summary>
 		/// Сохранить.
 		/// </summary>
 		/// <param name="path">Путь до места сохранения.</param>
 		/// <param name="vertices">Вершины.</param>
 		/// <param name="connections">Связи.</param>
-		public void Save(string path, List<SerializableVertex> vertices, List<SerializableConnection> connections)
+		public void Save(List<SerializableVertex> vertices, List<SerializableConnection> connections)
 		{
-			var json = JsonSerializer.Serialize(new SerializableData()
+			if (_saveFile.ShowDialog() == true)
 			{
-				Vertices = vertices,
-				Connections = connections
-			});
+				var json = JsonSerializer.Serialize(new SerializableData()
+				{
+					Vertices = vertices,
+					Connections = connections
+				});
 
-			File.WriteAllText($"{path}\\{ConfigurationManager.AppSettings["defaultSaveFileName"]}", json);
+				File.WriteAllText(_saveFile.FileName, json);
+			}
 		}
 	}
 }

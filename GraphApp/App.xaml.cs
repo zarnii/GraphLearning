@@ -1,15 +1,17 @@
 ﻿using GraphApp.Interfaces;
+using GraphApp.Model;
+using GraphApp.Model.Exception;
+using GraphApp.Model.Serializing;
+using GraphApp.Services;
 using GraphApp.View;
 using GraphApp.ViewModel;
-using GraphApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Windows;
-using System.Windows.Controls;
-using GraphApp.Model;
-using GraphApp.Model.Serializing;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace GraphApp
 {
@@ -23,8 +25,12 @@ namespace GraphApp
 		/// </summary>
 		private readonly IServiceProvider _serviceProvider;
 
+		private readonly BrushConverter _brushConverter;
+
 		public App()
 		{
+			_brushConverter = new BrushConverter();
+
 			var serviceCollection = new ServiceCollection();
 
 			serviceCollection.AddSingleton<RootWindow>(serviceProvider =>
@@ -81,21 +87,74 @@ namespace GraphApp
 		private void SettingMapper()
 		{
 			var mapper = _serviceProvider.GetRequiredService<IMapper>();
-			mapper.CreateMap<SerializableVertex, Vertex>((tSource, param) =>
+			mapper.CreateMap<SerializableVertex, VisualVertex>((tSource, param) =>
 			{
-				var sv = tSource as SerializableVertex;
-				return new Vertex(sv.X, sv.Y, sv.Number, sv.Name);
+				try
+				{
+					var sv = tSource as SerializableVertex;
+
+					return new VisualVertex(
+						(sv.X, sv.Y),
+						sv.Width,
+						sv.Height,
+						sv.Number,
+						(Color)ColorConverter.ConvertFromString(sv.ColorString)
+					);
+				}
+				catch (FormatException ex)
+				{
+					throw new LoadDataException("Ошибка формата", ex);
+				}
+				
 			});
 
 			mapper.CreateMap<SerializableConnection, VisualConnection>((tSource, param) =>
 			{
-				var sc = tSource as SerializableConnection;
-				var vertices = param as List<VisualVertex>;
+				try
+				{
+					var sc = tSource as SerializableConnection;
+					var vertices = param as List<VisualVertex>;
 
-				var firstVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[0]).FirstOrDefault();
-				var secondVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[1]).FirstOrDefault();
+					var firstVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[0]).FirstOrDefault();
+					var secondVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[1]).FirstOrDefault();
 
-				return new VisualConnection((firstVertex, secondVertex), sc.Weight, sc.connectionType);
+					return new VisualConnection((firstVertex, secondVertex), sc.Weight, sc.ConnectionType);
+				}
+				catch(ArgumentNullException ex)
+				{
+					throw new LoadDataException(String.Empty, ex);
+				}
+				
+			});
+
+			mapper.CreateMap<VisualVertex, SerializableVertex>((tSource, param) =>
+			{
+				var vv = tSource as VisualVertex;
+
+				return new SerializableVertex()
+				{
+					X = vv.X,
+					Y = vv.Y,
+					Number = vv.Number,
+					Name = vv.Name,
+					Height = vv.Height,
+					Width = vv.Width,
+					ColorString = _brushConverter.ConvertToString(vv.Color)
+				};
+
+			});
+
+			mapper.CreateMap<VisualConnection, SerializableConnection>((tSource, param) =>
+			{
+				var vc = tSource as VisualConnection;
+				var connectedVertices = vc.ConnectedVertices;
+
+				return new SerializableConnection()
+				{
+					ConnectedVerticesNumber = new int[2] { connectedVertices.Item1.Number, connectedVertices.Item2.Number },
+					Weight = vc.Weight,
+					ConnectionType = vc.ConnectionType
+				};
 			});
 		}
 	}
