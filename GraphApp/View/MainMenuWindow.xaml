@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:GraphApp.View"
+	  xmlns:viewModel="clr-namespace:GraphApp.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainMenuWindow">
@@ -15,7 +16,8 @@
 				Margin="0, 150, 0, 0" 
 				HorizontalAlignment="Center" 
 				Width="100" 
-				Height="30"/>
+				Height="30"
+				Command="{Binding OpenLearnLevels}"/>
 			<Button
 				Content="Песочница"
 				Margin="0, 20, 0, 0"

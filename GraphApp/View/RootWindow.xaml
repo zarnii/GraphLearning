@@ -9,6 +9,6 @@
         Title="MainWindow" Height="450" Width="800">
 
 	<Grid>
-		<Frame Content="{Binding CurrentPage}"/>
+		<Frame Content="{Binding NavigationService.CurrentPage}"/>
 	</Grid>
 </Window>

@@ -1,4 +1,10 @@
-﻿using GraphApp.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Model.Exception;
 using GraphApp.Model.Serializing;
@@ -6,12 +12,7 @@ using GraphApp.Services;
 using GraphApp.View;
 using GraphApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+
 
 namespace GraphApp
 {
@@ -52,6 +53,8 @@ namespace GraphApp
 				}
 			);
 
+			serviceCollection.AddSingleton<LearnLevelsWindow>();
+
 			// Фабричная функция страниц.
 			serviceCollection.AddSingleton<Func<Type, Page>>(serviceProvider =>
 			{
@@ -63,6 +66,7 @@ namespace GraphApp
 			serviceCollection.AddSingleton<IDataSaver, DataSaverServices>();
 			serviceCollection.AddSingleton<IDataLoader, DataLoaderServices>();
 			serviceCollection.AddSingleton<IDataHeandlerService, DataHeandlerService>();
+			serviceCollection.AddSingleton<INavigationService, NavigationService>();
 			serviceCollection.AddSingleton<RootViewModel>();
 			serviceCollection.AddSingleton<MainMenuViewModel>();
 			serviceCollection.AddSingleton<VisualEditorViewModel>();

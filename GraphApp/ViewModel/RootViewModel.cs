@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using GraphApp.Command;
+using GraphApp.Interfaces;
 using GraphApp.View;
 
 namespace GraphApp.ViewModel
@@ -10,45 +11,24 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления главного окна.
 	/// </summary>
-	public class RootViewModel: INotifyPropertyChanged
+	public class RootViewModel
 	{
 		#region fields
 		/// <summary>
-		/// Страница графического редактора.
+		/// Сервис навигации.
 		/// </summary>
-		private Page _visualEditor;
-
-		/// <summary>
-		/// Страница главного меню.
-		/// </summary>
-		private Page _mainMenu;
-
-		/// <summary>
-		/// Текущая страница.
-		/// </summary>
-		private Page _currentPage;
-
-		/// <summary>
-		/// Оповещение подписчиков об изменении свойства.
-		/// </summary>
-		public event PropertyChangedEventHandler? PropertyChanged;
+		private INavigationService _navigationService;
 		#endregion
 
 		#region properties
 		/// <summary>
-		/// Текущая страница.
+		/// Сервис навигации.
 		/// </summary>
-		public Page CurrentPage 
-		{ 
-			get
-			{
-				return _currentPage;
-			}
-			set
-			{
-				_currentPage = value;
-				
-				OnPropertyChanged(nameof(CurrentPage));
+		public INavigationService NavigationService
+		{
+			get 
+			{ 
+				return _navigationService; 
 			}
 		}
 		#endregion
@@ -57,14 +37,10 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
-		public RootViewModel(Func<Type, Page> pageFactory)
+		public RootViewModel(INavigationService navigationService)
 		{
-			_visualEditor = pageFactory.Invoke(typeof(VisualEditorWindow));
-			_mainMenu = pageFactory.Invoke(typeof(MainMenuWindow));
-
-			(_mainMenu.DataContext as MainMenuViewModel).OpenVisualEditor = new RelayCommand(SetVisualEditor);
-
-			CurrentPage = _mainMenu;
+			_navigationService = navigationService;
+			_navigationService.NavigateTo<MainMenuWindow>();
 		}
 		#endregion
 
@@ -72,23 +48,6 @@ namespace GraphApp.ViewModel
 		#endregion
 
 		#region private metgods
-		/// <summary>
-		/// Оповещение подписчиков об изменении свойства.
-		/// </summary>
-		/// <param name="propertyName">Имя свойства.</param>
-		private void OnPropertyChanged([CallerMemberName]string propertyName = "")
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
-		/// <summary>
-		/// Установка страницы редактора.
-		/// </summary>
-		/// <param name="parameter">Параметр.</param>
-		private void SetVisualEditor(object parameter)
-		{
-			CurrentPage = _visualEditor;
-		}
 		#endregion
 	}
 }

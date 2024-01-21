@@ -1,9 +1,4 @@
-﻿using GraphApp.Command;
-using GraphApp.Interfaces;
-using GraphApp.Model;
-using GraphApp.Model.Exception;
-using GraphApp.Model.Serializing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
@@ -13,6 +8,11 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using GraphApp.Command;
+using GraphApp.Interfaces;
+using GraphApp.Model;
+using GraphApp.Model.Exception;
+using GraphApp.Model.Serializing;
 
 namespace GraphApp.ViewModel
 {
