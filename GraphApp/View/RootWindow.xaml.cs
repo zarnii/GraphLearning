@@ -10,9 +10,10 @@ namespace GraphApp
 	/// </summary>
 	public partial class RootWindow : Window
 	{
-		public RootWindow()
+		public RootWindow(RootViewModel viewModel)
 		{
 			InitializeComponent();
+			DataContext = viewModel;
 		}
 	}
 }

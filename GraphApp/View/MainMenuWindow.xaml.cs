@@ -8,9 +8,10 @@ namespace GraphApp.View
 	/// </summary>
 	public partial class MainMenuWindow : Page
 	{
-		public MainMenuWindow()
+		public MainMenuWindow(MainMenuViewModel viewModel)
 		{
 			InitializeComponent();
+			DataContext = viewModel;
 		}
 	}
 }

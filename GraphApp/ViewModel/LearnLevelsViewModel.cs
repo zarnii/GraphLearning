@@ -1,14 +1,14 @@
-﻿using System;
-using GraphApp.Command;
+﻿using GraphApp.Command;
 using GraphApp.Interfaces;
+using System;
 using System.Windows.Input;
 
 namespace GraphApp.ViewModel
 {
 	/// <summary>
-	/// Модель представления главного меню.
+	/// Модель представления окна с уроками.
 	/// </summary>
-	public class MainMenuViewModel
+	public class LearnLevelsViewModel
 	{
 		#region fields
 		/// <summary>
@@ -19,7 +19,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда открытия окна.
 		/// </summary>
-		private ICommand _openVisualEditor;
+		private ICommand _openWindow;
 		#endregion
 
 		#region properties
@@ -30,16 +30,16 @@ namespace GraphApp.ViewModel
 		{
 			get
 			{
-				return _openVisualEditor;
+				return _openWindow;
 			}
 			set
 			{
 				if (value == null)
 				{
-					throw new ArgumentNullException(nameof(value), "Пустая команда.");
+					throw new ArgumentNullException();
 				}
 
-				_openVisualEditor = value;
+				_openWindow = value;
 			}
 		}
 		#endregion
@@ -49,9 +49,10 @@ namespace GraphApp.ViewModel
 		/// Конструктор.
 		/// </summary>
 		/// <param name="navigationService">Сервис навигации.</param>
-		public MainMenuViewModel(INavigationService navigationService)
+		public LearnLevelsViewModel(INavigationService navigationService)
 		{
 			_navigationService = navigationService;
+
 			OpenWindow = new RelayCommand(OpenWindowCommand);
 		}
 		#endregion
@@ -60,11 +61,14 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Открытие окна.
 		/// </summary>
-		/// <param name="parameter">Открываемое окно</param>
+		/// <param name="parameter">Тип окна.</param>
 		private void OpenWindowCommand(object parameter)
 		{
 			_navigationService.NavigateTo((Type)parameter);
 		}
+		#endregion
+
+		#region public methods
 		#endregion
 	}
 }

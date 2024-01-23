@@ -12,6 +12,8 @@ using GraphApp.Services;
 using GraphApp.View;
 using GraphApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
+using System.IO;
 
 
 namespace GraphApp
@@ -34,42 +36,37 @@ namespace GraphApp
 
 			var serviceCollection = new ServiceCollection();
 
-			serviceCollection.AddSingleton<RootWindow>(serviceProvider =>
-				new RootWindow()
-				{
-					DataContext = serviceProvider.GetRequiredService<RootViewModel>()
-				}
-			);
-			serviceCollection.AddSingleton<MainMenuWindow>(serviceProvider =>
-				new MainMenuWindow()
-				{
-					DataContext = serviceProvider.GetRequiredService<MainMenuViewModel>()
-				}
-			);
-			serviceCollection.AddSingleton<VisualEditorWindow>(serviceProvider =>
-				new VisualEditorWindow()
-				{
-					DataContext = serviceProvider.GetRequiredService<VisualEditorViewModel>()
-				}
-			);
-
+			#region windows
+			serviceCollection.AddSingleton<RootWindow>();
+			serviceCollection.AddSingleton<MainMenuWindow>();
+			serviceCollection.AddSingleton<VisualEditorWindow>();
 			serviceCollection.AddSingleton<LearnLevelsWindow>();
+			serviceCollection.AddSingleton<TheoryWindow>();
+			serviceCollection.AddSingleton<Question1>();
+			#endregion
 
-			// Фабричная функция страниц.
-			serviceCollection.AddSingleton<Func<Type, Page>>(serviceProvider =>
-			{
-				return page => (Page)serviceProvider.GetRequiredService(page);
-			});
-
-
+			#region services
 			serviceCollection.AddSingleton<IMapper, Mapper>();
 			serviceCollection.AddSingleton<IDataSaver, DataSaverServices>();
 			serviceCollection.AddSingleton<IDataLoader, DataLoaderServices>();
 			serviceCollection.AddSingleton<IDataHeandlerService, DataHeandlerService>();
 			serviceCollection.AddSingleton<INavigationService, NavigationService>();
+			#endregion
+
+			#region viewModel
 			serviceCollection.AddSingleton<RootViewModel>();
 			serviceCollection.AddSingleton<MainMenuViewModel>();
 			serviceCollection.AddSingleton<VisualEditorViewModel>();
+			serviceCollection.AddSingleton<LearnLevelsViewModel>();
+			#endregion
+
+			#region other
+			// Фабричная функция страниц.
+			serviceCollection.AddSingleton<Func<Type, Page>>(serviceProvider =>
+			{
+				return page => (Page)serviceProvider.GetRequiredService(page);
+			});
+			#endregion
 
 			_serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -84,6 +81,7 @@ namespace GraphApp
 		{
 			var rootWindow = _serviceProvider.GetRequiredService<RootWindow>();
 			rootWindow.Show();
+			//CreateQuastion();
 
 			base.OnStartup(e);
 		}
@@ -160,6 +158,36 @@ namespace GraphApp
 					ConnectionType = vc.ConnectionType
 				};
 			});
+		}
+
+		private void CreateQuastion()
+		{
+			var q1 = new Quastion()
+			{
+				Title = "Вопрос 1",
+				Text = "Что такое граф?",
+				Answers = new Answer[]
+				{
+					new Answer()
+					{
+						Text = "Модель",
+						Flag = true
+					},
+					new Answer()
+					{
+						Text = "Объект",
+						Flag = false
+					},
+					new Answer()
+					{
+						Text = "Представление",
+						Flag = false
+					}
+				}
+			};
+
+			var jsonString = JsonSerializer.Serialize(q1);
+			File.WriteAllText("F:\\C#\\GraphApp\\GraphApp\\GraphApp\\bin\\Debug\\net6.0-windows\\quastions\\first.json", jsonString);
 		}
 	}
 }

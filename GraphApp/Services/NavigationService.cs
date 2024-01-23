@@ -74,6 +74,15 @@ namespace GraphApp.Services
 		}
 		#endregion
 
+		/// <summary>
+		/// Навигация.
+		/// </summary>
+		/// <param name="pageType">Страница, на которую нужно произвести навигацию.</param>
+		public void NavigateTo(Type pageType)
+		{
+			CurrentPage = _pageFactory(pageType);
+		}
+
 		#region private methods
 		/// <summary>
 		/// Оповещение подписчиков об изменении свойства.
