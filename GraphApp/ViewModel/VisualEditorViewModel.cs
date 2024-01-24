@@ -446,7 +446,11 @@ namespace GraphApp.ViewModel
 				connections.Add(_mapper.Map<SerializableConnection>(connection, null));
 			}
 
-			_dataHeandler.Save(vertices, connections);
+			_dataHeandler.Save<SerializableData>(new SerializableData() 
+			{
+				Connections = connections,
+				Vertices = vertices,
+			});
 		}
 
 		/// <summary>
@@ -455,9 +459,9 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter"></param>
 		private void LoadGraphCommand(object parameter)
 		{
-			var data = _dataHeandler.Load();
+			var data = _dataHeandler.Load<SerializableData>();
 
-			if (data.Item1 == null || data.Item2 == null)
+			if (data.Vertices == null || data.Connections == null)
 			{
 				return;
 			}
@@ -467,13 +471,13 @@ namespace GraphApp.ViewModel
 
 			try
 			{
-				foreach (var sVertex in data.Item1)
+				foreach (var sVertex in data.Vertices)
 				{
 					var vertex = _mapper.Map<VisualVertex>(sVertex, null);
 					Vertices.Add(vertex);
 				}
 
-				foreach (var sConnection in data.Item2)
+				foreach (var sConnection in data.Connections)
 				{
 					var vertices = Vertices.ToList();
 					var connection = _mapper.Map<VisualConnection>(sConnection, vertices);

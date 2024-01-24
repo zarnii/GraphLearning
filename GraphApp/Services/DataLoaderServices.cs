@@ -27,17 +27,17 @@ namespace GraphApp.Services
 		/// </summary>  
 		/// <param name="path">Путь до файла.</param>
 		/// <returns>Лист веришн и лист связей.</returns>
-		public (List<SerializableVertex>, List<SerializableConnection>) Load()
+		public TLoad Load<TLoad>()
 		{
-			if (_openFile.ShowDialog() == true)
+			if (_openFile.ShowDialog() == false)
 			{
-				var jsonData = File.ReadAllText(_openFile.FileName);
-				var data = JsonSerializer.Deserialize<SerializableData>(jsonData);
-
-				return (data.Vertices, data.Connections);
+				return default(TLoad);
 			}
 
-			return(null, null);
+			var jsonData = File.ReadAllText(_openFile.FileName);
+			var data = JsonSerializer.Deserialize<TLoad>(jsonData);
+
+			return data;
 		}
 	}
 }

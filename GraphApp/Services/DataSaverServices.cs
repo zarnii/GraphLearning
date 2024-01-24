@@ -28,18 +28,15 @@ namespace GraphApp.Services
 		/// <param name="path">Путь до места сохранения.</param>
 		/// <param name="vertices">Вершины.</param>
 		/// <param name="connections">Связи.</param>
-		public void Save(List<SerializableVertex> vertices, List<SerializableConnection> connections)
+		public void Save<TSave>(TSave data)
 		{
-			if (_saveFile.ShowDialog() == true)
+			if (_saveFile.ShowDialog() == false)
 			{
-				var json = JsonSerializer.Serialize(new SerializableData()
-				{
-					Vertices = vertices,
-					Connections = connections
-				});
-
-				File.WriteAllText(_saveFile.FileName, json);
+				return;
 			}
+
+			var json = JsonSerializer.Serialize(data);
+			File.WriteAllText(_saveFile.FileName, json);
 		}
 	}
 }
