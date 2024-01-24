@@ -417,6 +417,12 @@ namespace GraphApp.ViewModel
 			var ddEventArgs = (DragDeltaEventArgs)parameter;
 			var vertex = (VisualVertex)((FrameworkElement)ddEventArgs.OriginalSource).DataContext;
 
+			if (vertex.X + ddEventArgs.HorizontalChange < 0
+				|| vertex.Y + ddEventArgs.VerticalChange < 0)
+			{
+				return;
+			}
+
 			vertex.X += ddEventArgs.HorizontalChange;
 			vertex.Y += ddEventArgs.VerticalChange;
 		}
