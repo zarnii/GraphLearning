@@ -10,7 +10,7 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления вопроса.
 	/// </summary>
-	public class QuastionViewModel
+	public class QuastionViewModel: ViewModel
 	{
 		#region fields
 		/// <summary>

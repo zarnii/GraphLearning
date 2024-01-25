@@ -6,11 +6,11 @@ namespace GraphApp.Interfaces
 {
     public interface INavigationService: INotifyPropertyChanged
     {
-        Page CurrentPage { get; }
+        ViewModel.ViewModel CurrentView { get; }
 
-        void NavigateTo<Page>() 
-            where Page : System.Windows.Controls.Page;
+        void NavigateTo<TViewModel>(ViewModel.ViewModel parentViewModel) 
+            where TViewModel: ViewModel.ViewModel;
 
-        void NavigateTo(Type pageType);
+        void NavigateTo(Type viewModelType, ViewModel.ViewModel parentViewModel);
     }
 }

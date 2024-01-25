@@ -1,17 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Controls;
-using GraphApp.Command;
-using GraphApp.Interfaces;
-using GraphApp.View;
+﻿using GraphApp.Interfaces;
 
 namespace GraphApp.ViewModel
 {
 	/// <summary>
 	/// Модель представления главного окна.
 	/// </summary>
-	public class RootViewModel
+	public class RootViewModel : ViewModel
 	{
 		#region fields
 		/// <summary>
@@ -26,9 +20,9 @@ namespace GraphApp.ViewModel
 		/// </summary>
 		public INavigationService NavigationService
 		{
-			get 
-			{ 
-				return _navigationService; 
+			get
+			{
+				return _navigationService;
 			}
 		}
 		#endregion
@@ -40,7 +34,7 @@ namespace GraphApp.ViewModel
 		public RootViewModel(INavigationService navigationService)
 		{
 			_navigationService = navigationService;
-			_navigationService.NavigateTo<MainMenuWindow>();
+			_navigationService.NavigateTo<MainMenuViewModel>(this);
 		}
 		#endregion
 

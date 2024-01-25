@@ -19,7 +19,7 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления страницы редактора.
 	/// </summary>
-	public class VisualEditorViewModel
+	public class VisualEditorViewModel: ViewModel
 	{
 		#region fields
 		/// <summary>
@@ -31,11 +31,6 @@ namespace GraphApp.ViewModel
 		/// Высота вершины по умолчанию.
 		/// </summary>
 		private int _defaultVertexHeight = 20;
-
-		/// <summary>
-		/// Пусть сохранения.
-		/// </summary>
-		private string _pathToFiles;
 
 		/// <summary>
 		/// Цвет вершины по умолчанию.
@@ -78,6 +73,11 @@ namespace GraphApp.ViewModel
 		private ICommand _loadGraph;
 
 		/// <summary>
+		/// Команда перехода в предыдущее окно.
+		/// </summary>
+		private ICommand _goBack;
+
+		/// <summary>
 		/// Режим мыши.
 		/// </summary>
 		private static MouseMode _mouseMode;
@@ -91,6 +91,11 @@ namespace GraphApp.ViewModel
 		/// Маппер.
 		/// </summary>
 		private IMapper _mapper;
+
+		/// <summary>
+		/// Сервис навигации.
+		/// </summary>
+		private INavigationService _navigationService;
 		#endregion
 
 		#region properties
@@ -234,6 +239,23 @@ namespace GraphApp.ViewModel
 			}
 		}
 
+		public ICommand GoBack
+		{
+			get
+			{
+				return _goBack;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда перехода в предыдущее окно.");
+				}
+
+				_goBack = value;
+			}
+		}
+
 		/// <summary>
 		/// Выбранные вершины
 		/// </summary>
@@ -254,12 +276,11 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
-		public VisualEditorViewModel(IDataHeandlerService dataHeandler, IMapper mapper)
+		public VisualEditorViewModel(IDataHeandlerService dataHeandler, IMapper mapper, INavigationService navigationService)
 		{
-			_pathToFiles = ConfigurationManager.AppSettings["defaultSavePath"];
-
 			_dataHeandler = dataHeandler;
 			_mapper = mapper;
+			_navigationService = navigationService;
 
 			Vertices = new ObservableCollection<VisualVertex>();
 			Connections = new ObservableCollection<VisualConnection>();
@@ -272,6 +293,7 @@ namespace GraphApp.ViewModel
 			MoveVertex = new RelayCommand(MoveVertexCommand);
 			SaveGraph = new RelayCommand(SaveGraphCommand);
 			LoadGraph = new RelayCommand(LoadGraphCommand);
+			GoBack = new RelayCommand(GoBackCommand);
 
 
 			AddVertex(new Point(200, 200));
@@ -498,6 +520,11 @@ namespace GraphApp.ViewModel
 				Connections.Clear();
 			}
 			
+		}
+
+		private void GoBackCommand(object parameter)
+		{
+			_navigationService.NavigateTo(Parent.GetType(), null);
 		}
 		#endregion
 	}

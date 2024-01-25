@@ -8,7 +8,7 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления окна с уроками.
 	/// </summary>
-	public class LearnLevelsViewModel
+	public class LearnLevelsViewModel: ViewModel
 	{
 		#region fields
 		/// <summary>
@@ -20,6 +20,11 @@ namespace GraphApp.ViewModel
 		/// Команда открытия окна.
 		/// </summary>
 		private ICommand _openWindow;
+
+		/// <summary>
+		/// Команда перехода назад.
+		/// </summary>
+		private ICommand _goBack;
 		#endregion
 
 		#region properties
@@ -40,6 +45,26 @@ namespace GraphApp.ViewModel
 				}
 
 				_openWindow = value;
+			}
+		}
+
+		/// <summary>
+		/// Команда перехода назад.
+		/// </summary>
+		public ICommand GoBack
+		{
+			get
+			{
+				return _goBack;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда перехода назад.");
+				}
+
+				_goBack = value;
 			}
 		}
 		#endregion
@@ -64,7 +89,13 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter">Тип окна.</param>
 		private void OpenWindowCommand(object parameter)
 		{
-			_navigationService.NavigateTo((Type)parameter);
+			_navigationService.NavigateTo((Type)parameter, this);
+			GoBack = new RelayCommand(GoBackCommand);
+		}
+
+		private void GoBackCommand(object parameter) 
+		{
+			_navigationService.NavigateTo(Parent.GetType(), null);
 		}
 		#endregion
 

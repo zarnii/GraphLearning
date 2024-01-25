@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using GraphApp.Interfaces;
+﻿using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Model.Exception;
 using GraphApp.Model.Serializing;
@@ -12,8 +6,12 @@ using GraphApp.Services;
 using GraphApp.View;
 using GraphApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
-using System.IO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 
 namespace GraphApp
@@ -36,13 +34,8 @@ namespace GraphApp
 
 			var serviceCollection = new ServiceCollection();
 
-			#region windows
+			#region window
 			serviceCollection.AddSingleton<RootWindow>();
-			serviceCollection.AddSingleton<MainMenuWindow>();
-			serviceCollection.AddSingleton<VisualEditorWindow>();
-			serviceCollection.AddSingleton<LearnLevelsWindow>();
-			serviceCollection.AddSingleton<TheoryWindow>();
-			serviceCollection.AddSingleton<Question1>();
 			#endregion
 
 			#region services
@@ -58,13 +51,14 @@ namespace GraphApp
 			serviceCollection.AddSingleton<MainMenuViewModel>();
 			serviceCollection.AddSingleton<VisualEditorViewModel>();
 			serviceCollection.AddSingleton<LearnLevelsViewModel>();
+			serviceCollection.AddSingleton<FirstTheoryViewModel>();
 			#endregion
 
 			#region other
-			// Фабричная функция страниц.
-			serviceCollection.AddSingleton<Func<Type, Page>>(serviceProvider =>
+			// Фабричная функция vm.
+			serviceCollection.AddSingleton<Func<Type, ViewModel.ViewModel>>((vmType) =>
 			{
-				return page => (Page)serviceProvider.GetRequiredService(page);
+				return (ViewModel.ViewModel)_serviceProvider.GetRequiredService(vmType);
 			});
 			#endregion
 
@@ -81,7 +75,6 @@ namespace GraphApp
 		{
 			var rootWindow = _serviceProvider.GetRequiredService<RootWindow>();
 			rootWindow.Show();
-			//CreateQuastion();
 
 			base.OnStartup(e);
 		}
@@ -107,7 +100,7 @@ namespace GraphApp
 				{
 					throw new LoadDataException("Ошибка формата", ex);
 				}
-				
+
 			});
 
 			mapper.CreateMap<SerializableConnection, VisualConnection>((tSource, param) =>
@@ -122,11 +115,11 @@ namespace GraphApp
 
 					return new VisualConnection((firstVertex, secondVertex), sc.Weight, sc.ConnectionType);
 				}
-				catch(ArgumentNullException ex)
+				catch (ArgumentNullException ex)
 				{
 					throw new LoadDataException(String.Empty, ex);
 				}
-				
+
 			});
 
 			mapper.CreateMap<VisualVertex, SerializableVertex>((tSource, param) =>
@@ -158,36 +151,6 @@ namespace GraphApp
 					ConnectionType = vc.ConnectionType
 				};
 			});
-		}
-
-		private void CreateQuastion()
-		{
-			var q1 = new Quastion()
-			{
-				Title = "Вопрос 1",
-				Text = "Что такое граф?",
-				Answers = new Answer[]
-				{
-					new Answer()
-					{
-						Text = "Модель",
-						Flag = true
-					},
-					new Answer()
-					{
-						Text = "Объект",
-						Flag = false
-					},
-					new Answer()
-					{
-						Text = "Представление",
-						Flag = false
-					}
-				}
-			};
-
-			var jsonString = JsonSerializer.Serialize(q1);
-			File.WriteAllText("F:\\C#\\GraphApp\\GraphApp\\GraphApp\\bin\\Debug\\net6.0-windows\\quastions\\first.json", jsonString);
 		}
 	}
 }

@@ -8,7 +8,7 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления главного меню.
 	/// </summary>
-	public class MainMenuViewModel
+	public class MainMenuViewModel: ViewModel
 	{
 		#region fields
 		/// <summary>
@@ -63,7 +63,7 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter">Открываемое окно</param>
 		private void OpenWindowCommand(object parameter)
 		{
-			_navigationService.NavigateTo((Type)parameter);
+			_navigationService.NavigateTo((Type)parameter, this);
 		}
 		#endregion
 	}

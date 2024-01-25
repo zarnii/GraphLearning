@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using GraphApp.Interfaces;
+using GraphApp.ViewModel;
 
 namespace GraphApp.Services
 {
@@ -13,14 +14,14 @@ namespace GraphApp.Services
 	{
 		#region fields
 		/// <summary>
-		/// Фабрика страниц.
+		/// Фабрика vm.
 		/// </summary>
-		private Func<Type, Page> _pageFactory;
+		private Func<Type, ViewModel.ViewModel> _viewModelFactory;
 
 		/// <summary>
-		/// Текущая страница.
+		/// Текущая vm.
 		/// </summary>
-		private Page _currentPage;
+		private ViewModel.ViewModel _currentView;
 
 		/// <summary>
 		/// Изменение свойства.
@@ -30,13 +31,13 @@ namespace GraphApp.Services
 
 		#region properties
 		/// <summary>
-		/// Текущая страница.
+		/// Текущая vm.
 		/// </summary>
-		public Page CurrentPage
+		public ViewModel.ViewModel CurrentView
 		{
 			get
 			{
-				return _currentPage;
+				return _currentView;
 			}
 			private set
 			{
@@ -45,7 +46,7 @@ namespace GraphApp.Services
 					throw new ArgumentNullException();
 				}
 
-				_currentPage = value;
+				_currentView = value;
 				OnPropertyChanged();
 			}
 		}
@@ -55,10 +56,10 @@ namespace GraphApp.Services
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
-		/// <param name="pageFactory">Фабрика страниц.</param>
-		public NavigationService(Func<Type, Page> pageFactory)
+		/// <param name="viewModelFactory">Фабрика vm.</param>
+		public NavigationService(Func<Type, ViewModel.ViewModel> viewModelFactory)
 		{
-			_pageFactory = pageFactory;
+			_viewModelFactory = viewModelFactory;
 		}
 		#endregion
 
@@ -66,22 +67,30 @@ namespace GraphApp.Services
 		/// <summary>
 		/// Навигация.
 		/// </summary>
-		/// <typeparam name="Page">Страница, на которую нужно произвести навигацию.</typeparam>
-		public void NavigateTo<Page>()
-			where Page : System.Windows.Controls.Page
+		/// <typeparam name="TViewModel">ViewModel, на которую нужно произвести навигацию</typeparam>
+		public void NavigateTo<TViewModel>(ViewModel.ViewModel parentViewModel)
+			where TViewModel : ViewModel.ViewModel
 		{
-			CurrentPage = _pageFactory.Invoke(typeof(Page));
+			var view = _viewModelFactory.Invoke(typeof(TViewModel));
+			view.Parent = parentViewModel;
+
+			CurrentView = view;
+			
 		}
-		#endregion
+
 
 		/// <summary>
 		/// Навигация.
 		/// </summary>
-		/// <param name="pageType">Страница, на которую нужно произвести навигацию.</param>
-		public void NavigateTo(Type pageType)
+		/// <param name="viewModelType">ViewModel, на которую нужно произвести навигацию.</param>
+		public void NavigateTo(Type viewModelType, ViewModel.ViewModel parentViewModel)
 		{
-			CurrentPage = _pageFactory(pageType);
+			var view = _viewModelFactory.Invoke(viewModelType);
+			view.Parent = parentViewModel;
+
+			CurrentView = view;
 		}
+		#endregion
 
 		#region private methods
 		/// <summary>

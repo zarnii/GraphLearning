@@ -1,8 +1,29 @@
 ﻿<Application x:Class="GraphApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:GraphApp">
+             xmlns:local="clr-namespace:GraphApp"
+			 xmlns:viewModel="clr-namespace:GraphApp.ViewModel" 
+			 xmlns:view="clr-namespace:GraphApp.View">
     <Application.Resources>
-         
-    </Application.Resources>
+		<DataTemplate DataType="{x:Type viewModel:MainMenuViewModel}">
+			<view:MainView/>
+		</DataTemplate>
+		
+		<DataTemplate DataType="{x:Type viewModel:VisualEditorViewModel}">
+			<view:VisualEditorView/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type viewModel:LearnLevelsViewModel}">
+			<view:LearnLevelsView/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type viewModel:FirstTheoryViewModel}">
+			<view:FirstTheoryView/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type viewModel:QuastionViewModel}">
+			<view:QuestionView/>
+		</DataTemplate>
+		
+	</Application.Resources>
 </Application>
