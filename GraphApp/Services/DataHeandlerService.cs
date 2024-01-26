@@ -52,19 +52,31 @@ namespace GraphApp.Services
 
 		#region public methods
 		/// <summary>
-		/// Загрузка.
+		/// Загрузка данных из json.
 		/// </summary>
-		/// <param name="path">Пусть до данных.</param>
-		/// <returns>Лист вершин и связей.</returns>
+		/// <typeparam name="TLoad">Тип считываемых данных.</typeparam>
+		/// <returns>Данные.</returns>
 		public TLoad Load<TLoad>()
 		{
 			return _dataLoader.Load<TLoad>();
 		}
 
 		/// <summary>
-		/// Сохранение.
+		/// Загрузка данных из json.
 		/// </summary>
-		/// <param name="path">Путь.</param>
+		/// <typeparam name="TLoad">Тип считываемых данных.</typeparam>
+		/// <param name="path">Путь до файла.</param>
+		/// <returns>Данные.</returns>
+		public TLoad Load<TLoad>(string path)
+		{
+			return _dataLoader.Load<TLoad>(path);
+		}
+
+		/// <summary>
+		/// Сохранение данных.
+		/// </summary>
+		/// <typeparam name="TSave">Тип данных.</typeparam>
+		/// <param name="data">Данные.</param>
 		public void Save<TSave>(TSave data)
 		{
 			_dataSaver.Save<TSave>(data);

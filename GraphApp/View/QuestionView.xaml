@@ -11,11 +11,12 @@
 			<RowDefinition Height="50"/>
 			<RowDefinition Height="50"/>
 			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
 		</Grid.RowDefinitions>
 
 		<Grid Grid.Row="0">
 			<Label 
-				Content="{Binding Quastion.Title}"
+				Content="{Binding Question.Title}"
 				FontSize="30"
 				VerticalAlignment="Center"
 				HorizontalAlignment="Center"/>
@@ -23,7 +24,7 @@
 
 		<Grid Grid.Row="1">
 			<Label
-				Content="{Binding Quastion.Text}"
+				Content="{Binding Question.Text}"
 				FontSize="30"
 				VerticalAlignment="Center"
 				HorizontalAlignment="Center"/>
@@ -31,17 +32,36 @@
 
 		<Grid Grid.Row="2">
 			<StackPanel>
-				<RadioButton Content="{Binding Quastion.Answers[0].Text}" 
-							 Command="{Binding ClickOn}" 
-							 CommandParameter="{Binding Quastion.Answers[0].Flag}"
+				<RadioButton Content="{Binding Question.Answers[0].Text}" 
+							 Command="{Binding SelectRadioButton}" 
+							 CommandParameter="{Binding Question.Answers[0].Flag}"
+							 VerticalContentAlignment="Center"
 							 FontSize="20"/>
-				<RadioButton Content="{Binding Quastion.Answers[1].Text}" 
-							 Command="{Binding ClickOn}"
-							 CommandParameter=""
+				<RadioButton Content="{Binding Question.Answers[1].Text}" 
+							 Command="{Binding SelectRadioButton}"
+							 CommandParameter="{Binding Question.Answers[1].Flag}"
+							 VerticalContentAlignment="Center"
 							 FontSize="20"/>
-				<RadioButton Content="{Binding Quastion.Answers[2].Text}" FontSize="20" />
+				<RadioButton Content="{Binding Question.Answers[2].Text}"
+							 Command="{Binding SelectRadioButton}"
+							 CommandParameter="{Binding Question.Answers[2].Flag}"
+							 VerticalContentAlignment="Center"
+							 FontSize="20"/>
 			</StackPanel>
 		</Grid>
 
+		<Grid Grid.Row="3">
+			<Button 
+				Content="Проверить"
+				Command="{Binding CheckAnswer}"
+				HorizontalAlignment="Center"
+				Width="200"/>
+
+			<Button
+				Content="Назад"
+				Command="{Binding OpenLearnLevels}"
+				HorizontalAlignment="Left"
+				Width="100"/>
+		</Grid>
 	</Grid>
 </UserControl>

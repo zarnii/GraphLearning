@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GraphApp.Model
+﻿namespace GraphApp.Model
 {
-    public class Answer
-    {
-        public string Text { get; set; }
+	/// <summary>
+	/// Вариант ответа.
+	/// </summary>
+	public class Answer
+	{
+		/// <summary>
+		/// Текст ответа.
+		/// </summary>
+		public string Text { get; set; }
 
-        public bool Flag { get; set; }
-    }
+		/// <summary>
+		/// Флаг, показывающий верный ли ответ.
+		/// </summary>
+		public bool Flag { get; set; }
+	}
 }

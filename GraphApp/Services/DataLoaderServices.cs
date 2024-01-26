@@ -24,9 +24,9 @@ namespace GraphApp.Services
 
 		/// <summary>
 		/// Считывание данных из json.
-		/// </summary>  
-		/// <param name="path">Путь до файла.</param>
-		/// <returns>Лист веришн и лист связей.</returns>
+		/// </summary>
+		/// <typeparam name="TLoad">Сериализуемый тип.</typeparam>
+		/// <returns>Считанные данные.</returns>
 		public TLoad Load<TLoad>()
 		{
 			if (_openFile.ShowDialog() == false)
@@ -34,7 +34,18 @@ namespace GraphApp.Services
 				return default(TLoad);
 			}
 
-			var jsonData = File.ReadAllText(_openFile.FileName);
+			return Load<TLoad>(_openFile.FileName);
+		}
+
+		/// <summary>
+		/// Считывание данных из json.
+		/// </summary>
+		/// <typeparam name="TLoad">Сериализуемый тип.</typeparam>
+		/// <param name="path">Путь до файла.</param>
+		/// <returns>Считанные данные.</returns>
+		public TLoad Load<TLoad>(string path)
+		{
+			var jsonData = File.ReadAllText(path);
 			var data = JsonSerializer.Deserialize<TLoad>(jsonData);
 
 			return data;

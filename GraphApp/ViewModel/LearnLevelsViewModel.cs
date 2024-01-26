@@ -1,6 +1,7 @@
 ﻿using GraphApp.Command;
 using GraphApp.Interfaces;
 using System;
+using System.Configuration;
 using System.Windows.Input;
 
 namespace GraphApp.ViewModel
@@ -15,6 +16,8 @@ namespace GraphApp.ViewModel
 		/// Сервис навигации.
 		/// </summary>
 		private INavigationService _navigationService;
+
+		private IQuestionService _questionService;
 
 		/// <summary>
 		/// Команда открытия окна.
@@ -51,7 +54,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда перехода назад.
 		/// </summary>
-		public ICommand GoBack
+		public ICommand OpenQuestion
 		{
 			get
 			{
@@ -74,11 +77,13 @@ namespace GraphApp.ViewModel
 		/// Конструктор.
 		/// </summary>
 		/// <param name="navigationService">Сервис навигации.</param>
-		public LearnLevelsViewModel(INavigationService navigationService)
+		public LearnLevelsViewModel(INavigationService navigationService, IQuestionService questionService)
 		{
 			_navigationService = navigationService;
+			_questionService = questionService;
 
 			OpenWindow = new RelayCommand(OpenWindowCommand);
+			OpenQuestion = new RelayCommand(OpenQuestionCommand);
 		}
 		#endregion
 
@@ -90,12 +95,12 @@ namespace GraphApp.ViewModel
 		private void OpenWindowCommand(object parameter)
 		{
 			_navigationService.NavigateTo((Type)parameter, this);
-			GoBack = new RelayCommand(GoBackCommand);
 		}
 
-		private void GoBackCommand(object parameter) 
+		private void OpenQuestionCommand(object parameter) 
 		{
-			_navigationService.NavigateTo(Parent.GetType(), null);
+			_questionService.CurrentQuestionPathKey = (string)parameter;
+			_navigationService.NavigateTo<QuestionViewModel>(null);
 		}
 		#endregion
 

@@ -3,14 +3,12 @@ using GraphApp.Model;
 using GraphApp.Model.Exception;
 using GraphApp.Model.Serializing;
 using GraphApp.Services;
-using GraphApp.View;
 using GraphApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 
@@ -44,6 +42,7 @@ namespace GraphApp
 			serviceCollection.AddSingleton<IDataLoader, DataLoaderServices>();
 			serviceCollection.AddSingleton<IDataHeandlerService, DataHeandlerService>();
 			serviceCollection.AddSingleton<INavigationService, NavigationService>();
+			serviceCollection.AddSingleton<IQuestionService, QuestionService>();
 			#endregion
 
 			#region viewModel
@@ -52,6 +51,7 @@ namespace GraphApp
 			serviceCollection.AddSingleton<VisualEditorViewModel>();
 			serviceCollection.AddSingleton<LearnLevelsViewModel>();
 			serviceCollection.AddSingleton<FirstTheoryViewModel>();
+			serviceCollection.AddSingleton<QuestionViewModel>();
 			#endregion
 
 			#region other

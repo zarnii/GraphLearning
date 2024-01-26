@@ -11,5 +11,7 @@ namespace GraphApp.Interfaces
 	public interface IDataLoader
 	{
 		TLoad Load<TLoad>();
+
+		TLoad Load<TLoad>(string path);
 	}
 }

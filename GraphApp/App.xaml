@@ -21,7 +21,7 @@
 			<view:FirstTheoryView/>
 		</DataTemplate>
 
-		<DataTemplate DataType="{x:Type viewModel:QuastionViewModel}">
+		<DataTemplate DataType="{x:Type viewModel:QuestionViewModel}">
 			<view:QuestionView/>
 		</DataTemplate>
 		

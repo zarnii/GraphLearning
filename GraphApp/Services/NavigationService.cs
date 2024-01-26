@@ -75,7 +75,6 @@ namespace GraphApp.Services
 			view.Parent = parentViewModel;
 
 			CurrentView = view;
-			
 		}
 
 
