@@ -8,39 +8,82 @@
              mc:Ignorable="d"
 			 xmlns:model="clr-namespace:GraphApp.Model"
              d:DesignHeight="450" d:DesignWidth="800">
-	<Grid>
+	<Grid >
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<Grid Grid.Row="0" Background="#FFBFBFBF">
-			<StackPanel Orientation="Horizontal">
-				<Button Content="Save" Command="{Binding SaveGraph}" Width="100"/>
-				<Button Content="Load" Command="{Binding LoadGraph}" Width="100"/>
-				<Button Content="Назад" Command="{Binding GoBack}"/>
+		<Grid Grid.Row="0" Style="{StaticResource GridStyle}">
+
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+				<Button 
+					Content="Назад" 
+					Command="{Binding GoBack}" 
+					Style="{StaticResource ButtonStyle}"
+					Width="70"/>
 			</StackPanel>
+				
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+				<Button 
+					Content="Сохранить" 
+					Command="{Binding SaveGraph}" 
+					Width="100" 
+					Style="{StaticResource ButtonStyle}"
+					Margin="0,0,10,0"/>
+				<Button 
+					Content="Загрузить" 
+					Command="{Binding LoadGraph}" 
+					Width="100" 
+					Style="{StaticResource ButtonStyle}"/>
+			</StackPanel>
+				
+			 
 		</Grid>
 
 		<Grid Grid.Row="1">
-			<Grid.ColumnDefinitions>
+			<Grid.ColumnDefinitions> 
 				<ColumnDefinition Width="70"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
-			<Grid Grid.Column="0" Background="#FFBFBFBF"/>
+			<Grid Grid.Column="0" Style="{StaticResource GridStyle}" />
 
 			<Grid Grid.Column="0">
 				<StackPanel>
-					<Button Grid.Row="0" Margin="0,5,0,0" Content="Курсор" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Default}"/>
-					<Button Grid.Row="0" Margin="0,5,0,0" Content="Создать" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Create}"/>
-					<Button Grid.Row="1" Margin="0,5,0,0" Content="Соединить" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Connect}"/>
-					<Button Grid.Row="2" Margin="0,5,0,0" Content="Удалить" Command="{Binding ChangeMouseMode}" CommandParameter="{x:Static model:MouseMode.Delete}"/>
+					<Button 
+						Margin="0,5,0,0" 
+						Content="Курсор" 
+						Command="{Binding ChangeMouseMode}" 
+						CommandParameter="{x:Static model:MouseMode.Default}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
+					<Button 
+						Margin="0,5,0,0" 
+						Content="Создать" 
+						Command="{Binding ChangeMouseMode}" 
+						CommandParameter="{x:Static model:MouseMode.Create}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
+					<Button 
+						Margin="0,5,0,0" 
+						Content="Соединить" 
+						Command="{Binding ChangeMouseMode}" 
+						CommandParameter="{x:Static model:MouseMode.Connect}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
+					<Button 
+						Margin="0,5,0,0" 
+						Content="Удалить" 
+						Command="{Binding ChangeMouseMode}" 
+						CommandParameter="{x:Static model:MouseMode.Delete}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
 				</StackPanel>
 			</Grid>
 
-			<Grid Grid.Column="1">
-				<Rectangle Fill="Beige">
+			<Grid Grid.Column="1" >
+				<Rectangle Fill="#1a1a1a" Stroke="#424242">
 					<i:Interaction.Triggers>
 						<i:EventTrigger EventName="MouseLeftButtonDown">
 							<i:InvokeCommandAction Command="{Binding ClickOnField}" PassEventArgsToCommand="True"/>

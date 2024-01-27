@@ -6,8 +6,7 @@
 		xmlns:model="clr-namespace:GraphApp.Model"
         mc:Ignorable="d"
 		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        Title="MainWindow" Height="450" Width="800">
-
+        Title="MainWindow" Height="450" Width="800" >
 	<Grid>
 		<ContentControl Content="{Binding NavigationService.CurrentView}"/>
 	</Grid>

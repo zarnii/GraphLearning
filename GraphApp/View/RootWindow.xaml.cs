@@ -13,7 +13,7 @@ namespace GraphApp
 		public RootWindow(RootViewModel viewModel)
 		{
 			InitializeComponent();
-			DataContext = viewModel;
+			DataContext = viewModel;	
 		}
 	}
 }

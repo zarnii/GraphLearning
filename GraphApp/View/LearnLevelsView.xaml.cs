@@ -24,5 +24,15 @@ namespace GraphApp.View
 		{
 			InitializeComponent();
 		}
+
+		private void LeftButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			Scroll.LineUp();
+		}
+
+		private void RightButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			Scroll.LineDown();
+		}
 	}
 }
