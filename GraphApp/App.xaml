@@ -5,10 +5,122 @@
 			 xmlns:viewModel="clr-namespace:GraphApp.ViewModel" 
 			 xmlns:view="clr-namespace:GraphApp.View">
 	<Application.Resources>
+		<!--Стиль Grid-->
 		<Style x:Key="GridStyle" TargetType="Grid">
 			<Setter Property="Background" Value="#FF252526"/>
 		</Style>
 
+		<!--Стиль TextBlock-->
+		<Style x:Key="TextStyle" TargetType="TextBlock">
+			<Setter Property="Foreground" Value="White"/>
+		</Style>
+		
+		<!--Стиль Заголовка-->
+		<Style x:Key="Header1Style" TargetType="Label">
+			<Setter Property="Foreground" Value="White"/>
+		</Style>
+		
+		<!--Стиль RadioButton-->
+		<Style x:Key="RadioButtonStyle" TargetType="RadioButton">
+			<Setter Property="Foreground" Value="White"/>
+		</Style>
+
+		<!--Стиль Левой нопки в ScrollBar-->
+		<Style x:Key="ScrollBarButtonLeft" TargetType="{x:Type RepeatButton}">
+			<Setter Property="Focusable" Value="False"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type RepeatButton}">
+						<Canvas Height="18">
+							<Polygon Fill="Gray" Points="0,7 10,2 10,12" Margin="0,1.5,0,1.5"/>
+						</Canvas>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<!--Стиль Правой кнопки в ScrollBar-->
+		<Style x:Key="ScrollBarButtonRight" TargetType="{x:Type RepeatButton}">
+			<Setter Property="Focusable" Value="False"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type RepeatButton}">
+						<Canvas Height="18">
+							<Polygon Fill="Gray" Points="18,7 8,2 8,12" Margin="0,1.5,0,1.5"/>
+						</Canvas>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<!--Стиль полос слева и справа от полосы прокрутки-->
+		<Style x:Key="ScrollBarPageButtonStyle" TargetType="{x:Type RepeatButton}">
+			<Setter Property="IsTabStop" Value="False"/>
+			<Setter Property="Focusable" Value="False"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type RepeatButton}">
+						
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		
+		<!--Стиль ползунка в ScrollBar-->
+		<Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+			<Setter Property="IsTabStop" Value="False"/>
+			<Setter Property="Focusable" Value="False"/>
+			<Setter Property="Margin" Value="1,0,1,0" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Thumb}">
+						<Rectangle Fill="Gray" Height="10" Opacity="0.5"/>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		
+		<!--Стиль ScrollBar-->
+		<ControlTemplate x:Key="HorisontalScrollBar" TargetType="{x:Type ScrollBar}">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="18"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="18"/>
+				</Grid.ColumnDefinitions>
+
+				<RepeatButton Grid.Column="0" Height="18"
+                          Style="{StaticResource ScrollBarButtonLeft}"
+                          Command="ScrollBar.LineLeftCommand" >
+				</RepeatButton>
+				<Track Name="PART_Track" Grid.Column="1" 
+                   IsDirectionReversed="False">
+					<Track.DecreaseRepeatButton>
+						<RepeatButton Command="ScrollBar.PageRightCommand" Style="{StaticResource ScrollBarPageButtonStyle}">
+						</RepeatButton>
+					</Track.DecreaseRepeatButton>
+					<Track.Thumb>
+						<Thumb Style="{StaticResource ScrollBarThumbStyle}">
+						</Thumb>
+					</Track.Thumb>
+					<Track.IncreaseRepeatButton>
+						<RepeatButton Command="ScrollBar.PageLeftCommand" Style="{StaticResource ScrollBarPageButtonStyle}">
+						</RepeatButton>
+					</Track.IncreaseRepeatButton>
+				</Track>
+				<RepeatButton Grid.Column="2" Height="18"
+                          Style="{StaticResource ScrollBarButtonRight}"
+                          Command="ScrollBar.LineRightCommand">
+				</RepeatButton>
+			</Grid>
+		</ControlTemplate>
+		
+		<!--Применение стиля ScrollBar-->
+		<Style TargetType="{x:Type ScrollBar}">
+			<Setter Property="Template" Value="{StaticResource HorisontalScrollBar}"/>
+		</Style>
+
+		<!--Стиль кнопки-->
 		<Style x:Key="ButtonStyle" TargetType="Button">
 			<Setter Property="Background" Value="#3d3d3d"/>
 			<Setter Property="BorderBrush" Value="#5348a2"/>

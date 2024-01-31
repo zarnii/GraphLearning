@@ -6,10 +6,11 @@
              xmlns:local="clr-namespace:GraphApp.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<Grid Background="White">
+	<Grid Style="{StaticResource GridStyle}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50"/>
 			<RowDefinition Height="50"/>
+			<RowDefinition Height="30"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="30"/>
 		</Grid.RowDefinitions>
@@ -19,49 +20,56 @@
 				Content="{Binding Question.Title}"
 				FontSize="30"
 				VerticalAlignment="Center"
-				HorizontalAlignment="Center"/>
+				HorizontalAlignment="Center"
+				Style="{StaticResource Header1Style}"/>
 		</Grid>
 
 		<Grid Grid.Row="1">
 			<Label
 				Content="{Binding Question.Text}"
-				FontSize="30"
+				FontSize="20"
 				VerticalAlignment="Center"
-				HorizontalAlignment="Center"/>
+				HorizontalAlignment="Center"
+				Style="{StaticResource Header1Style}"/>
 		</Grid>
 
-		<Grid Grid.Row="2">
+		<Grid Grid.Row="3">
 			<StackPanel>
 				<RadioButton Content="{Binding Question.Answers[0].Text}" 
 							 Command="{Binding SelectRadioButton}" 
 							 CommandParameter="{Binding Question.Answers[0].Flag}"
 							 VerticalContentAlignment="Center"
-							 FontSize="20"/>
+							 FontSize="20"
+							 Style="{StaticResource RadioButtonStyle}"/>
 				<RadioButton Content="{Binding Question.Answers[1].Text}" 
 							 Command="{Binding SelectRadioButton}"
 							 CommandParameter="{Binding Question.Answers[1].Flag}"
 							 VerticalContentAlignment="Center"
-							 FontSize="20"/>
+							 FontSize="20"
+							 Style="{StaticResource RadioButtonStyle}"/>
 				<RadioButton Content="{Binding Question.Answers[2].Text}"
 							 Command="{Binding SelectRadioButton}"
 							 CommandParameter="{Binding Question.Answers[2].Flag}"
 							 VerticalContentAlignment="Center"
-							 FontSize="20"/>
+							 FontSize="20"
+							 Style="{StaticResource RadioButtonStyle}"/>
 			</StackPanel>
 		</Grid>
 
-		<Grid Grid.Row="3">
+		<Grid Grid.Row="4">
 			<Button 
 				Content="Проверить"
 				Command="{Binding CheckAnswer}"
 				HorizontalAlignment="Center"
-				Width="200"/>
+				Width="200"
+				Style="{StaticResource ButtonStyle}"/>
 
 			<Button
 				Content="Назад"
 				Command="{Binding OpenLearnLevels}"
 				HorizontalAlignment="Left"
-				Width="100"/>
+				Width="100"
+				Style="{StaticResource ButtonStyle}"/>
 		</Grid>
 	</Grid>
 </UserControl>

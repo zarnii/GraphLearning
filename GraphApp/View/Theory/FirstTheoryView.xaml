@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:GraphApp.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<Grid Background="white" >
+	<Grid Style="{StaticResource GridStyle}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="50"/>
 			<RowDefinition Height="*"/>
@@ -17,7 +17,8 @@
 				Content="Введение" 
 				HorizontalAlignment="Center"
 				VerticalAlignment="Center"
-				FontSize="30"/>
+				FontSize="30"
+				Style="{StaticResource Header1Style}"/>
 		</Grid>
 
 		<Grid Grid.Row="1">
@@ -28,27 +29,27 @@
 				<RowDefinition Height="30"/>
 				<RowDefinition Height="30"/>
 				<RowDefinition Height="*"/>
-				<RowDefinition Height="20"/>
+				<RowDefinition Height="30"/>
 			</Grid.RowDefinitions>
 
-			<TextBlock TextWrapping="Wrap" Grid.Row="0">
+			<TextBlock Style="{StaticResource TextStyle}" TextWrapping="Wrap" Grid.Row="0">
 				<Bold>Граф</Bold> - это модель, которая состоит из множества вершин и множества соединяющих их рёбер. 
 				При этом значение имеет только сам факт, какая вершина с какой соединена.
 			</TextBlock>
-			<TextBlock TextWrapping="Wrap" Grid.Row="1">
+			<TextBlock Style="{StaticResource TextStyle}" TextWrapping="Wrap" Grid.Row="1">
 				<Bold>Вершина</Bold> - это абстрактный объект, не имеющий как таковых характеристик. 
 				Является фундаментальным понятием в теории графов. На рисунке отображается точкой.
 			</TextBlock>
-			<TextBlock TextWrapping="Wrap" Grid.Row="2">
+			<TextBlock Style="{StaticResource TextStyle}" TextWrapping="Wrap" Grid.Row="2">
 				<Bold>Ребро</Bold> - связь между двумя вершинами. Само по себе ребро существовать не может.
 			</TextBlock>
-			<TextBlock TextWrapping="Wrap" Grid.Row="3">
+			<TextBlock Style="{StaticResource TextStyle}" TextWrapping="Wrap" Grid.Row="3">
 				<Bold>Петля</Bold> - ребро, связывающее одну вершину с самой собой.
 			</TextBlock>
-			<TextBlock TextWrapping="Wrap" Grid.Row="4">
+			<TextBlock Style="{StaticResource TextStyle}" TextWrapping="Wrap" Grid.Row="4">
 				<Bold>Смежность вершин</Bold> - две вершины называются смежными, если они связаны одним ребром.
 			</TextBlock>
-			<TextBlock TextWrapping="Wrap" Grid.Row="5">
+			<TextBlock Style="{StaticResource TextStyle}" TextWrapping="Wrap" Grid.Row="5">
 				Очень многие задачи могут быть решены используя богатую библиотеку алгоритмов теории графов. 
 				Для этого достаточно лишь принять объекты за вершины, а связь между ними - за рёбра, 
 				после чего весь арсенал алгоритмов теории графов к вашим услугам: 
@@ -60,7 +61,10 @@
 				Grid.Row="6" 
 				Content="Назад" 
 				HorizontalAlignment="Left"
-				Command="{Binding GoBack}"/>
+				Command="{Binding GoBack}"
+				Style="{StaticResource ButtonStyle}"
+				Width="100"
+				Margin="1,0,0,1"/>
 		</Grid>
 	</Grid> 
 </UserControl>
