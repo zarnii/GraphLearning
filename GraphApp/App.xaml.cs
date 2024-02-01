@@ -51,7 +51,7 @@ namespace GraphApp
 			serviceCollection.AddSingleton<VisualEditorViewModel>();
 			serviceCollection.AddSingleton<LearnLevelsViewModel>();
 			serviceCollection.AddSingleton<FirstTheoryViewModel>();
-			serviceCollection.AddSingleton<QuestionViewModel>();
+			serviceCollection.AddTransient<QuestionViewModel>();
 			#endregion
 
 			#region other

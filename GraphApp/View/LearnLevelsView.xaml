@@ -53,6 +53,8 @@
 						Height="100" 
 						Width="100" 
 						Margin="30, 0, 0, 0"
+						Command="{Binding OpenQuestion}"
+						CommandParameter="secondQuestion"
 						Style="{StaticResource ButtonStyle}"/>
 					<Button 
 						Content="Теория 3" 

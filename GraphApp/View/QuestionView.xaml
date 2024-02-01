@@ -34,26 +34,20 @@
 		</Grid>
 
 		<Grid Grid.Row="3">
-			<StackPanel>
-				<RadioButton Content="{Binding Question.Answers[0].Text}" 
-							 Command="{Binding SelectRadioButton}" 
-							 CommandParameter="{Binding Question.Answers[0].Flag}"
-							 VerticalContentAlignment="Center"
-							 FontSize="20"
-							 Style="{StaticResource RadioButtonStyle}"/>
-				<RadioButton Content="{Binding Question.Answers[1].Text}" 
-							 Command="{Binding SelectRadioButton}"
-							 CommandParameter="{Binding Question.Answers[1].Flag}"
-							 VerticalContentAlignment="Center"
-							 FontSize="20"
-							 Style="{StaticResource RadioButtonStyle}"/>
-				<RadioButton Content="{Binding Question.Answers[2].Text}"
-							 Command="{Binding SelectRadioButton}"
-							 CommandParameter="{Binding Question.Answers[2].Flag}"
-							 VerticalContentAlignment="Center"
-							 FontSize="20"
-							 Style="{StaticResource RadioButtonStyle}"/>
-			</StackPanel>
+			<ListBox ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle}" 
+				HorizontalContentAlignment="Center" 
+				BorderThickness="0" 
+				Background="{Binding ListBoxColor}" 
+				ItemsSource="{Binding Question.Answers}"
+				SelectedItem="{Binding SelectedAnswer}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock 
+							Text="{Binding Text}" 
+							Style="{StaticResource AnswerStyle}"/>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 		</Grid>
 
 		<Grid Grid.Row="4">

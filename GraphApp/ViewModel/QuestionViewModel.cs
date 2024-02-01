@@ -1,24 +1,35 @@
-﻿using GraphApp.Interfaces;
+﻿using GraphApp.Command;
+using GraphApp.Interfaces;
 using GraphApp.Model;
-using System.Windows.Input;
 using System;
-using GraphApp.Command;
-using System.Windows;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GraphApp.ViewModel
 {
-	public class QuestionViewModel : ViewModel
+	public class QuestionViewModel : ViewModel, INotifyPropertyChanged
 	{
 		#region fields
-		/// <summary>
-		/// Выбранный флаг ответа.
-		/// </summary>
-		private bool _selectedFlag;
+		private string _correctColorHex = "#145210";
+
+		private string _incorrectColorHex = "#891b21";
+
+		private string _defaultColorHex = "#FF252526";
+
+		private double _defaultOpacity = 0.3;
+
+		private SolidColorBrush _correctColor;
+
+		private SolidColorBrush _incorrectColor;
+
+		private SolidColorBrush _defaultColor;
 
 		/// <summary>
-		/// Команда выбора RadioButton.
+		/// Цвет фона ответа.
 		/// </summary>
-		private ICommand _selectRadioButton;
+		private Brush _listBoxColor;
 
 		/// <summary>
 		/// Команда проверки ответа.
@@ -34,29 +45,14 @@ namespace GraphApp.ViewModel
 		/// Сервис навигации.
 		/// </summary>
 		private INavigationService _navigationService;
+
+		/// <summary>
+		/// Событие изменения свойства.
+		/// </summary>
+		public event PropertyChangedEventHandler? PropertyChanged;
 		#endregion
 
 		#region properties
-		/// <summary>
-		/// Команда выбора RadioButton.
-		/// </summary>
-		public ICommand SelectRadioButton
-		{
-			get
-			{
-				return _selectRadioButton;
-			}
-			set
-			{
-				if (value == null)
-				{
-					throw new ArgumentNullException(nameof(value), "Пустая команда выбора RadioButton");
-				}
-
-				_selectRadioButton = value;
-			}
-		}
-
 		/// <summary>
 		/// Команда проверки ответа.
 		/// </summary>
@@ -101,6 +97,27 @@ namespace GraphApp.ViewModel
 		/// Вопрос.
 		/// </summary>
 		public Question Question { get; private set; }
+
+		/// <summary>
+		/// Выбранный ответ.
+		/// </summary>
+		public Answer SelectedAnswer { get; set; }
+
+		/// <summary>
+		/// Цвет фона фариантов ответа.
+		/// </summary>
+		public Brush ListBoxColor
+		{
+			get
+			{
+				return _listBoxColor;
+			}
+			set
+			{
+				_listBoxColor = value;
+				OnPropertyChanged();
+			}
+		}
 		#endregion
 
 		#region constructor
@@ -114,43 +131,34 @@ namespace GraphApp.ViewModel
 			_navigationService = navigationService;
 			Question = questionService.GetCurrentQuestion();
 
-			SelectRadioButton = new RelayCommand(SelectRadioButtonCommand);
 			CheckAnswer = new RelayCommand(CheckAnswerCommand);
 			OpenLearnLevels = new RelayCommand(OpenLearnLevelsCommand);
+
+			_incorrectColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_incorrectColorHex));
+			_correctColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_correctColorHex));
+			_defaultColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_defaultColorHex));
+
+			_incorrectColor.Opacity = _defaultOpacity;
+			_correctColor.Opacity = _defaultOpacity;
+
+			ListBoxColor = _defaultColor;
 		}
 		#endregion
 
 		#region private methods
-		/// <summary>
-		/// Выбор RadioButton.
-		/// </summary>
-		/// <param name="parameter"></param>
-		private void SelectRadioButtonCommand(object parameter)
-		{
-			_selectedFlag = (bool)parameter;
-		}
-
 		/// <summary>
 		/// Проверка ответа.
 		/// </summary>
 		/// <param name="parameter"></param>
 		private void CheckAnswerCommand(object parameter)
 		{
-			if (_selectedFlag)
+			if (SelectedAnswer.Flag)
 			{
-				MessageBox.Show(
-					"Ответ верный",
-					"Ответ верный",
-					MessageBoxButton.OK
-				);
+				ListBoxColor = _correctColor;
 			}
 			else
 			{
-				MessageBox.Show(
-					"Ответ не верный",
-					"Ответ не верный",
-					MessageBoxButton.OK
-				);
+				ListBoxColor = _incorrectColor;
 			}
 		}
 
@@ -161,6 +169,15 @@ namespace GraphApp.ViewModel
 		private void OpenLearnLevelsCommand(object parameter)
 		{
 			_navigationService.NavigateTo<LearnLevelsViewModel>(null);
+		}
+
+		/// <summary>
+		/// Оповещение подписчиков о изменении свойства.
+		/// </summary>
+		/// <param name="propertyName"></param>
+		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 		#endregion
 	}
