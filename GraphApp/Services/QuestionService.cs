@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using GraphApp.Interfaces;
 using GraphApp.Model;
+using System.IO;
+using System.Linq;
+using System.Collections;
 
 namespace GraphApp.Services
 {
@@ -12,9 +16,14 @@ namespace GraphApp.Services
 	{
 		#region fields
 		/// <summary>
+		/// Текущий вопрос.
+		/// </summary>
+		private Question _currentQuestion;
+
+		/// <summary>
 		/// Ключ из файла, до текущего вопроса.
 		/// </summary>
-		private string _currentQuestionPathKey;
+		private IList<Question> _questions;
 
 		/// <summary>
 		/// Сервис загрузки данных.
@@ -24,22 +33,33 @@ namespace GraphApp.Services
 
 		#region properties
 		/// <summary>
-		/// Ключ из файла, до текущего вопроса.
+		/// Коллекция вопросов.
 		/// </summary>
-		public string CurrentQuestionPathKey
+		public IList<Question> Questions
 		{
 			get
 			{
-				return _currentQuestionPathKey;
+				return _questions;
+			}
+		}
+
+		/// <summary>
+		/// Текущий вопрос.
+		/// </summary>
+		public Question CurrentQuestion
+		{
+			get
+			{
+				return _currentQuestion;
 			}
 			set
 			{
-				if (String.IsNullOrEmpty(value))
+				if (value == null)
 				{
-					throw new ArgumentNullException(nameof(value), "Пустой ключ.");
+					throw new ArgumentNullException(nameof(value), "Пустой вопрос.");
 				}
 
-				_currentQuestionPathKey = value;
+				_currentQuestion = value;
 			}
 		}
 		#endregion
@@ -52,17 +72,29 @@ namespace GraphApp.Services
 		public QuestionService(IDataLoader dataLoader)
 		{
 			_dataLoader = dataLoader;
+			_questions = new List<Question>();
+
+			InitQuestions();
 		}
 		#endregion
 
 		#region public methods
 		/// <summary>
-		/// Получение текущего вопроса.
+		/// Инициализация вопросов.
 		/// </summary>
-		/// <returns></returns>
-		public Question GetCurrentQuestion()
+		public void InitQuestions()
 		{
-			return _dataLoader.Load<Question>(ConfigurationManager.AppSettings[_currentQuestionPathKey]);
+			if (_questions.Count != 0)
+			{
+				return;
+			}
+
+			var paths = Directory.GetFiles(ConfigurationManager.AppSettings["defaultPathToQuestions"]);
+
+			foreach (string path in paths)
+			{
+				_questions.Add(_dataLoader.Load<Question>(path));
+			}
 		}
 		#endregion
 	}

@@ -1,4 +1,5 @@
 ﻿using GraphApp.Model;
+using System.Collections.Generic;
 
 namespace GraphApp.Interfaces
 {
@@ -8,14 +9,18 @@ namespace GraphApp.Interfaces
 	public interface IQuestionService
 	{
 		/// <summary>
-		/// Ключ в app.config до текущего вопроса.
+		/// Текущий вопрос.
 		/// </summary>
-		string CurrentQuestionPathKey { get; set; }
+		Question CurrentQuestion { get; set; }
 
 		/// <summary>
-		/// Получение текущего открытого вопроса.
+		/// Коллекция вопросов.
 		/// </summary>
-		/// <returns>Текущий вопрос.</returns>
-		Question GetCurrentQuestion();
+		IList<Question> Questions { get; }
+
+		/// <summary>
+		/// Получение всех вопросов.
+		/// </summary>
+		void InitQuestions();
 	}
 }

@@ -304,7 +304,6 @@ namespace GraphApp.ViewModel
 			AddConnection((Vertices[0], Vertices[1]));
 
 			AddConnection((Vertices[0], Vertices[2]));
-
 		}
 		#endregion
 

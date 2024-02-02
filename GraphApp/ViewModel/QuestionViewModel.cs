@@ -129,10 +129,10 @@ namespace GraphApp.ViewModel
 		public QuestionViewModel(IQuestionService questionService, INavigationService navigationService)
 		{
 			_navigationService = navigationService;
-			Question = questionService.GetCurrentQuestion();
 
 			CheckAnswer = new RelayCommand(CheckAnswerCommand);
 			OpenLearnLevels = new RelayCommand(OpenLearnLevelsCommand);
+			Question = questionService.CurrentQuestion;
 
 			_incorrectColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_incorrectColorHex));
 			_correctColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_correctColorHex));
@@ -174,7 +174,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Оповещение подписчиков о изменении свойства.
 		/// </summary>
-		/// <param name="propertyName"></param>
+		/// <param name="propertyName">Имя измененного свойсива.</param>
 		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

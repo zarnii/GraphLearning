@@ -1,7 +1,8 @@
 ﻿using GraphApp.Command;
 using GraphApp.Interfaces;
+using GraphApp.Model;
 using System;
-using System.Configuration;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace GraphApp.ViewModel
@@ -9,7 +10,7 @@ namespace GraphApp.ViewModel
 	/// <summary>
 	/// Модель представления окна с уроками.
 	/// </summary>
-	public class LearnLevelsViewModel: ViewModel
+	public class LearnLevelsViewModel : ViewModel
 	{
 		#region fields
 		/// <summary>
@@ -17,6 +18,9 @@ namespace GraphApp.ViewModel
 		/// </summary>
 		private INavigationService _navigationService;
 
+		/// <summary>
+		/// Сервис вопросов.
+		/// </summary>
 		private IQuestionService _questionService;
 
 		/// <summary>
@@ -70,6 +74,17 @@ namespace GraphApp.ViewModel
 				_goBack = value;
 			}
 		}
+
+		/// <summary>
+		/// Коллекция вопросов.
+		/// </summary>
+		public List<Question> Questions
+		{
+			get
+			{
+				return (List<Question>)_questionService.Questions;
+			}
+		}
 		#endregion
 
 		#region constructor
@@ -84,6 +99,7 @@ namespace GraphApp.ViewModel
 
 			OpenWindow = new RelayCommand(OpenWindowCommand);
 			OpenQuestion = new RelayCommand(OpenQuestionCommand);
+
 		}
 		#endregion
 
@@ -97,9 +113,13 @@ namespace GraphApp.ViewModel
 			_navigationService.NavigateTo((Type)parameter, this);
 		}
 
-		private void OpenQuestionCommand(object parameter) 
+		/// <summary>
+		/// Открытие окна с вопросом.
+		/// </summary>
+		/// <param name="parameter">Открываемый вопрос.</param>
+		private void OpenQuestionCommand(object parameter)
 		{
-			_questionService.CurrentQuestionPathKey = (string)parameter;
+			_questionService.CurrentQuestion = (Question)parameter;
 			_navigationService.NavigateTo<QuestionViewModel>(null);
 		}
 		#endregion
