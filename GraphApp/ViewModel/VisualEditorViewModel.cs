@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -480,18 +481,19 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter"></param>
 		private void LoadGraphCommand(object parameter)
 		{
-			var data = _dataHeandler.Load<SerializableData>();
-
-			if (data.Vertices == null || data.Connections == null)
-			{
-				return;
-			}
-
-			Vertices.Clear();
-			Connections.Clear();
-
 			try
 			{
+				var data = _dataHeandler.Load<SerializableData>();
+
+
+				if (data == null || data.Vertices == null || data.Connections == null)
+				{
+					return;
+				}
+
+				Vertices.Clear();
+				Connections.Clear();
+
 				foreach (var sVertex in data.Vertices)
 				{
 					var vertex = _mapper.Map<VisualVertex>(sVertex, null);
@@ -517,6 +519,15 @@ namespace GraphApp.ViewModel
 
 				Vertices.Clear();
 				Connections.Clear();
+			}
+			catch(DirectoryNotFoundException ex)
+			{
+				MessageBox.Show(
+					ex.Message,
+					"Ошибка",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+				);
 			}
 			
 		}

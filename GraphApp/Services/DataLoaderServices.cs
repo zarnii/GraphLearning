@@ -1,18 +1,16 @@
 ﻿using GraphApp.Interfaces;
-using GraphApp.Model;
-using GraphApp.Model.Serializing;
+using GraphApp.Model.Exception;
 using Microsoft.Win32;
-using System.Collections.Generic;
-using System.Configuration;
+using System;
 using System.IO;
 using System.Text.Json;
 
 namespace GraphApp.Services
 {
-    /// <summary>
-    /// Загрузчик данных.
-    /// </summary>
-    public class DataLoaderServices : IDataLoader
+	/// <summary>
+	/// Загрузчик данных.
+	/// </summary>
+	public class DataLoaderServices : IDataLoader
 	{
 		private readonly OpenFileDialog _openFile;
 
@@ -38,17 +36,37 @@ namespace GraphApp.Services
 		}
 
 		/// <summary>
-		/// Считывание данных из json.
+		/// Считывание данных из файла json.
 		/// </summary>
 		/// <typeparam name="TLoad">Сериализуемый тип.</typeparam>
 		/// <param name="path">Путь до файла.</param>
 		/// <returns>Считанные данные.</returns>
+		/// <exception cref="ArgumentNullException">Пустой путь до файла.</exception>
+		/// <exception cref="LoadDataException">Неправильный формат файла.</exception>
 		public TLoad Load<TLoad>(string path)
 		{
-			var jsonData = File.ReadAllText(path);
-			var data = JsonSerializer.Deserialize<TLoad>(jsonData);
+			if (String.IsNullOrEmpty(path))
+			{
+				throw new ArgumentNullException(nameof(path), "Пустой путь до файла.");
+			}
 
-			return data;
+			if (!File.Exists(path))
+			{
+				throw new DirectoryNotFoundException($"Файл по пути {path} не найден.");
+			}
+
+			try
+			{
+				var jsonData = File.ReadAllText(path);
+				var data = JsonSerializer.Deserialize<TLoad>(jsonData);
+
+				return data;
+			}
+			catch (JsonException ex)
+			{
+				throw new LoadDataException("Неудалось загрузить данные из файла.");
+			}
+
 		}
 	}
 }

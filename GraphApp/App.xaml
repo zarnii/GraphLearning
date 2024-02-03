@@ -13,6 +13,7 @@
 		<!--Стиль TextBlock-->
 		<Style x:Key="TextStyle" TargetType="TextBlock">
 			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="20"/>
 		</Style>
 		
 		<!--Стиль для варионтов ответа-->
@@ -27,11 +28,7 @@
 			<Setter Property="Foreground" Value="White"/>
 		</Style>
 		
-		<!--Стиль RadioButton-->
-		<Style x:Key="RadioButtonStyle" TargetType="RadioButton">
-			<Setter Property="Foreground" Value="White"/>
-		</Style>
-
+		<!--Стиль вариантов ответа в ListBox-->
 		<Style x:Key="FocusVisual">
 			<Setter Property="Control.Template">
 				<Setter.Value>
@@ -125,21 +122,47 @@
 			</Setter>
 		</Style>
 
+		<!--Стиль Верхней кнопки прокрутки-->
+		<Style x:Key="ScrollBarButtonUp" TargetType="{x:Type RepeatButton}">
+			<Setter Property="Focusable" Value="False"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type RepeatButton}">
+						<Canvas Height="18">
+							<Polygon Fill="Gray" Points="8,0 16,16 0,16" Margin="0.5,0,0,0"/>
+						</Canvas>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<!--Стиль Нижней кнопки прокрутки-->
+		<Style x:Key="ScrollBarButtonDown" TargetType="{x:Type RepeatButton}">
+			<Setter Property="Focusable" Value="False"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type RepeatButton}">
+						<Canvas Height="18">
+							<Polygon Fill="Gray" Points="0,0 16,0 8,16" Margin="0.5,0,0,0"/>
+						</Canvas>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
 		<!--Стиль полос слева и справа от полосы прокрутки-->
 		<Style x:Key="ScrollBarPageButtonStyle" TargetType="{x:Type RepeatButton}">
 			<Setter Property="IsTabStop" Value="False"/>
 			<Setter Property="Focusable" Value="False"/>
 			<Setter Property="Template">
 				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type RepeatButton}">
-						
-					</ControlTemplate>
+					<ControlTemplate TargetType="{x:Type RepeatButton}"/>
 				</Setter.Value>
 			</Setter>
 		</Style>
 		
-		<!--Стиль ползунка в ScrollBar-->
-		<Style x:Key="ScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+		<!--Стиль ползунка в Horisontal ScrollBar-->
+		<Style x:Key="HorisontalScrollBarThumbStyle" TargetType="{x:Type Thumb}">
 			<Setter Property="IsTabStop" Value="False"/>
 			<Setter Property="Focusable" Value="False"/>
 			<Setter Property="Margin" Value="1,0,1,0" />
@@ -151,8 +174,22 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-		
-		<!--Стиль ScrollBar-->
+
+		<!--Стиль ползунка в Vertical ScrollBar-->
+		<Style x:Key="VertivalScrollBarThumbStyle" TargetType="{x:Type Thumb}">
+			<Setter Property="IsTabStop" Value="False"/>
+			<Setter Property="Focusable" Value="False"/>
+			<Setter Property="Margin" Value="1,0,1,0" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type Thumb}">
+						<Rectangle Fill="Gray" Opacity="0.5"/>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<!--Стиль Horisontal ScrollBar-->
 		<ControlTemplate x:Key="HorisontalScrollBar" TargetType="{x:Type ScrollBar}">
 			<Grid>
 				<Grid.ColumnDefinitions>
@@ -172,7 +209,7 @@
 						</RepeatButton>
 					</Track.DecreaseRepeatButton>
 					<Track.Thumb>
-						<Thumb Style="{StaticResource ScrollBarThumbStyle}">
+						<Thumb Style="{StaticResource HorisontalScrollBarThumbStyle}">
 						</Thumb>
 					</Track.Thumb>
 					<Track.IncreaseRepeatButton>
@@ -186,10 +223,50 @@
 				</RepeatButton>
 			</Grid>
 		</ControlTemplate>
-		
-		<!--Применение стиля ScrollBar-->
-		<Style TargetType="{x:Type ScrollBar}">
+
+		<!--Стиль Vertical ScrollBar-->
+		<ControlTemplate x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="18"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="18"/>
+				</Grid.RowDefinitions>
+
+				<RepeatButton Grid.Row="0" Height="18"
+                          Style="{StaticResource ScrollBarButtonUp}"
+                          Command="ScrollBar.LineUpCommand" >
+				</RepeatButton>
+				<Track Name="PART_Track" Grid.Row="1" 
+                   IsDirectionReversed="True">
+					<Track.DecreaseRepeatButton>
+						<RepeatButton Command="ScrollBar.PageUpCommand" Style="{StaticResource ScrollBarPageButtonStyle}">
+						</RepeatButton>
+					</Track.DecreaseRepeatButton>
+					<Track.Thumb>
+						<Thumb Style="{StaticResource VertivalScrollBarThumbStyle}">
+						</Thumb>
+					</Track.Thumb>
+					<Track.IncreaseRepeatButton>
+						<RepeatButton Command="ScrollBar.PageDownCommand" Style="{StaticResource ScrollBarPageButtonStyle}">
+						</RepeatButton>
+					</Track.IncreaseRepeatButton>
+				</Track>
+				<RepeatButton Grid.Row="2" Height="18"
+                          Style="{StaticResource ScrollBarButtonDown}"
+                          Command="ScrollBar.LineDownCommand">
+				</RepeatButton>
+			</Grid>
+		</ControlTemplate>
+
+		<!--Применение стиля Horisontal ScrollBar-->
+		<Style x:Key="HorisontalScrollBarStyle" TargetType="{x:Type ScrollBar}">
 			<Setter Property="Template" Value="{StaticResource HorisontalScrollBar}"/>
+		</Style>
+
+		<!--Применение стиля Vertical ScrollBar-->
+		<Style x:Key="VerticalScrollBarStyle" TargetType="{x:Type ScrollBar}">
+			<Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
 		</Style>
 
 		<!--Стиль кнопки-->

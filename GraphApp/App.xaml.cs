@@ -100,6 +100,10 @@ namespace GraphApp
 				{
 					throw new LoadDataException("Ошибка формата", ex);
 				}
+				catch(NullReferenceException ex)
+				{
+					throw new LoadDataException("Пуста ссылка", ex);
+				}
 
 			});
 

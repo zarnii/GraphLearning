@@ -152,6 +152,11 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter"></param>
 		private void CheckAnswerCommand(object parameter)
 		{
+			if (SelectedAnswer == null)
+			{
+				return;
+			}
+
 			if (SelectedAnswer.Flag)
 			{
 				ListBoxColor = _correctColor;
