@@ -135,6 +135,7 @@
 												</i:EventTrigger>
 											</i:Interaction.Triggers>
 										</Ellipse>
+
 									</ControlTemplate>
 								</Thumb.Template>
 								<i:Interaction.Triggers>

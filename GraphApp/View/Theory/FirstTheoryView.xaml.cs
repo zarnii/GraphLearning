@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace GraphApp.View
+namespace GraphApp.View.Theory
 {
 	/// <summary>
 	/// Логика взаимодействия для FirstTheoryView.xaml

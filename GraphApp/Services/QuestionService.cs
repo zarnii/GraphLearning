@@ -21,7 +21,7 @@ namespace GraphApp.Services
 		private Question _currentQuestion;
 
 		/// <summary>
-		/// Ключ из файла, до текущего вопроса.
+		/// Список вопросов.
 		/// </summary>
 		private IList<Question> _questions;
 
@@ -85,6 +85,11 @@ namespace GraphApp.Services
 		public void InitQuestions()
 		{
 			if (_questions.Count != 0)
+			{
+				return;
+			}
+
+			if (!Directory.Exists(ConfigurationManager.AppSettings["defaultPathToQuestions"]))
 			{
 				return;
 			}

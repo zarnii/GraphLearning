@@ -3,6 +3,8 @@ using GraphApp.Interfaces;
 using GraphApp.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace GraphApp.ViewModel
@@ -24,6 +26,11 @@ namespace GraphApp.ViewModel
 		private IQuestionService _questionService;
 
 		/// <summary>
+		/// Сервис user control.
+		/// </summary>
+		private ITheoryService _userControlService;
+
+		/// <summary>
 		/// Команда открытия окна.
 		/// </summary>
 		private ICommand _openWindow;
@@ -32,6 +39,11 @@ namespace GraphApp.ViewModel
 		/// Команда перехода назад.
 		/// </summary>
 		private ICommand _goBack;
+
+		/// <summary>
+		/// Команда открытия теории.
+		/// </summary>
+		private ICommand _openTheory;
 		#endregion
 
 		#region properties
@@ -76,6 +88,26 @@ namespace GraphApp.ViewModel
 		}
 
 		/// <summary>
+		/// Команда открытия теории.
+		/// </summary>
+		public ICommand OpenTheory
+		{
+			get
+			{
+				return _openTheory;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда открытия теории.");
+				}
+
+				_openTheory = value;
+			}
+		}
+
+		/// <summary>
 		/// Коллекция вопросов.
 		/// </summary>
 		public List<Question> Questions
@@ -85,6 +117,17 @@ namespace GraphApp.ViewModel
 				return (List<Question>)_questionService.Questions;
 			}
 		}
+
+		/// <summary>
+		/// Коллекция теории.
+		/// </summary>
+		public List<Theory> Theories
+		{
+			get
+			{
+				return _userControlService.TheoryControls;
+			}
+		}
 		#endregion
 
 		#region constructor
@@ -92,14 +135,17 @@ namespace GraphApp.ViewModel
 		/// Конструктор.
 		/// </summary>
 		/// <param name="navigationService">Сервис навигации.</param>
-		public LearnLevelsViewModel(INavigationService navigationService, IQuestionService questionService)
+		public LearnLevelsViewModel(INavigationService navigationService, 
+			IQuestionService questionService, 
+			ITheoryService userControlService)
 		{
 			_navigationService = navigationService;
 			_questionService = questionService;
+			_userControlService = userControlService;
 
 			OpenWindow = new RelayCommand(OpenWindowCommand);
 			OpenQuestion = new RelayCommand(OpenQuestionCommand);
-
+			OpenTheory = new RelayCommand(OpenTheoryCommand);
 		}
 		#endregion
 
@@ -121,6 +167,16 @@ namespace GraphApp.ViewModel
 		{
 			_questionService.CurrentQuestion = (Question)parameter;
 			_navigationService.NavigateTo<QuestionViewModel>(null);
+		}
+
+		/// <summary>
+		/// Открытия теории.
+		/// </summary>
+		/// <param name="parameter">Открываемый раздел теории.</param>
+		private void OpenTheoryCommand(object parameter)
+		{
+			_userControlService.CurrentTheory = (Theory)parameter;
+			_navigationService.NavigateTo<TheoryViewModel>(null);
 		}
 		#endregion
 

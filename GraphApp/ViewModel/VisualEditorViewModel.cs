@@ -319,6 +319,7 @@ namespace GraphApp.ViewModel
 		private void SetMouseMode(object mode)
 		{
 			_mouseMode = (MouseMode)mode;
+			SelectedVertices.Clear();
 		}
 
 		/// <summary>

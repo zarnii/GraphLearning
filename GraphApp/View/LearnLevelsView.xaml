@@ -9,7 +9,8 @@
 	<Grid Style="{StaticResource GridStyle}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30"/>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="150"/>
+			<RowDefinition Height="150"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
@@ -25,43 +26,37 @@
 		<Grid Grid.Row="1">
 			<ScrollViewer 
 				HorizontalScrollBarVisibility="Auto" 
-				VerticalScrollBarVisibility="Disabled">
+				VerticalScrollBarVisibility="Disabled"
+				HorizontalAlignment="Center">
 				<ScrollViewer.Resources>
 					<Style TargetType="ScrollBar" BasedOn="{StaticResource HorisontalScrollBarStyle}"/>
 				</ScrollViewer.Resources>
-				<StackPanel Orientation="Horizontal">
-					<Button 
-						Content="Теория 1" 
-						Height="100" 
-						Width="100" 
-						Margin="30, 0, 0, 0" 
-						Command="{Binding OpenWindow}" 
-						CommandParameter="{x:Type viewModel:FirstTheoryViewModel}"
-						Style="{StaticResource ButtonStyle}"/>
-					<Button 
-						Content="Теория 2" 
-						Height="100" 
-						Width="100" 
-						Margin="30, 0, 0, 0"
-						Style="{StaticResource ButtonStyle}"/>
-					<Button 
-						Content="Теория 3" 
-						Height="100" 
-						Width="100" 
-						Margin="30, 0, 0, 0"
-						Style="{StaticResource ButtonStyle}"/>
-					<Button 
-						Content="Вопрос 4" 
-						Height="100" 
-						Width="100" 
-						Margin="30, 0, 0, 0"
-						Style="{StaticResource ButtonStyle}"/>
-				</StackPanel>
+				<ItemsControl ItemsSource="{Binding Theories}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal"/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Button
+								Height="100"
+								Width="100"
+								Margin="30, 0, 0, 0"
+								Content="Теория"
+								Command="{Binding Path=DataContext.OpenTheory,
+									RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+								CommandParameter="{Binding}"
+								Style="{StaticResource ButtonStyle}"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 			</ScrollViewer>
 		</Grid>
 		<Grid Grid.Row="2">
 			<ScrollViewer HorizontalScrollBarVisibility="Auto"
-				VerticalScrollBarVisibility="Disabled">
+				VerticalScrollBarVisibility="Disabled"
+				HorizontalAlignment="Center">
 				<ScrollViewer.Resources>
 					<Style TargetType="ScrollBar" BasedOn="{StaticResource HorisontalScrollBarStyle}"/>
 				</ScrollViewer.Resources>

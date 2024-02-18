@@ -43,15 +43,17 @@ namespace GraphApp
 			serviceCollection.AddSingleton<IDataHeandlerService, DataHeandlerService>();
 			serviceCollection.AddSingleton<INavigationService, NavigationService>();
 			serviceCollection.AddSingleton<IQuestionService, QuestionService>();
+			serviceCollection.AddSingleton<ITheoryService, TheoryService>();
 			#endregion
 
 			#region viewModel
 			serviceCollection.AddSingleton<RootViewModel>();
 			serviceCollection.AddSingleton<MainMenuViewModel>();
-			serviceCollection.AddSingleton<VisualEditorViewModel>();
+			serviceCollection.AddTransient<VisualEditorViewModel>();
 			serviceCollection.AddSingleton<LearnLevelsViewModel>();
-			serviceCollection.AddSingleton<FirstTheoryViewModel>();
 			serviceCollection.AddTransient<QuestionViewModel>();
+			serviceCollection.AddSingleton<TheoryViewModel>();
+			serviceCollection.AddSingleton<TestViewModel>();
 			#endregion
 
 			#region other
@@ -100,7 +102,7 @@ namespace GraphApp
 				{
 					throw new LoadDataException("Ошибка формата", ex);
 				}
-				catch(NullReferenceException ex)
+				catch (NullReferenceException ex)
 				{
 					throw new LoadDataException("Пуста ссылка", ex);
 				}
