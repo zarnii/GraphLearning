@@ -8,9 +8,9 @@ namespace GraphApp.Interfaces
     {
         ViewModel.ViewModel CurrentView { get; }
 
-        void NavigateTo<TViewModel>(ViewModel.ViewModel parentViewModel) 
+        void NavigateTo<TViewModel>() 
             where TViewModel: ViewModel.ViewModel;
 
-        void NavigateTo(Type viewModelType, ViewModel.ViewModel parentViewModel);
+        void NavigateTo(Type viewModelType);
     }
 }

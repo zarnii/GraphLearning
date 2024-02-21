@@ -63,7 +63,7 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter">Открываемое окно</param>
 		private void OpenWindowCommand(object parameter)
 		{
-			_navigationService.NavigateTo((Type)parameter, this);
+			_navigationService.NavigateTo((Type)parameter);
 		}
 		#endregion
 	}

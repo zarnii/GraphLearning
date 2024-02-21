@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Controls;
-using GraphApp.Interfaces;
+﻿using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.View.Theory;
+using System;
+using System.Collections.Generic;
 
 namespace GraphApp.Services
 {
 	/// <summary>
 	/// Сервис теорий.
 	/// </summary>
-	public class TheoryService: ITheoryService
+	public class TheoryService : ITheoryService
 	{
 		private Theory _currentTheory;
 
 		public Theory CurrentTheory
 		{
-			get 
-			{ 
-				return _currentTheory; 
+			get
+			{
+				return _currentTheory;
 			}
 			set
 			{

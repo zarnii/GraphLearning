@@ -34,7 +34,7 @@ namespace GraphApp.ViewModel
 		public RootViewModel(INavigationService navigationService)
 		{
 			_navigationService = navigationService;
-			_navigationService.NavigateTo<MainMenuViewModel>(this);
+			_navigationService.NavigateTo<MainMenuViewModel>();
 		}
 		#endregion
 

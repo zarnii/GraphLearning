@@ -68,12 +68,10 @@ namespace GraphApp.Services
 		/// Навигация.
 		/// </summary>
 		/// <typeparam name="TViewModel">ViewModel, на которую нужно произвести навигацию</typeparam>
-		public void NavigateTo<TViewModel>(ViewModel.ViewModel parentViewModel)
+		public void NavigateTo<TViewModel>()
 			where TViewModel : ViewModel.ViewModel
 		{
 			var view = _viewModelFactory.Invoke(typeof(TViewModel));
-			view.Parent = parentViewModel;
-
 			CurrentView = view;
 		}
 
@@ -82,11 +80,9 @@ namespace GraphApp.Services
 		/// Навигация.
 		/// </summary>
 		/// <param name="viewModelType">ViewModel, на которую нужно произвести навигацию.</param>
-		public void NavigateTo(Type viewModelType, ViewModel.ViewModel parentViewModel)
+		public void NavigateTo(Type viewModelType)
 		{
 			var view = _viewModelFactory.Invoke(viewModelType);
-			view.Parent = parentViewModel;
-
 			CurrentView = view;
 		}
 		#endregion

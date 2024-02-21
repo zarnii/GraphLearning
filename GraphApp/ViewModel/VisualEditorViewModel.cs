@@ -535,7 +535,7 @@ namespace GraphApp.ViewModel
 
 		private void GoBackCommand(object parameter)
 		{
-			_navigationService.NavigateTo(Parent.GetType(), null);
+			_navigationService.NavigateTo<MainMenuViewModel>();
 		}
 		#endregion
 	}

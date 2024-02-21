@@ -44,6 +44,7 @@ namespace GraphApp
 			serviceCollection.AddSingleton<INavigationService, NavigationService>();
 			serviceCollection.AddSingleton<IQuestionService, QuestionService>();
 			serviceCollection.AddSingleton<ITheoryService, TheoryService>();
+			serviceCollection.AddSingleton<IHealthPointService, HealthPointService>();
 			#endregion
 
 			#region viewModel

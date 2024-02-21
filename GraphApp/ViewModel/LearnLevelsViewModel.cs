@@ -156,7 +156,7 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter">Тип окна.</param>
 		private void OpenWindowCommand(object parameter)
 		{
-			_navigationService.NavigateTo((Type)parameter, this);
+			_navigationService.NavigateTo((Type)parameter);
 		}
 
 		/// <summary>
@@ -166,7 +166,7 @@ namespace GraphApp.ViewModel
 		private void OpenQuestionCommand(object parameter)
 		{
 			_questionService.CurrentQuestion = (Question)parameter;
-			_navigationService.NavigateTo<QuestionViewModel>(null);
+			_navigationService.NavigateTo<QuestionViewModel>();
 		}
 
 		/// <summary>
@@ -176,7 +176,7 @@ namespace GraphApp.ViewModel
 		private void OpenTheoryCommand(object parameter)
 		{
 			_userControlService.CurrentTheory = (Theory)parameter;
-			_navigationService.NavigateTo<TheoryViewModel>(null);
+			_navigationService.NavigateTo<TheoryViewModel>();
 		}
 		#endregion
 

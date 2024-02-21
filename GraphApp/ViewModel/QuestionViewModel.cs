@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace GraphApp.ViewModel
 {
@@ -26,6 +27,10 @@ namespace GraphApp.ViewModel
 
 		private SolidColorBrush _defaultColor;
 
+		private TimeSpan _timerTime;
+
+		private DispatcherTimer _timer;
+
 		/// <summary>
 		/// Цвет фона ответа.
 		/// </summary>
@@ -45,6 +50,11 @@ namespace GraphApp.ViewModel
 		/// Сервис навигации.
 		/// </summary>
 		private INavigationService _navigationService;
+
+		/// <summary>
+		/// Сервис жизней пользователя.
+		/// </summary>
+		private IHealthPointService _healthPointService;
 
 		/// <summary>
 		/// Событие изменения свойства.
@@ -118,6 +128,19 @@ namespace GraphApp.ViewModel
 				OnPropertyChanged();
 			}
 		}
+
+		public TimeSpan TimerTime
+		{
+			get
+			{
+				return _timerTime;
+			}
+			set
+			{
+				_timerTime = value;
+				OnPropertyChanged(nameof(TimerTime));
+			}
+		}
 		#endregion
 
 		#region constructor
@@ -126,9 +149,12 @@ namespace GraphApp.ViewModel
 		/// </summary>
 		/// <param name="questionService">Сервис вопросов.</param>
 		/// <param name="navigationService">Сервис навигации.</param>
-		public QuestionViewModel(IQuestionService questionService, INavigationService navigationService)
+		public QuestionViewModel(IQuestionService questionService, 
+			INavigationService navigationService, 
+			IHealthPointService healthPointService)
 		{
 			_navigationService = navigationService;
+			_healthPointService = healthPointService;
 
 			CheckAnswer = new RelayCommand(CheckAnswerCommand);
 			OpenLearnLevels = new RelayCommand(OpenLearnLevelsCommand);
@@ -137,6 +163,7 @@ namespace GraphApp.ViewModel
 			_incorrectColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_incorrectColorHex));
 			_correctColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_correctColorHex));
 			_defaultColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_defaultColorHex));
+			_timer = new DispatcherTimer();
 
 			_incorrectColor.Opacity = _defaultOpacity;
 			_correctColor.Opacity = _defaultOpacity;
@@ -152,7 +179,14 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter"></param>
 		private void CheckAnswerCommand(object parameter)
 		{
+			ListBoxColor = _defaultColor;
+
 			if (SelectedAnswer == null)
+			{
+				return;
+			}
+
+			if (!_healthPointService.TimeoutIsEnd())
 			{
 				return;
 			}
@@ -164,6 +198,7 @@ namespace GraphApp.ViewModel
 			else
 			{
 				ListBoxColor = _incorrectColor;
+				_healthPointService.Hit();
 			}
 		}
 
@@ -173,7 +208,12 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter"></param>
 		private void OpenLearnLevelsCommand(object parameter)
 		{
-			_navigationService.NavigateTo<LearnLevelsViewModel>(null);
+			_navigationService.NavigateTo<LearnLevelsViewModel>();
+		}
+
+		private void UpdateTimer(object parameter)
+		{
+			TimerTime = TimeOnly.FromDateTime(DateTime.Now) - _healthPointService.TimeoutEndTime;
 		}
 
 		/// <summary>
