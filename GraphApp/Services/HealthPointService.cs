@@ -43,6 +43,11 @@ namespace GraphApp.Services
 			_timeoutDuration = TimeSpan.FromSeconds(
 				TryReadAppSettings(ConfigurationManager.AppSettings["defaultTimeOutDuration"])
 			);
+
+#if DEBUG
+			_timeoutDuration = TimeSpan.FromSeconds(5);
+#endif
+
 			_defaultHealthPoint = TryReadAppSettings(ConfigurationManager.AppSettings["defaultHealthPoint"]);
 			_damage = TryReadAppSettings(ConfigurationManager.AppSettings["defaultDamage"]);
 			HealthPoint = _defaultHealthPoint;

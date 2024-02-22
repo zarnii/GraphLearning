@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 	<Grid Style="{StaticResource GridStyle}">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="50"/>
+			<RowDefinition Height="30"/>
 			<RowDefinition Height="50"/>
 			<RowDefinition Height="30"/>
 			<RowDefinition Height="*"/>
@@ -16,18 +16,25 @@
 		</Grid.RowDefinitions>
 
 		<Grid Grid.Row="0">
-			<Label 
-				Content="{Binding Question.Title}"
-				FontSize="30"
-				VerticalAlignment="Center"
-				HorizontalAlignment="Center"
-				Style="{StaticResource Header1Style}"/>
+			<Button
+				Content="Назад"
+				Command="{Binding OpenLearnLevels}"
+				HorizontalAlignment="Left"
+				Width="100"
+				Style="{StaticResource ButtonStyle}"/>
+			<Label
+				Content="{Binding TimerTime}"
+				ContentStringFormat=" {0:hh\:mm\:ss}"
+				HorizontalAlignment="Right"
+				Opacity="{Binding TimerOpasity}"
+				Foreground="Red"
+				FontSize="14"/>
 		</Grid>
 
 		<Grid Grid.Row="1">
 			<Label
 				Content="{Binding Question.Text}"
-				FontSize="20"
+				FontSize="30"
 				VerticalAlignment="Center"
 				HorizontalAlignment="Center"
 				Style="{StaticResource Header1Style}"/>
@@ -56,13 +63,6 @@
 				Command="{Binding CheckAnswer}"
 				HorizontalAlignment="Center"
 				Width="200"
-				Style="{StaticResource ButtonStyle}"/>
-
-			<Button
-				Content="Назад"
-				Command="{Binding OpenLearnLevels}"
-				HorizontalAlignment="Left"
-				Width="100"
 				Style="{StaticResource ButtonStyle}"/>
 		</Grid>
 	</Grid>

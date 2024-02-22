@@ -81,6 +81,17 @@ namespace GraphApp.Services
 		{
 			_dataSaver.Save<TSave>(data);
 		}
+
+		/// <summary>
+		/// Сохранение данных.
+		/// </summary>
+		/// <typeparam name="TSave">Тип данных.</typeparam>
+		/// <param name="data">Данные.</param>
+		/// <param name="path">Путь.</param>
+		public void Save<TSave>(TSave data, string path)
+		{
+			_dataSaver.Save<TSave>(data, path);
+		}
 		#endregion
 	}
 }

@@ -27,9 +27,11 @@ namespace GraphApp.ViewModel
 
 		private SolidColorBrush _defaultColor;
 
-		private TimeSpan _timerTime;
+		static private TimeSpan _timerTime;
 
-		private DispatcherTimer _timer;
+		static private DispatcherTimer _timer = new DispatcherTimer();
+
+		static private double _timerOpsity = 0;
 
 		/// <summary>
 		/// Цвет фона ответа.
@@ -135,10 +137,23 @@ namespace GraphApp.ViewModel
 			{
 				return _timerTime;
 			}
-			set
+			private set
 			{
 				_timerTime = value;
-				OnPropertyChanged(nameof(TimerTime));
+				OnPropertyChanged();
+			}
+		}
+
+		public double TimerOpasity
+		{
+			get
+			{
+				return _timerOpsity;
+			}
+			private set
+			{
+				_timerOpsity = value;
+				OnPropertyChanged();
 			}
 		}
 		#endregion
@@ -163,12 +178,19 @@ namespace GraphApp.ViewModel
 			_incorrectColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_incorrectColorHex));
 			_correctColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_correctColorHex));
 			_defaultColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_defaultColorHex));
-			_timer = new DispatcherTimer();
+
+			_timer.Interval = TimeSpan.FromSeconds(1);
+			_timer.Tick += UpdateTimer;
 
 			_incorrectColor.Opacity = _defaultOpacity;
 			_correctColor.Opacity = _defaultOpacity;
 
 			ListBoxColor = _defaultColor;
+		}
+
+		~QuestionViewModel()
+		{
+			_timer.Tick -= UpdateTimer;
 		}
 		#endregion
 
@@ -200,6 +222,12 @@ namespace GraphApp.ViewModel
 				ListBoxColor = _incorrectColor;
 				_healthPointService.Hit();
 			}
+
+			if (_healthPointService.HealthPoint == 0)
+			{
+				TimerOpasity = 1;
+				_timer.Start();
+			}
 		}
 
 		/// <summary>
@@ -211,9 +239,21 @@ namespace GraphApp.ViewModel
 			_navigationService.NavigateTo<LearnLevelsViewModel>();
 		}
 
-		private void UpdateTimer(object parameter)
+		/// <summary>
+		/// Обновление таймера.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void UpdateTimer(object sender, EventArgs e)
 		{
-			TimerTime = TimeOnly.FromDateTime(DateTime.Now) - _healthPointService.TimeoutEndTime;
+			if (_healthPointService.TimeoutIsEnd())
+			{
+				_timer.Stop();
+				TimerOpasity = 0;
+				TimerTime = TimeSpan.Zero;
+			};
+
+			TimerTime = _healthPointService.TimeoutEndTime - TimeOnly.FromDateTime(DateTime.Now);
 		}
 
 		/// <summary>

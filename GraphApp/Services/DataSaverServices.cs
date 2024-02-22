@@ -35,8 +35,13 @@ namespace GraphApp.Services
 				return;
 			}
 
+			Save<TSave>(data, _saveFile.FileName);
+		}
+
+		public void Save<TSave>(TSave data, string path)
+		{
 			var json = JsonSerializer.Serialize(data);
-			File.WriteAllText(_saveFile.FileName, json);
+			File.WriteAllText(path, json);
 		}
 	}
 }

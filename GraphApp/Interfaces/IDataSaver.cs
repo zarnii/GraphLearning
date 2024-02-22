@@ -10,5 +10,7 @@ namespace GraphApp.Interfaces
 	public interface IDataSaver
 	{
 		void Save<TSave>(TSave data);
+
+		void Save<TSave>(TSave data, string path);
 	}
 }
