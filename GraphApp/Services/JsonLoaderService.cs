@@ -10,11 +10,11 @@ namespace GraphApp.Services
 	/// <summary>
 	/// Загрузчик данных.
 	/// </summary>
-	public class DataLoaderServices : IDataLoader
+	public class JsonLoaderService : IDataLoader
 	{
 		private readonly OpenFileDialog _openFile;
 
-		public DataLoaderServices()
+		public JsonLoaderService()
 		{
 			_openFile = new OpenFileDialog();
 			_openFile.Filter = "Json files (*.json)|*.json";

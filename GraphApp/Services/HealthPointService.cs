@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GraphApp.Interfaces;
+using GraphApp.Model;
+using System;
 using System.Configuration;
-using GraphApp.Interfaces;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace GraphApp.Services
 {
@@ -23,10 +22,22 @@ namespace GraphApp.Services
 		/// </summary>
 		private int _defaultHealthPoint;
 
+		private readonly string _pathToHealthFile;
+
 		/// <summary>
 		/// Длительность тайм-аута в секундах. 
 		/// </summary>
 		private TimeSpan _timeoutDuration;
+
+		/// <summary>
+		/// Сервис обработки данных.
+		/// </summary>
+		private IDataHeandlerService _dataHandler;
+
+		/// <summary>
+		/// Маппер.
+		/// </summary>
+		private IMapper _mapper;
 
 		/// <summary>
 		/// Количество жизней.
@@ -36,21 +47,38 @@ namespace GraphApp.Services
 		/// <summary>
 		/// Время, когда пользователь снова обретет жизни.
 		/// </summary>
-		public TimeOnly TimeoutEndTime { get; private set; }
+		public DateTime TimeoutEndTime { get; private set; }
 
-		public HealthPointService()
+		public HealthPointService(IDataHeandlerService dataHeandler, IMapper mapper)
 		{
 			_timeoutDuration = TimeSpan.FromSeconds(
 				TryReadAppSettings(ConfigurationManager.AppSettings["defaultTimeOutDuration"])
 			);
 
 #if DEBUG
-			_timeoutDuration = TimeSpan.FromSeconds(5);
+			_timeoutDuration = TimeSpan.FromSeconds(30);
 #endif
 
 			_defaultHealthPoint = TryReadAppSettings(ConfigurationManager.AppSettings["defaultHealthPoint"]);
 			_damage = TryReadAppSettings(ConfigurationManager.AppSettings["defaultDamage"]);
-			HealthPoint = _defaultHealthPoint;
+			_dataHandler = dataHeandler;
+			_mapper = mapper;
+			_pathToHealthFile =
+				$"{ConfigurationManager.AppSettings["defaultPathToData"]}" +
+				$"/" +
+				$"{ConfigurationManager.AppSettings["defaultHealthFileName"]}";
+
+			
+			if (CheckHealthFileIsEmpty())
+			{
+				HealthPoint = _defaultHealthPoint;
+				TimeoutEndTime = DateTime.Now;
+			}
+			else
+			{
+				LoadData();
+			}
+			
 		}
 
 		private int TryReadAppSettings(string settingName)
@@ -66,13 +94,66 @@ namespace GraphApp.Services
 			return outValue;
 		}
 
-		private void ResetHealhPoint()
+		private void AwaitResetHealhPoint(TimeSpan delay)
 		{
 			Task.Run(async () =>
 			{
-				await Task.Delay(_timeoutDuration);
+				await Task.Delay(delay);
 				HealthPoint = _defaultHealthPoint;
 			});
+		}
+
+		/// <summary>
+		/// Загрузка сохраненных данных.
+		/// </summary>
+		private void LoadData()
+		{
+			var serializableHealthData = 
+				_dataHandler
+				.Load<Model.Serializing.SerializableHealthData>(_pathToHealthFile);
+
+			var healthData = _mapper.Map<HealthData>(serializableHealthData, null);
+
+			// Если время тайм-аута уже вышло
+			// то в поля помещаем стандартные значения,
+			// иначе значение из дампа.
+			if (healthData.TimeoutEndTime <= DateTime.Now)
+			{
+				HealthPoint = _defaultHealthPoint;
+				TimeoutEndTime = DateTime.Now;
+			}
+			else
+			{
+				HealthPoint = healthData.HealthPoint;
+				TimeoutEndTime = healthData.TimeoutEndTime;
+				AwaitResetHealhPoint(TimeoutEndTime - DateTime.Now);
+			}
+		}
+
+		/// <summary>
+		/// Сохранение данных.
+		/// </summary>
+		private void SaveData()
+		{
+			var data = _mapper.Map<Model.Serializing.SerializableHealthData>(
+				new Model.HealthData()
+				{
+					HealthPoint = HealthPoint,
+					TimeoutEndTime = TimeoutEndTime,
+				},
+				null
+			);
+
+			_dataHandler.Save<Model.Serializing.SerializableHealthData>(data, _pathToHealthFile);
+		}
+
+		/// <summary>
+		/// Проверка пустой ли файл с данными.
+		/// </summary>
+		/// <returns></returns>
+		private bool CheckHealthFileIsEmpty()
+		{
+			return String.IsNullOrWhiteSpace(File.ReadAllText(_pathToHealthFile));
 		}
 
 		/// <summary>
@@ -81,7 +162,7 @@ namespace GraphApp.Services
 		/// <returns>True, если время тайм-аута прошло.</returns>
 		public bool TimeoutIsEnd()
 		{
-			return TimeoutEndTime <= TimeOnly.FromDateTime(DateTime.Now);
+			return TimeoutEndTime <= DateTime.Now;
 		}
 
 		/// <summary>
@@ -98,8 +179,9 @@ namespace GraphApp.Services
 
 			if (HealthPoint == 0)
 			{
-				TimeoutEndTime = TimeOnly.FromDateTime(DateTime.Now).Add(_timeoutDuration);
-				ResetHealhPoint();
+				TimeoutEndTime = DateTime.Now.Add(_timeoutDuration);
+				SaveData();
+				AwaitResetHealhPoint(_timeoutDuration);
 			}
 		}
 	}

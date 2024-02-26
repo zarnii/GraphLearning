@@ -38,9 +38,9 @@ namespace GraphApp
 
 			#region services
 			serviceCollection.AddSingleton<IMapper, Mapper>();
-			serviceCollection.AddSingleton<IDataSaver, DataSaverServices>();
-			serviceCollection.AddSingleton<IDataLoader, DataLoaderServices>();
-			serviceCollection.AddSingleton<IDataHeandlerService, DataHeandlerService>();
+			serviceCollection.AddSingleton<IDataSaver, JsonSaverService>();
+			serviceCollection.AddSingleton<IDataLoader, JsonLoaderService>();
+			serviceCollection.AddSingleton<IDataHeandlerService, JsonDataHeandlerService>();
 			serviceCollection.AddSingleton<INavigationService, NavigationService>();
 			serviceCollection.AddSingleton<IQuestionService, QuestionService>();
 			serviceCollection.AddSingleton<ITheoryService, TheoryService>();
@@ -156,6 +156,37 @@ namespace GraphApp
 					ConnectedVerticesNumber = new int[2] { connectedVertices.Item1.Number, connectedVertices.Item2.Number },
 					Weight = vc.Weight,
 					ConnectionType = vc.ConnectionType
+				};
+			});
+
+			mapper.CreateMap<HealthData, SerializableHealthData>((tSource, param) =>
+			{
+				var hd = tSource as HealthData;
+				var byteHealthPoint = BitConverter.GetBytes(hd.HealthPoint);
+
+				return new SerializableHealthData() 
+				{ 
+					HealthPoint = String.Join(' ', byteHealthPoint),
+					TimeoutEndTime = hd.TimeoutEndTime.ToBinary().ToString(),
+				};
+			});
+
+			mapper.CreateMap<SerializableHealthData, HealthData>((tSource, param) =>
+			{
+				var shd = tSource as SerializableHealthData;
+
+				var byteHealthPoint = new List<byte>();
+				var byteTimeoutEndTime = Int64.Parse(shd.TimeoutEndTime);
+
+				foreach (var bt in shd.HealthPoint.Split(' '))
+				{
+					byteHealthPoint.Add(Byte.Parse(bt));
+				}
+
+				return new HealthData()
+				{
+					HealthPoint = BitConverter.ToInt32(byteHealthPoint.ToArray(), 0),
+					TimeoutEndTime = DateTime.FromBinary(byteTimeoutEndTime)
 				};
 			});
 		}

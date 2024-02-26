@@ -164,7 +164,9 @@ namespace GraphApp.ViewModel
 		/// </summary>
 		/// <param name="questionService">Сервис вопросов.</param>
 		/// <param name="navigationService">Сервис навигации.</param>
-		public QuestionViewModel(IQuestionService questionService, 
+		/// <param name="healthPointService">Сервис жизней.</param>
+		public QuestionViewModel(
+			IQuestionService questionService, 
 			INavigationService navigationService, 
 			IHealthPointService healthPointService)
 		{
@@ -186,6 +188,7 @@ namespace GraphApp.ViewModel
 			_correctColor.Opacity = _defaultOpacity;
 
 			ListBoxColor = _defaultColor;
+			CheckHealthPoint();
 		}
 
 		~QuestionViewModel()
@@ -223,11 +226,7 @@ namespace GraphApp.ViewModel
 				_healthPointService.Hit();
 			}
 
-			if (_healthPointService.HealthPoint == 0)
-			{
-				TimerOpasity = 1;
-				_timer.Start();
-			}
+			CheckHealthPoint();
 		}
 
 		/// <summary>
@@ -251,9 +250,20 @@ namespace GraphApp.ViewModel
 				_timer.Stop();
 				TimerOpasity = 0;
 				TimerTime = TimeSpan.Zero;
-			};
 
-			TimerTime = _healthPointService.TimeoutEndTime - TimeOnly.FromDateTime(DateTime.Now);
+				return;
+			}
+
+			TimerTime = _healthPointService.TimeoutEndTime - DateTime.Now;
+		}
+
+		private void CheckHealthPoint()
+		{
+			if (_healthPointService.HealthPoint == 0)
+			{
+				TimerOpasity = 1;
+				_timer.Start();
+			}
 		}
 
 		/// <summary>

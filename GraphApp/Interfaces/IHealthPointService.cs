@@ -19,7 +19,7 @@ namespace GraphApp.Interfaces
 		/// <summary>
 		/// Время, когда пользователь снова обретет жизни.
 		/// </summary>
-		TimeOnly TimeoutEndTime { get; }
+		DateTime TimeoutEndTime { get; }
 
 		/// <summary>
 		/// Нанесение урона.

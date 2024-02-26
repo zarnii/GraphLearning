@@ -17,10 +17,5 @@ namespace GraphApp.Interfaces
 		/// Коллекция вопросов.
 		/// </summary>
 		IList<Question> Questions { get; }
-
-		/// <summary>
-		/// Получение всех вопросов.
-		/// </summary>
-		void InitQuestions();
 	}
 }

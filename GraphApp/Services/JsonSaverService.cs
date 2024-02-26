@@ -10,13 +10,13 @@ using System.Text.Json;
 namespace GraphApp.Services
 {
 	/// <summary>
-	/// Сервис сохранения данных.
+	/// Сервис сохранения данных в формате Json.
 	/// </summary>
-	public class DataSaverServices : IDataSaver
+	public class JsonSaverService : IDataSaver
 	{
 		private readonly SaveFileDialog _saveFile;
 
-		public DataSaverServices()
+		public JsonSaverService()
 		{
 			_saveFile = new SaveFileDialog();
 			_saveFile.Filter = "Json files (*.json)|*.json";

@@ -6,6 +6,7 @@ using GraphApp.Model;
 using System.IO;
 using System.Linq;
 using System.Collections;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GraphApp.Services
 {
@@ -82,7 +83,7 @@ namespace GraphApp.Services
 		/// <summary>
 		/// Инициализация вопросов.
 		/// </summary>
-		public void InitQuestions()
+		private void InitQuestions()
 		{
 			if (_questions.Count != 0)
 			{
