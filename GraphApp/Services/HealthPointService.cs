@@ -1,8 +1,10 @@
 ﻿using GraphApp.Interfaces;
 using GraphApp.Model;
 using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace GraphApp.Services
@@ -12,17 +14,21 @@ namespace GraphApp.Services
 	/// </summary>
 	public class HealthPointService : IHealthPointService
 	{
-		/// <summary>
-		/// Урон, при неправильном ответе.
-		/// </summary>
-		private int _damage;
+        #region fileds
+        /// <summary>
+        /// Урон, при неправильном ответе.
+        /// </summary>
+        private int _damage;
 
 		/// <summary>
 		/// Стандартное количество жизней.
 		/// </summary>
 		private int _defaultHealthPoint;
 
-		private readonly string _pathToHealthFile;
+		/// <summary>
+		/// Путь до файла с записью жизней.
+		/// </summary>
+		private string _pathToHealthFile;
 
 		/// <summary>
 		/// Длительность тайм-аута в секундах. 
@@ -38,18 +44,22 @@ namespace GraphApp.Services
 		/// Маппер.
 		/// </summary>
 		private IMapper _mapper;
+        #endregion
 
-		/// <summary>
-		/// Количество жизней.
-		/// </summary>
-		public int HealthPoint { get; private set; }
+        #region properties
+        /// <summary>
+        /// Количество жизней.
+        /// </summary>
+        public int HealthPoint { get; private set; }
 
 		/// <summary>
 		/// Время, когда пользователь снова обретет жизни.
 		/// </summary>
 		public DateTime TimeoutEndTime { get; private set; }
+        #endregion
 
-		public HealthPointService(IDataHeandlerService dataHeandler, IMapper mapper)
+        #region constructor
+        public HealthPointService(IDataHeandlerService dataHeandler, IMapper mapper)
 		{
 			_timeoutDuration = TimeSpan.FromSeconds(
 				TryReadAppSettings(ConfigurationManager.AppSettings["defaultTimeOutDuration"])
@@ -63,10 +73,7 @@ namespace GraphApp.Services
 			_damage = TryReadAppSettings(ConfigurationManager.AppSettings["defaultDamage"]);
 			_dataHandler = dataHeandler;
 			_mapper = mapper;
-			_pathToHealthFile =
-				$"{ConfigurationManager.AppSettings["defaultPathToData"]}" +
-				$"/" +
-				$"{ConfigurationManager.AppSettings["defaultHealthFileName"]}";
+			_pathToHealthFile = ConfigurationManager.AppSettings["defaultPathToHealthFile"];
 
 			
 			if (CheckHealthFileIsEmpty())
@@ -80,8 +87,10 @@ namespace GraphApp.Services
 			}
 			
 		}
+        #endregion
 
-		private int TryReadAppSettings(string settingName)
+        #region private methods
+        private int TryReadAppSettings(string settingName)
 		{
 			int outValue;
 
@@ -155,12 +164,14 @@ namespace GraphApp.Services
 		{
 			return String.IsNullOrWhiteSpace(File.ReadAllText(_pathToHealthFile));
 		}
+        #endregion
 
-		/// <summary>
-		/// Проверка на возможность востановить жизни.
-		/// </summary>
-		/// <returns>True, если время тайм-аута прошло.</returns>
-		public bool TimeoutIsEnd()
+        #region public methods
+        /// <summary>
+        /// Проверка на возможность востановить жизни.
+        /// </summary>
+        /// <returns>True, если время тайм-аута прошло.</returns>
+        public bool TimeoutIsEnd()
 		{
 			return TimeoutEndTime <= DateTime.Now;
 		}
@@ -184,5 +195,6 @@ namespace GraphApp.Services
 				AwaitResetHealhPoint(_timeoutDuration);
 			}
 		}
-	}
+        #endregion
+    }
 }

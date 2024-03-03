@@ -10,6 +10,12 @@
 			<Setter Property="Background" Value="#FF252526"/>
 		</Style>
 
+		<!--Стиль Label-->
+		<Style x:Key="LabelStyle" TargetType="Label">
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="14"/>
+		</Style>
+		
 		<!--Стиль TextBlock-->
 		<Style x:Key="TextStyle" TargetType="TextBlock">
 			<Setter Property="Foreground" Value="White"/>

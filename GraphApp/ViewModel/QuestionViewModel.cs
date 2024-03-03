@@ -131,6 +131,9 @@ namespace GraphApp.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Время на таймере.
+		/// </summary>
 		public TimeSpan TimerTime
 		{
 			get
@@ -144,6 +147,9 @@ namespace GraphApp.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Прозрачность таймера.
+		/// </summary>
 		public double TimerOpasity
 		{
 			get
@@ -156,6 +162,17 @@ namespace GraphApp.ViewModel
 				OnPropertyChanged();
 			}
 		}
+
+		/// <summary>
+		/// Количество жизней.
+		/// </summary>
+		public int HealthPoint
+		{
+			get
+			{
+				return _healthPointService.HealthPoint;
+			}
+		}
 		#endregion
 
 		#region constructor
@@ -166,7 +183,7 @@ namespace GraphApp.ViewModel
 		/// <param name="navigationService">Сервис навигации.</param>
 		/// <param name="healthPointService">Сервис жизней.</param>
 		public QuestionViewModel(
-			IQuestionService questionService, 
+			IPracticeService questionService, 
 			INavigationService navigationService, 
 			IHealthPointService healthPointService)
 		{
@@ -224,6 +241,7 @@ namespace GraphApp.ViewModel
 			{
 				ListBoxColor = _incorrectColor;
 				_healthPointService.Hit();
+				OnPropertyChanged(nameof(HealthPoint));
 			}
 
 			CheckHealthPoint();
@@ -250,6 +268,7 @@ namespace GraphApp.ViewModel
 				_timer.Stop();
 				TimerOpasity = 0;
 				TimerTime = TimeSpan.Zero;
+				OnPropertyChanged(nameof(HealthPoint));
 
 				return;
 			}

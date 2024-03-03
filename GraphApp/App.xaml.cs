@@ -42,7 +42,7 @@ namespace GraphApp
 			serviceCollection.AddSingleton<IDataLoader, JsonLoaderService>();
 			serviceCollection.AddSingleton<IDataHeandlerService, JsonDataHeandlerService>();
 			serviceCollection.AddSingleton<INavigationService, NavigationService>();
-			serviceCollection.AddSingleton<IQuestionService, QuestionService>();
+			serviceCollection.AddSingleton<IPracticeService, QuestionService>();
 			serviceCollection.AddSingleton<ITheoryService, TheoryService>();
 			serviceCollection.AddSingleton<IHealthPointService, HealthPointService>();
 			#endregion

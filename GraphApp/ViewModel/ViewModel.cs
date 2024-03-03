@@ -2,6 +2,5 @@
 {
 	public abstract class ViewModel
 	{
-		public ViewModel Parent { get; set; }
 	}
 }

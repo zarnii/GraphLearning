@@ -6,7 +6,7 @@ namespace GraphApp.Interfaces
 	/// <summary>
 	/// Сервис вопросов.
 	/// </summary>
-	public interface IQuestionService
+	public interface IPracticeService
 	{
 		/// <summary>
 		/// Текущий вопрос.
@@ -16,6 +16,6 @@ namespace GraphApp.Interfaces
 		/// <summary>
 		/// Коллекция вопросов.
 		/// </summary>
-		IList<Question> Questions { get; }
+		List<Question> Questions { get; }
 	}
 }

@@ -15,11 +15,8 @@
 
 		<Grid Grid.Row="1">
 
-			<UserControl Content="{Binding CurrentControl}">
-				
-			</UserControl>
-			
-			
+			<TextBlock Text="{Binding Text}"/>
+
 			<!--
 			<DockPanel>
 				<Rectangle/>

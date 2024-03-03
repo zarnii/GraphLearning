@@ -22,13 +22,20 @@
 				HorizontalAlignment="Left"
 				Width="100"
 				Style="{StaticResource ButtonStyle}"/>
-			<Label
-				Content="{Binding TimerTime}"
-				ContentStringFormat=" {0:hh\:mm\:ss}"
-				HorizontalAlignment="Right"
-				Opacity="{Binding TimerOpasity}"
-				Foreground="Red"
-				FontSize="14"/>
+
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+				<Label
+					Content="{Binding HealthPoint}"
+					Style="{StaticResource LabelStyle}"
+					ContentStringFormat="Попытки: {0} "/>
+				<Label
+					Content="{Binding TimerTime}"
+					ContentStringFormat=" {0:hh\:mm\:ss}"
+					HorizontalAlignment="Right"
+					Opacity="{Binding TimerOpasity}"
+					Style="{StaticResource LabelStyle}"/>
+			</StackPanel>
+			
 		</Grid>
 
 		<Grid Grid.Row="1">
