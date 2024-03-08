@@ -1,98 +1,186 @@
 ﻿using GraphApp.Command;
+using GraphApp.Interfaces;
 using GraphApp.Model;
-using System.Collections.ObjectModel;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
+using System.Collections.Generic;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace GraphApp.ViewModel
 {
-    class TestViewModel : ViewModel, INotifyPropertyChanged
-    {
-        private double _x;
-        private double _y;
-        public event PropertyChangedEventHandler? PropertyChanged;
+	public class TestViewModel : ViewModel, INotifyPropertyChanged
+	{
+		#region fields
+		private Dictionary<Question, Answer> _selectedAnswerByQuestion;
+		/// <summary>
+		/// Команда проверки ответа.
+		/// </summary>
+		private ICommand _checkAnswer;
 
-        public double X
-        {
-            get
-            {
-                return _x;
-            }
-            set
-            {
-                _x = value;
-                OnPropertyChanged();
-            }
+		/// <summary>
+		/// Команда открытия LearnLevels.
+		/// </summary>
+		private ICommand _openLearnLevels;
+
+		/// <summary>
+		/// Команда выбора ответа.
+		/// </summary>
+		private ICommand _selectAnswer;
+
+		/// <summary>
+		/// Сервис навигации.
+		/// </summary>
+		private INavigationService _navigationService;
+
+		/// <summary>
+		/// Сервис проверки тестов.
+		/// </summary>
+		private ITestCheckService _answerCheckService;
+
+		/// <summary>
+		/// Событие изменения свойства.
+		/// </summary>
+		public event PropertyChangedEventHandler? PropertyChanged;
+		#endregion
+
+		#region properties
+		/// <summary>
+		/// Команда проверки ответа.
+		/// </summary>
+		public ICommand CheckAnswer
+		{
+			get
+			{
+				return _checkAnswer;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда выбора проверки ответа.");
+				}
+
+				_checkAnswer = value;
+			}
+		}
+
+		/// <summary>
+		/// Команда открытия LearnLevels.
+		/// </summary>
+		public ICommand OpenLearnLevels
+		{
+			get
+			{
+				return _openLearnLevels;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда открытия LearnLevels");
+				}
+
+				_openLearnLevels = value;
+			}
+		}
+
+		/// <summary>
+		/// Команда выбора ответа.
+		/// </summary>
+		public ICommand SelectAnswer
+		{
+			get
+			{
+				return _selectAnswer;
+			}
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException(nameof(value), "Пустая команда выбора ответа.");
+				}
+
+				_selectAnswer = value;
+			}
+		}
+
+		/// <summary>
+		/// Вопрос.
+		/// </summary>
+		public Test CurrentTest { get; private set; }
+        #endregion
+
+        #region constructor
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="testProvider">Поставщик тестов.</param>
+        /// <param name="navigationService">Сервис навигации.</param>
+        /// <param name="answerCheckService">Сервис проверки теста.</param>
+        public TestViewModel(
+			ITestProvider testProvider, 
+			INavigationService navigationService, 
+			ITestCheckService answerCheckService)
+		{
+			_navigationService = navigationService;
+			_answerCheckService = answerCheckService;
+			_selectedAnswerByQuestion = new Dictionary<Question, Answer>();
+
+			CheckAnswer = new RelayCommand(CheckAnswerCommand);
+			OpenLearnLevels = new RelayCommand(OpenLearnLevelsCommand);
+			SelectAnswer = new RelayCommand(SelectAnswerCommand);
+			CurrentTest = testProvider.CurrentTest;
+		}
+		#endregion
+
+		#region private methods
+		/// <summary>
+		/// Проверка ответа.
+		/// </summary>
+		/// <param name="parameter"></param>
+		private void CheckAnswerCommand(object parameter)
+		{
+			_answerCheckService.VerifableTest = CurrentTest;
+			_answerCheckService.SelectedAnswerByQuestion = _selectedAnswerByQuestion;
+			_navigationService.NavigateTo<VerifyTestViewModel>();
+		}
+
+		/// <summary>
+		/// Открытие LearnLevels.
+		/// </summary>
+		/// <param name="parameter"></param>
+		private void OpenLearnLevelsCommand(object parameter)
+		{
+			_navigationService.NavigateTo<LearnLevelsViewModel>();
+		}
+
+		/// <summary>
+		/// Выбор ответа.
+		/// </summary>
+		/// <param name="parameter">Выбранный ответ.</param>
+		private void SelectAnswerCommand(object parameter)
+		{
+			// Костыль.
+			// Надо как-то по другому сделать, но, честно, я хз как.
+			var answer = VisualTreeHelper.GetParent((RadioButton)((RoutedEventArgs)parameter).Source);
+			var question = (Question)((System.Windows.Controls.StackPanel)VisualTreeHelper.GetParent(answer)).DataContext;
+
+			_selectedAnswerByQuestion[question] = (Answer)((System.Windows.Controls.ContentPresenter)answer).Content;
         }
 
-        public double Y
-        {
-            get
-            {
-                return _y;
-            }
-            set
-            {
-                _y = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int CanvasHeight { get; set; }
-        public int CanvasWidth { get; set; }
-        public ICommand MouseScale { get; set; }
-        public ObservableCollection<Vertex> Shapes { get; set; }
-        public string Text { get; set; } = "Hello\nWorld!";
-
-        public TestViewModel()
-        {
-            CanvasHeight = 200;
-            CanvasWidth = 200;
-
-            Shapes = new ObservableCollection<Vertex>()
-            {
-                new Vertex()
-                {
-                    X = 10,
-                    Y = 20,
-                },
-                new Vertex()
-                {
-                    X = 30,
-                    Y = 20,
-                },
-                new Vertex()
-                {
-                    X = 50,
-                    Y = 20,
-                }
-            };
-
-            MouseScale = new RelayCommand(MouseScaleCommand);
-            X = 0.1;
-            Y = 0.1;
-
-        }
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void MouseScaleCommand(object parameter)
-        {
-            double zoom = ((MouseWheelEventArgs)parameter).Delta > 0
-                ? 0.1
-                : -0.1;
-
-            if (X + zoom < 0.1 || Y + zoom < 0.1)
-            {
-                return;
-            }
-
-            X += zoom;
-            Y += zoom;
-        }
-    }
+		/// <summary>
+		/// Оповещение подписчиков о изменении свойства.
+		/// </summary>
+		/// <param name="propertyName">Имя измененного свойсива.</param>
+		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+		#endregion
+	}
 }

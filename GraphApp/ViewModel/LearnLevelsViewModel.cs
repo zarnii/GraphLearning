@@ -21,7 +21,7 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Сервис вопросов.
         /// </summary>
-        private IPracticeService _questionService;
+        private ITestProvider _testProvider;
 
         /// <summary>
         /// Сервис user control.
@@ -106,13 +106,13 @@ namespace GraphApp.ViewModel
         }
 
         /// <summary>
-        /// Коллекция вопросов.
+        /// Коллекция тестов.
         /// </summary>
-        public List<Question> Questions
+        public List<Test> Tests
         {
             get
             {
-                return _questionService.Questions;
+                return _testProvider.TestCollection;
             }
         }
 
@@ -134,11 +134,11 @@ namespace GraphApp.ViewModel
         /// </summary>
         /// <param name="navigationService">Сервис навигации.</param>
         public LearnLevelsViewModel(INavigationService navigationService,
-            IPracticeService questionService,
+            ITestProvider questionService,
             ITheoryService userControlService)
         {
             _navigationService = navigationService;
-            _questionService = questionService;
+            _testProvider = questionService;
             _userControlService = userControlService;
 
             OpenWindow = new RelayCommand(OpenWindowCommand);
@@ -163,8 +163,8 @@ namespace GraphApp.ViewModel
         /// <param name="parameter">Открываемый вопрос.</param>
         private void OpenQuestionCommand(object parameter)
         {
-            _questionService.CurrentQuestion = (Question)parameter;
-            _navigationService.NavigateTo<QuestionViewModel>();
+            _testProvider.CurrentTest = (Test)parameter;
+            _navigationService.NavigateTo<TestViewModel>();
         }
 
         /// <summary>

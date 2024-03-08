@@ -42,9 +42,10 @@ namespace GraphApp
 			serviceCollection.AddSingleton<IDataLoader, JsonLoaderService>();
 			serviceCollection.AddSingleton<IDataHeandlerService, JsonDataHeandlerService>();
 			serviceCollection.AddSingleton<INavigationService, NavigationService>();
-			serviceCollection.AddSingleton<IPracticeService, QuestionService>();
+			serviceCollection.AddSingleton<ITestProvider, TestProvider>();
 			serviceCollection.AddSingleton<ITheoryService, TheoryService>();
 			serviceCollection.AddSingleton<IHealthPointService, HealthPointService>();
+			serviceCollection.AddSingleton<ITestCheckService, TestCheckService>();
 			#endregion
 
 			#region viewModel
@@ -52,9 +53,10 @@ namespace GraphApp
 			serviceCollection.AddSingleton<MainMenuViewModel>();
 			serviceCollection.AddTransient<VisualEditorViewModel>();
 			serviceCollection.AddSingleton<LearnLevelsViewModel>();
-			serviceCollection.AddTransient<QuestionViewModel>();
+			serviceCollection.AddTransient<TestViewModel>();
 			serviceCollection.AddSingleton<TheoryViewModel>();
-			serviceCollection.AddSingleton<TestViewModel>();
+			serviceCollection.AddSingleton<ScrollTestViewModel>();
+			serviceCollection.AddTransient<VerifyTestViewModel>();
 			#endregion
 
 			#region other

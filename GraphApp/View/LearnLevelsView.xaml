@@ -60,7 +60,7 @@
 				<ScrollViewer.Resources>
 					<Style TargetType="ScrollBar" BasedOn="{StaticResource HorisontalScrollBarStyle}"/>
 				</ScrollViewer.Resources>
-				<ItemsControl ItemsSource="{Binding Questions}">
+				<ItemsControl ItemsSource="{Binding Tests}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<StackPanel Orientation="Horizontal"/>

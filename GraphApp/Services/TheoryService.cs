@@ -11,9 +11,15 @@ namespace GraphApp.Services
 	/// </summary>
 	public class TheoryService : ITheoryService
 	{
-		private Theory _currentTheory;
+        #region fields
+        private Theory _currentTheory;
+        #endregion
 
-		public Theory CurrentTheory
+        #region properies
+        /// <summary>
+        /// Текущая теория.
+        /// </summary>
+        public Theory CurrentTheory
 		{
 			get
 			{
@@ -30,21 +36,36 @@ namespace GraphApp.Services
 			}
 		}
 
+		/// <summary>
+		/// Коллекция теорий.
+		/// </summary>
 		public List<Theory> TheoryControls { get; private set; }
+        #endregion
 
-		public TheoryService()
+        #region constructor
+		/// <summary>
+		/// Конструктор.
+		/// </summary>
+        public TheoryService()
 		{
 			InitControl();
 		}
+        #endregion
 
-		private void InitControl()
+        #region private methods
+        /// <summary>
+        /// Инициализация коллекций теорий.
+        /// </summary>
+        private void InitControl()
 		{
-			var theoryControlList = new List<Theory>();
+            var theoryControlList = new List<Theory>
+            {
+                new Theory(new FirstTheoryView()),
+                new Theory(new SecondTheoryView())
+            };
 
-			theoryControlList.Add(new Theory(new FirstTheoryView()));
-			theoryControlList.Add(new Theory(new SecondTheoryView()));
-
-			TheoryControls = theoryControlList;
+            TheoryControls = theoryControlList;
 		}
-	}
+        #endregion
+    }
 }

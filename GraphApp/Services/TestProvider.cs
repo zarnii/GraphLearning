@@ -10,54 +10,55 @@ namespace GraphApp.Services
     /// <summary>
     /// Сервис вопросов.
     /// </summary>
-    public class QuestionService : IPracticeService
+    public class TestProvider : ITestProvider
     {
         #region fields
         /// <summary>
         /// Текущий вопрос.
         /// </summary>
-        private Question _currentQuestion;
+        private Test _currentTest;
 
         /// <summary>
         /// Список вопросов.
         /// </summary>
-        private List<Question> _questions;
+        private List<Question> _questionsCollection;
+
+        /// <summary>
+        /// Список тестов.
+        /// </summary>
+        private List<Test> _testCollection;
 
         /// <summary>
         /// Сервис загрузки данных.
         /// </summary>
         private IDataLoader _dataLoader;
+
         #endregion
 
         #region properties
         /// <summary>
-        /// Коллекция вопросов.
+        /// Коллекция тестов.
         /// </summary>
-        public List<Question> Questions
+        public List<Test> TestCollection
         {
             get
             {
-                return _questions;
+                return _testCollection;
             }
         }
 
         /// <summary>
-        /// Текущий вопрос.
+        /// Текущий тест.
         /// </summary>
-        public Question CurrentQuestion
+        public Test CurrentTest
         {
             get
             {
-                return _currentQuestion;
+                return _currentTest;
             }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Пустой вопрос.");
-                }
-
-                _currentQuestion = value;
+                _currentTest = value;
             }
         }
         #endregion
@@ -67,12 +68,12 @@ namespace GraphApp.Services
         /// Конструктор.
         /// </summary>
         /// <param name="dataLoader"></param>
-        public QuestionService(IDataLoader dataLoader)
+        public TestProvider(IDataLoader dataLoader)
         {
             _dataLoader = dataLoader;
-            _questions = new List<Question>();
 
             InitQuestions();
+            InitTests();
         }
         #endregion
 
@@ -82,22 +83,43 @@ namespace GraphApp.Services
         /// </summary>
         private void InitQuestions()
         {
-            if (_questions.Count != 0)
-            {
-                return;
-            }
+            _questionsCollection = new List<Question>();
 
             if (!Directory.Exists(ConfigurationManager.AppSettings["defaultPathToQuestions"]))
             {
                 return;
             }
 
-            var paths = Directory.GetFiles(ConfigurationManager.AppSettings["defaultPathToQuestions"]);
+            var files = Directory.GetFiles(ConfigurationManager.AppSettings["defaultPathToQuestions"]);
 
-            foreach (string path in paths)
+            foreach (var file in files)
             {
-                _questions.Add(_dataLoader.Load<Question>(path));
+                _questionsCollection.Add(_dataLoader.Load<Question>(file));
             }
+        }
+
+        private void InitTests()
+        {
+            _testCollection = new List<Test>();
+
+            if (!Directory.Exists(ConfigurationManager.AppSettings["defaultPathToQuestions"]))
+            {
+                return;
+            }
+
+            var files = Directory.GetFiles(ConfigurationManager.AppSettings["defaultPathToTests"]);
+
+            foreach (var file in files)
+            {
+                _testCollection.Add(_dataLoader.Load<Test>(file));
+            }
+        }
+        #endregion
+
+        #region public methods
+        public Test RandomGenerate(int questionCount)
+        {
+            return null;
         }
         #endregion
     }

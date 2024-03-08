@@ -4,18 +4,25 @@ using System.Collections.Generic;
 namespace GraphApp.Interfaces
 {
 	/// <summary>
-	/// Сервис вопросов.
+	/// Поставщик тестов.
 	/// </summary>
-	public interface IPracticeService
+	public interface ITestProvider
 	{
 		/// <summary>
-		/// Текущий вопрос.
+		/// Текущий тест.
 		/// </summary>
-		Question CurrentQuestion { get; set; }
+		Test CurrentTest { get; set; }
 
 		/// <summary>
-		/// Коллекция вопросов.
+		/// Коллекция Тестов.
 		/// </summary>
-		List<Question> Questions { get; }
+		List<Test> TestCollection { get; }
+
+		/// <summary>
+		/// Генерация рандомного теста.
+		/// </summary>
+		/// <param name="questionCount">Количество вопросов в тесте.</param>
+		/// <returns>Сгенерированный тест.</returns>
+		Test RandomGenerate(int questionCount);
 	}
 }
