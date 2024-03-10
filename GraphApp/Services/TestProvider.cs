@@ -119,7 +119,30 @@ namespace GraphApp.Services
         #region public methods
         public Test RandomGenerate(int questionCount)
         {
-            return null;
+            if (questionCount > _questionsCollection.Count || questionCount < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(questionCount),
+                    $"Аргумент должен находиться в диапозоне (1, {_questionsCollection.Count})");
+            }
+
+            var questions = new Question[questionCount];
+            var repeatingElements = new List<Question>();
+            var random = new Random();
+
+            var i = 0;
+            while (i < questionCount)
+            {
+                var randItem = random.Randchoice<Question>(_questionsCollection);
+
+                if (!repeatingElements.Contains(randItem))
+                {
+                    questions[i] = randItem;
+                    i++;
+                }
+            }
+
+            return new Test() { Title = "Сгенерированный вопрос", Questions = questions };
+
         }
         #endregion
     }

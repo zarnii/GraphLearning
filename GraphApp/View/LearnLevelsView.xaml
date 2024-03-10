@@ -53,6 +53,7 @@
 				</ItemsControl>
 			</ScrollViewer>
 		</Grid>
+		
 		<Grid Grid.Row="2">
 			<ScrollViewer HorizontalScrollBarVisibility="Auto"
 				VerticalScrollBarVisibility="Disabled"
@@ -81,6 +82,17 @@
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 			</ScrollViewer>
+		</Grid>
+
+		<Grid Grid.Row="3">
+			<Button
+				Style="{StaticResource ButtonStyle}"
+				Content="Сгенерировать тест"
+				Height="40"
+				Width="150"
+				VerticalAlignment="Bottom"
+				HorizontalAlignment="Center"
+				Command="{Binding GenerateTest}"/>
 		</Grid>
 	</Grid>
 </UserControl>

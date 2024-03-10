@@ -4,6 +4,9 @@ using GraphApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using InputBox;
+using GraphApp.Services;
+using System.Windows;
 
 namespace GraphApp.ViewModel
 {
@@ -42,6 +45,11 @@ namespace GraphApp.ViewModel
         /// Команда открытия теории.
         /// </summary>
         private ICommand _openTheory;
+
+        /// <summary>
+        /// Команда генерации теста.
+        /// </summary>
+        private ICommand _generateTest;
         #endregion
 
         #region properties
@@ -106,6 +114,26 @@ namespace GraphApp.ViewModel
         }
 
         /// <summary>
+        /// Команда генерации теста.
+        /// </summary>
+        public ICommand GenerateTest
+        {
+            get
+            {
+                return _generateTest;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), "Пустая команда генерации теста.");
+                }
+
+                _generateTest = value;
+            }
+        }
+
+        /// <summary>
         /// Коллекция тестов.
         /// </summary>
         public List<Test> Tests
@@ -144,6 +172,7 @@ namespace GraphApp.ViewModel
             OpenWindow = new RelayCommand(OpenWindowCommand);
             OpenQuestion = new RelayCommand(OpenQuestionCommand);
             OpenTheory = new RelayCommand(OpenTheoryCommand, CheckCanExecute);
+            GenerateTest = new RelayCommand(GenerateTestCommand);
         }
         #endregion
 
@@ -175,6 +204,36 @@ namespace GraphApp.ViewModel
         {
             _userControlService.CurrentTheory = (Theory)parameter;
             _navigationService.NavigateTo<TheoryViewModel>();
+        }
+
+        /// <summary>
+        /// Генерация теста.
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void GenerateTestCommand(object parameter)
+        {
+            var inputBox = new InputBoxWindow("Введите количество вопросов", "Введите количество вопросов");
+
+            if (!inputBox.ShowDialog())
+            {
+                return;
+            }
+
+            try
+            {
+                _testProvider.CurrentTest = _testProvider.RandomGenerate(inputBox.TextBoxResult);
+                _navigationService.NavigateTo<TestViewModel>();
+            }
+            catch(ArgumentOutOfRangeException ex)
+            {
+                // Временно.
+                MessageBox.Show(
+                    ex.Message,
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
         }
 
         private bool CheckCanExecute(object parameter)
