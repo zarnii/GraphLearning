@@ -58,7 +58,7 @@ namespace GraphApp.ViewModel
 		#region private methods
 		private void GoBackCommand(object parameter)
 		{
-			_navigationService.NavigateTo<LearnLevelsViewModel>();
+			_navigationService.NavigateTo<EducationViewModel>();
 		}
 		#endregion
 	}

@@ -16,7 +16,11 @@ namespace GraphApp.ViewModel
 	public class TestViewModel : ViewModel, INotifyPropertyChanged
 	{
 		#region fields
+		/// <summary>
+		/// Выбранные ответы по вопросам.
+		/// </summary>
 		private Dictionary<Question, Answer> _selectedAnswerByQuestion;
+
 		/// <summary>
 		/// Команда проверки ответа.
 		/// </summary>
@@ -25,7 +29,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда открытия LearnLevels.
 		/// </summary>
-		private ICommand _openLearnLevels;
+		private ICommand _openEducation;
 
 		/// <summary>
 		/// Команда выбора ответа.
@@ -40,7 +44,7 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Сервис проверки тестов.
 		/// </summary>
-		private ITestCheckService _answerCheckService;
+		private IVerifyTestService _answerCheckService;
 
 		/// <summary>
 		/// Событие изменения свойства.
@@ -72,11 +76,11 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Команда открытия LearnLevels.
 		/// </summary>
-		public ICommand OpenLearnLevels
+		public ICommand OpenEducation
 		{
 			get
 			{
-				return _openLearnLevels;
+				return _openEducation;
 			}
 			set
 			{
@@ -85,7 +89,7 @@ namespace GraphApp.ViewModel
 					throw new ArgumentNullException(nameof(value), "Пустая команда открытия LearnLevels");
 				}
 
-				_openLearnLevels = value;
+				_openEducation = value;
 			}
 		}
 
@@ -125,14 +129,14 @@ namespace GraphApp.ViewModel
         public TestViewModel(
 			ITestProvider testProvider, 
 			INavigationService navigationService, 
-			ITestCheckService answerCheckService)
+			IVerifyTestService answerCheckService)
 		{
 			_navigationService = navigationService;
 			_answerCheckService = answerCheckService;
 			_selectedAnswerByQuestion = new Dictionary<Question, Answer>();
 
 			CheckAnswer = new RelayCommand(CheckAnswerCommand);
-			OpenLearnLevels = new RelayCommand(OpenLearnLevelsCommand);
+			OpenEducation = new RelayCommand(OpenEducationCommand);
 			SelectAnswer = new RelayCommand(SelectAnswerCommand);
 			CurrentTest = testProvider.CurrentTest;
 		}
@@ -154,9 +158,9 @@ namespace GraphApp.ViewModel
 		/// Открытие LearnLevels.
 		/// </summary>
 		/// <param name="parameter"></param>
-		private void OpenLearnLevelsCommand(object parameter)
+		private void OpenEducationCommand(object parameter)
 		{
-			_navigationService.NavigateTo<LearnLevelsViewModel>();
+			_navigationService.NavigateTo<EducationViewModel>();
 		}
 
 		/// <summary>

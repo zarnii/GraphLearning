@@ -1,19 +1,18 @@
 ﻿using GraphApp.Command;
 using GraphApp.Interfaces;
 using GraphApp.Model;
+using InputBox;
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
-using InputBox;
-using GraphApp.Services;
 using System.Windows;
+using System.Windows.Input;
 
 namespace GraphApp.ViewModel
 {
     /// <summary>
     /// Модель представления окна с уроками.
     /// </summary>
-    public class LearnLevelsViewModel : ViewModel
+    public class EducationViewModel : ViewModel
     {
         #region fields
         /// <summary>
@@ -161,9 +160,10 @@ namespace GraphApp.ViewModel
         /// Конструктор.
         /// </summary>
         /// <param name="navigationService">Сервис навигации.</param>
-        public LearnLevelsViewModel(INavigationService navigationService,
+        public EducationViewModel(INavigationService navigationService,
             ITestProvider questionService,
-            ITheoryService userControlService)
+            ITheoryService userControlService,
+            IPracticProvider practicProvider)
         {
             _navigationService = navigationService;
             _testProvider = questionService;
@@ -224,7 +224,7 @@ namespace GraphApp.ViewModel
                 _testProvider.CurrentTest = _testProvider.RandomGenerate(inputBox.TextBoxResult);
                 _navigationService.NavigateTo<TestViewModel>();
             }
-            catch(ArgumentOutOfRangeException ex)
+            catch (ArgumentOutOfRangeException ex)
             {
                 // Временно.
                 MessageBox.Show(

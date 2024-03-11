@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace GraphApp.View
 {
-    /// <summary>
-    /// Логика взаимодействия для TestVEView.xaml
-    /// </summary>
-    public partial class VisualEditorView : UserControl
-    {
-        public VisualEditorView()
-        {
-            InitializeComponent();
-        }
-    }
+	/// <summary>
+	/// Логика взаимодействия для LearnLevelsView.xaml
+	/// </summary>
+	public partial class EducationView : UserControl
+	{
+		public EducationView()
+		{
+			InitializeComponent();
+		}
+	}
 }

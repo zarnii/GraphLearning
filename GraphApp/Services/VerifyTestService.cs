@@ -9,7 +9,7 @@ namespace GraphApp.Services
     /// <summary>
     /// Сервис проверки ответов.
     /// </summary>
-    public class TestCheckService : ITestCheckService
+    public class VerifyTestService : IVerifyTestService
     {
         #region fields
         /// <summary>
@@ -94,7 +94,7 @@ namespace GraphApp.Services
         /// <summary>
         /// Конструктор.
         /// </summary>
-        public TestCheckService()
+        public VerifyTestService()
         {
             QuestionVerifiedAnswerMap = new Dictionary<Question, List<VisualAnswer>>();
         }

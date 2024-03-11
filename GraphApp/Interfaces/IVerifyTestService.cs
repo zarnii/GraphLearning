@@ -6,7 +6,7 @@ namespace GraphApp.Interfaces
     /// <summary>
     /// Сервис проверки ответов на тест.
     /// </summary>
-    public interface ITestCheckService
+    public interface IVerifyTestService
     {
         /// <summary>
         /// Набранное количество очков.

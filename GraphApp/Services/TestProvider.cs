@@ -83,14 +83,15 @@ namespace GraphApp.Services
         /// </summary>
         private void InitQuestions()
         {
-            _questionsCollection = new List<Question>();
+            var pathToQuestions = ConfigurationManager.AppSettings["defaultPathToQuestions"];
 
-            if (!Directory.Exists(ConfigurationManager.AppSettings["defaultPathToQuestions"]))
+            if (!Directory.Exists(pathToQuestions))
             {
                 return;
             }
 
-            var files = Directory.GetFiles(ConfigurationManager.AppSettings["defaultPathToQuestions"]);
+            var files = Directory.GetFiles(pathToQuestions);
+            _questionsCollection = new List<Question>();
 
             foreach (var file in files)
             {

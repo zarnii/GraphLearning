@@ -328,13 +328,13 @@
 		<DataTemplate DataType="{x:Type viewModel:MainMenuViewModel}">
 			<view:MainView/>
 		</DataTemplate>
-		
-		<DataTemplate DataType="{x:Type viewModel:VisualEditorViewModel}">
-			<view:VisualEditorView/>
+
+		<DataTemplate DataType="{x:Type viewModel:PlaygroundViewModel}">
+			<view:PlaygroundView/>
 		</DataTemplate>
 
-		<DataTemplate DataType="{x:Type viewModel:LearnLevelsViewModel}">
-			<view:LearnLevelsView/>
+		<DataTemplate DataType="{x:Type viewModel:EducationViewModel}">
+			<view:EducationView/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type viewModel:TestViewModel}">
@@ -352,6 +352,10 @@
 		<DataTemplate DataType="{x:Type viewModel:VerifyTestViewModel}">
 			<view:VerifyTestView/>
 		</DataTemplate>
-		
+
+		<DataTemplate DataType="{x:Type viewModel:PracticViewModel}">
+			<view:PracticView/>
+		</DataTemplate>
+
 	</Application.Resources>
 </Application>

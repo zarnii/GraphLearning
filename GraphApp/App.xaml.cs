@@ -14,183 +14,258 @@ using System.Windows.Media;
 
 namespace GraphApp
 {
-	/// <summary>
-	/// Приложение.
-	/// </summary>
-	public partial class App : Application
-	{
-		/// <summary>
-		/// Поставщик сервисов.
-		/// </summary>
-		private readonly IServiceProvider _serviceProvider;
+    /// <summary>
+    /// Приложение.
+    /// </summary>
+    public partial class App : Application
+    {
+        /// <summary>
+        /// Поставщик сервисов.
+        /// </summary>
+        private readonly IServiceProvider _serviceProvider;
 
-		private readonly BrushConverter _brushConverter;
+        private readonly BrushConverter _brushConverter;
 
-		public App()
-		{
-			_brushConverter = new BrushConverter();
+        public App()
+        {
+            _brushConverter = new BrushConverter();
 
-			var serviceCollection = new ServiceCollection();
+            var serviceCollection = new ServiceCollection();
 
-			#region window
-			serviceCollection.AddSingleton<RootWindow>();
-			#endregion
+            #region window
+            serviceCollection.AddSingleton<RootWindow>();
+            #endregion
 
-			#region services
-			serviceCollection.AddSingleton<IMapper, Mapper>();
-			serviceCollection.AddSingleton<IDataSaver, JsonSaverService>();
-			serviceCollection.AddSingleton<IDataLoader, JsonLoaderService>();
-			serviceCollection.AddSingleton<IDataHeandlerService, JsonDataHeandlerService>();
-			serviceCollection.AddSingleton<INavigationService, NavigationService>();
-			serviceCollection.AddSingleton<ITestProvider, TestProvider>();
-			serviceCollection.AddSingleton<ITheoryService, TheoryService>();
-			serviceCollection.AddSingleton<IHealthPointService, HealthPointService>();
-			serviceCollection.AddSingleton<ITestCheckService, TestCheckService>();
-			#endregion
+            #region services
+            serviceCollection.AddSingleton<IMapper, Mapper>();
+            serviceCollection.AddSingleton<IDataSaver, JsonSaverService>();
+            serviceCollection.AddSingleton<IDataLoader, JsonLoaderService>();
+            serviceCollection.AddSingleton<IDataHeandlerService, JsonDataHeandlerService>();
+            serviceCollection.AddSingleton<INavigationService, NavigationService>();
+            serviceCollection.AddSingleton<ITestProvider, TestProvider>();
+            serviceCollection.AddSingleton<ITheoryService, TheoryService>();
+            serviceCollection.AddSingleton<IHealthPointService, HealthPointService>();
+            serviceCollection.AddSingleton<IVerifyTestService, VerifyTestService>();
+            serviceCollection.AddSingleton<IPracticProvider, PracticProvider>();
+            serviceCollection.AddTransient<IVisualEditorService, VisualEditorService>();
+            #endregion
 
-			#region viewModel
-			serviceCollection.AddSingleton<RootViewModel>();
-			serviceCollection.AddSingleton<MainMenuViewModel>();
-			serviceCollection.AddTransient<VisualEditorViewModel>();
-			serviceCollection.AddSingleton<LearnLevelsViewModel>();
-			serviceCollection.AddTransient<TestViewModel>();
-			serviceCollection.AddSingleton<TheoryViewModel>();
-			serviceCollection.AddSingleton<ScrollTestViewModel>();
-			serviceCollection.AddTransient<VerifyTestViewModel>();
-			#endregion
+            #region viewModel
+            serviceCollection.AddSingleton<RootViewModel>();
+            serviceCollection.AddSingleton<MainMenuViewModel>();
+            serviceCollection.AddTransient<PlaygroundViewModel>();
+            serviceCollection.AddSingleton<EducationViewModel>();
+            serviceCollection.AddTransient<TestViewModel>();
+            serviceCollection.AddSingleton<TheoryViewModel>();
+            serviceCollection.AddSingleton<ScrollTestViewModel>();
+            serviceCollection.AddTransient<VerifyTestViewModel>();
+            serviceCollection.AddTransient<PracticViewModel>();
+            #endregion
 
-			#region other
-			// Фабричная функция vm.
-			serviceCollection.AddSingleton<Func<Type, ViewModel.ViewModel>>((vmType) =>
-			{
-				return (ViewModel.ViewModel)_serviceProvider.GetRequiredService(vmType);
-			});
-			#endregion
+            #region other
+            // Фабричная функция vm.
+            serviceCollection.AddSingleton<Func<Type, ViewModel.ViewModel>>((vmType) =>
+            {
+                return (ViewModel.ViewModel)_serviceProvider.GetRequiredService(vmType);
+            });
+            #endregion
 
-			_serviceProvider = serviceCollection.BuildServiceProvider();
+            _serviceProvider = serviceCollection.BuildServiceProvider();
 
-			SettingMapper();
-		}
+            SettingMapper();
+        }
 
-		/// <summary>
-		/// При старте приложения.
-		/// </summary>
-		/// <param name="e">Аргументы собития запуска.</param>
-		protected override void OnStartup(StartupEventArgs e)
-		{
-			var rootWindow = _serviceProvider.GetRequiredService<RootWindow>();
-			rootWindow.Show();
+        /// <summary>
+        /// При старте приложения.
+        /// </summary>
+        /// <param name="e">Аргументы собития запуска.</param>
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            var rootWindow = _serviceProvider.GetRequiredService<RootWindow>();
+            rootWindow.Show();
 
-			base.OnStartup(e);
-		}
+            base.OnStartup(e);
+        }
 
-		private void SettingMapper()
-		{
-			var mapper = _serviceProvider.GetRequiredService<IMapper>();
-			mapper.CreateMap<SerializableVertex, VisualVertex>((tSource, param) =>
-			{
-				try
-				{
-					var sv = tSource as SerializableVertex;
+        private void SettingMapper()
+        {
+            var mapper = _serviceProvider.GetRequiredService<IMapper>();
+            mapper.CreateMap<SerializableVertex, VisualVertex>((tSource, param) =>
+            {
+                try
+                {
+                    var sv = tSource as SerializableVertex;
 
-					return new VisualVertex(
-						(sv.X, sv.Y),
-						sv.Width,
-						sv.Height,
-						sv.Number,
-						(Color)ColorConverter.ConvertFromString(sv.ColorString)
-					);
-				}
-				catch (FormatException ex)
-				{
-					throw new LoadDataException("Ошибка формата", ex);
-				}
-				catch (NullReferenceException ex)
-				{
-					throw new LoadDataException("Пуста ссылка", ex);
-				}
+                    return new VisualVertex(
+                        (sv.X, sv.Y),
+                        sv.Width,
+                        sv.Height,
+                        sv.Number,
+                        (Color)ColorConverter.ConvertFromString(sv.ColorString)
+                    );
+                }
+                catch (FormatException ex)
+                {
+                    throw new LoadDataException("Ошибка формата", ex);
+                }
+                catch (NullReferenceException ex)
+                {
+                    throw new LoadDataException("Пуста ссылка", ex);
+                }
 
-			});
+            });
 
-			mapper.CreateMap<SerializableConnection, VisualConnection>((tSource, param) =>
-			{
-				try
-				{
-					var sc = tSource as SerializableConnection;
-					var vertices = param as List<VisualVertex>;
+            mapper.CreateMap<SerializableConnection, VisualConnection>((tSource, param) =>
+            {
+                try
+                {
+                    var sc = tSource as SerializableConnection;
+                    var vertices = param as List<VisualVertex>;
 
-					var firstVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[0]).FirstOrDefault();
-					var secondVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[1]).FirstOrDefault();
+                    var firstVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[0]).FirstOrDefault();
+                    var secondVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[1]).FirstOrDefault();
 
-					return new VisualConnection((firstVertex, secondVertex), sc.Weight, sc.ConnectionType);
-				}
-				catch (ArgumentNullException ex)
-				{
-					throw new LoadDataException(String.Empty, ex);
-				}
+                    return new VisualConnection((firstVertex, secondVertex), sc.Weight, sc.ConnectionType);
+                }
+                catch (ArgumentNullException ex)
+                {
+                    throw new LoadDataException(String.Empty, ex);
+                }
 
-			});
+            });
 
-			mapper.CreateMap<VisualVertex, SerializableVertex>((tSource, param) =>
-			{
-				var vv = tSource as VisualVertex;
+            mapper.CreateMap<VisualVertex, SerializableVertex>((tSource, param) =>
+            {
+                var vv = tSource as VisualVertex;
 
-				return new SerializableVertex()
-				{
-					X = vv.X,
-					Y = vv.Y,
-					Number = vv.Number,
-					Name = vv.Name,
-					Height = vv.Height,
-					Width = vv.Width,
-					ColorString = _brushConverter.ConvertToString(vv.Color)
-				};
+                return new SerializableVertex()
+                {
+                    X = vv.X,
+                    Y = vv.Y,
+                    Number = vv.Number,
+                    Name = vv.Name,
+                    Height = vv.Height,
+                    Width = vv.Width,
+                    ColorString = _brushConverter.ConvertToString(vv.Color)
+                };
 
-			});
+            });
 
-			mapper.CreateMap<VisualConnection, SerializableConnection>((tSource, param) =>
-			{
-				var vc = tSource as VisualConnection;
-				var connectedVertices = vc.ConnectedVertices;
+            mapper.CreateMap<VisualConnection, SerializableConnection>((tSource, param) =>
+            {
+                var vc = tSource as VisualConnection;
+                var connectedVertices = vc.ConnectedVertices;
 
-				return new SerializableConnection()
-				{
-					ConnectedVerticesNumber = new int[2] { connectedVertices.Item1.Number, connectedVertices.Item2.Number },
-					Weight = vc.Weight,
-					ConnectionType = vc.ConnectionType
-				};
-			});
+                return new SerializableConnection()
+                {
+                    ConnectedVerticesNumber = new int[2] { connectedVertices.Item1.Number, connectedVertices.Item2.Number },
+                    Weight = vc.Weight,
+                    ConnectionType = vc.ConnectionType
+                };
+            });
 
-			mapper.CreateMap<HealthData, SerializableHealthData>((tSource, param) =>
-			{
-				var hd = tSource as HealthData;
-				var byteHealthPoint = BitConverter.GetBytes(hd.HealthPoint);
+            mapper.CreateMap<HealthData, SerializableHealthData>((tSource, param) =>
+            {
+                var hd = tSource as HealthData;
+                var byteHealthPoint = BitConverter.GetBytes(hd.HealthPoint);
 
-				return new SerializableHealthData() 
-				{ 
-					HealthPoint = String.Join(' ', byteHealthPoint),
-					TimeoutEndTime = hd.TimeoutEndTime.ToBinary().ToString(),
-				};
-			});
+                return new SerializableHealthData()
+                {
+                    HealthPoint = String.Join(' ', byteHealthPoint),
+                    TimeoutEndTime = hd.TimeoutEndTime.ToBinary().ToString(),
+                };
+            });
 
-			mapper.CreateMap<SerializableHealthData, HealthData>((tSource, param) =>
-			{
-				var shd = tSource as SerializableHealthData;
+            mapper.CreateMap<SerializableHealthData, HealthData>((tSource, param) =>
+            {
+                var shd = tSource as SerializableHealthData;
 
-				var byteHealthPoint = new List<byte>();
-				var byteTimeoutEndTime = Int64.Parse(shd.TimeoutEndTime);
+                var byteHealthPoint = new List<byte>();
+                var byteTimeoutEndTime = Int64.Parse(shd.TimeoutEndTime);
 
-				foreach (var bt in shd.HealthPoint.Split(' '))
-				{
-					byteHealthPoint.Add(Byte.Parse(bt));
-				}
+                foreach (var bt in shd.HealthPoint.Split(' '))
+                {
+                    byteHealthPoint.Add(Byte.Parse(bt));
+                }
 
-				return new HealthData()
-				{
-					HealthPoint = BitConverter.ToInt32(byteHealthPoint.ToArray(), 0),
-					TimeoutEndTime = DateTime.FromBinary(byteTimeoutEndTime)
-				};
-			});
-		}
-	}
+                return new HealthData()
+                {
+                    HealthPoint = BitConverter.ToInt32(byteHealthPoint.ToArray(), 0),
+                    TimeoutEndTime = DateTime.FromBinary(byteTimeoutEndTime)
+                };
+            });
+
+            mapper.CreateMap<PracticTask, SerializablePracticTask>((tSource, param) =>
+            {
+                var pt = tSource as PracticTask;
+
+                var serVertices = new List<SerializableVertex>();
+                var serConnections = new List<SerializableConnection>();
+
+                foreach (var vertex in pt.Vertices)
+                {
+                    serVertices.Add(mapper.Map<SerializableVertex>(vertex, null));
+                }
+
+                foreach (var connection in pt.Connections)
+                {
+                    serConnections.Add(mapper.Map<SerializableConnection>(connection, null));
+                }
+
+                var spt = new SerializablePracticTask()
+                {
+                    Title = pt.Title,
+                    Text = pt.Text,
+                    Vertices = serVertices,
+                    Connections = serConnections,
+                    NeedCheckVertexCount = pt.NeedCheckVertexCount,
+                    NeedCheckVertexPosition = pt.NeedCheckVertexPosition,
+                    NeedCheckVertexSize = pt.NeedCheckVertexSize,
+                    NeedCheckVertexName = pt.NeedCheckVertexName,
+                    NeedCheckConnection = pt.NeedCheckConnection,
+                    NeedCheckConnectionCount = pt.NeedCheckConnectionCount,
+                    NeedCheckConnectionWeight = pt.NeedCheckConnectionWeight,
+                    NeedCheckConnectionType = pt.NeedCheckConnectionType
+                };
+
+                return spt;
+            });
+
+            mapper.CreateMap<SerializablePracticTask, PracticTask>((tSource, param) =>
+            {
+                var spt = tSource as SerializablePracticTask;
+
+                var vertices = new List<VisualVertex>();
+                var connections = new List<VisualConnection>();
+
+                foreach (var vertex in spt.Vertices)
+                {
+                    vertices.Add(mapper.Map<VisualVertex>(vertex, null));
+                }
+
+                foreach (var connection in spt.Connections)
+                {
+                    connections.Add(mapper.Map<VisualConnection>(connection, vertices));
+                }
+
+                var pt = new PracticTask()
+                {
+                    Title = spt.Title,
+                    Text = spt.Text,
+                    Vertices = vertices,
+                    Connections = connections,
+                    NeedCheckVertexCount = spt.NeedCheckVertexCount,
+                    NeedCheckVertexPosition = spt.NeedCheckVertexPosition,
+                    NeedCheckVertexSize = spt.NeedCheckVertexSize,
+                    NeedCheckVertexName = spt.NeedCheckVertexName,
+                    NeedCheckConnection = spt.NeedCheckConnection,
+                    NeedCheckConnectionCount = spt.NeedCheckConnectionCount,
+                    NeedCheckConnectionWeight = spt.NeedCheckConnectionWeight,
+                    NeedCheckConnectionType = spt.NeedCheckConnectionType
+                };
+
+                return pt;
+            });
+        }
+    }
 }

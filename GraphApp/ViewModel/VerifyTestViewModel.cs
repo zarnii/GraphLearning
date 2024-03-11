@@ -18,7 +18,7 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Сервис проверки ответов.
         /// </summary>
-        private ITestCheckService _testCheckService;
+        private IVerifyTestService _testCheckService;
 
         /// <summary>
         /// Сервис навигации.
@@ -64,7 +64,7 @@ namespace GraphApp.ViewModel
         /// </summary>
         /// <param name="testCheckService">Сервис проверки теста.</param>
         /// <param name="navigationService">Сервис навигации.</param>
-        public VerifyTestViewModel(ITestCheckService testCheckService, INavigationService navigationService)
+        public VerifyTestViewModel(IVerifyTestService testCheckService, INavigationService navigationService)
         {
             _navigationService = navigationService;
             _testCheckService = testCheckService;

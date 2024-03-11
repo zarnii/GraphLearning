@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace GraphApp.View
 {
     /// <summary>
-    /// Логика взаимодействия для TestVEView.xaml
+    /// Логика взаимодействия для PracticView.xaml
     /// </summary>
-    public partial class VisualEditorView : UserControl
+    public partial class PracticView : UserControl
     {
-        public VisualEditorView()
+        public PracticView()
         {
             InitializeComponent();
         }

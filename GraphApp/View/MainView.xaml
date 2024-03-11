@@ -16,7 +16,7 @@
 					Width="100" 
 					Height="30"
 					Command="{Binding OpenWindow}"
-					CommandParameter="{x:Type viewModel:LearnLevelsViewModel}"
+					CommandParameter="{x:Type viewModel:EducationViewModel}"
 					Style="{StaticResource ButtonStyle}"/>
 				<Button
 					Content="Песочница"
@@ -25,7 +25,7 @@
 					Width="100"
 					Height="30"
 					Command="{Binding OpenWindow}"
-					CommandParameter="{x:Type viewModel:VisualEditorViewModel}"
+					CommandParameter="{x:Type viewModel:PlaygroundViewModel}"
 					Style="{StaticResource ButtonStyle}"/>
 			</StackPanel>
 		</Grid>

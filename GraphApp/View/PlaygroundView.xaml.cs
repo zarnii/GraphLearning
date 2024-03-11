@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace GraphApp.View
 {
 	/// <summary>
-	/// Логика взаимодействия для LearnLevelsView.xaml
+	/// Логика взаимодействия для VisualEditorView.xaml
 	/// </summary>
-	public partial class LearnLevelsView : UserControl
+	public partial class PlaygroundView : UserControl
 	{
-		public LearnLevelsView()
+		public PlaygroundView()
 		{
 			InitializeComponent();
 		}

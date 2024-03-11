@@ -19,7 +19,7 @@
 		<Grid Grid.Row="0">
 			<Button
 				Content="Назад"
-				Command="{Binding OpenLearnLevels}"
+				Command="{Binding OpenEducation}"
 				HorizontalAlignment="Left"
 				Width="100"
 				Style="{StaticResource ButtonStyle}"/>

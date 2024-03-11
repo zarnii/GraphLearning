@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GraphApp.Model;
 
 namespace GraphApp.Model
 {
     /// <summary>
-    /// Практическое задание в виде теста.
+    /// Обучающий материал.
     /// </summary>
-    public class Test: EducationMaterial
+    public abstract class EducationMaterial
     {
         /// <summary>
-        /// Вопросы.
+        /// Заголовок.
         /// </summary>
-        public Question[] Questions { get; set; }
+        public string Title { get; set; }
     }
 }
