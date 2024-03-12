@@ -48,6 +48,9 @@ namespace GraphApp
             serviceCollection.AddSingleton<IVerifyTestService, VerifyTestService>();
             serviceCollection.AddSingleton<IPracticProvider, PracticProvider>();
             serviceCollection.AddTransient<IVisualEditorService, VisualEditorService>();
+            serviceCollection.AddSingleton<IQuestionProvider, QuestionProvider>();
+            serviceCollection.AddSingleton<ITestGenerator, TestGenerator>();
+            serviceCollection.AddSingleton<IAccessControlService, AccessControlService>();
             #endregion
 
             #region viewModel

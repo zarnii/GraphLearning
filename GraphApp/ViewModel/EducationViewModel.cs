@@ -26,6 +26,11 @@ namespace GraphApp.ViewModel
         private ITestProvider _testProvider;
 
         /// <summary>
+        /// Генератор тестов.
+        /// </summary>
+        private ITestGenerator _testGenerator;
+
+        /// <summary>
         /// Сервис user control.
         /// </summary>
         private ITheoryService _userControlService;
@@ -163,10 +168,12 @@ namespace GraphApp.ViewModel
         public EducationViewModel(INavigationService navigationService,
             ITestProvider questionService,
             ITheoryService userControlService,
-            IPracticProvider practicProvider)
+            ITestGenerator testGenerator,
+            IAccessControlService accessControlService)
         {
             _navigationService = navigationService;
             _testProvider = questionService;
+            _testGenerator = testGenerator;
             _userControlService = userControlService;
 
             OpenWindow = new RelayCommand(OpenWindowCommand);
@@ -221,7 +228,7 @@ namespace GraphApp.ViewModel
 
             try
             {
-                _testProvider.CurrentTest = _testProvider.RandomGenerate(inputBox.TextBoxResult);
+                _testProvider.CurrentTest = _testGenerator.RandomGenerate(inputBox.TextBoxResult);
                 _navigationService.NavigateTo<TestViewModel>();
             }
             catch (ArgumentOutOfRangeException ex)

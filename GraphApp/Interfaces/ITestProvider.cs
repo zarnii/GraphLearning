@@ -17,12 +17,5 @@ namespace GraphApp.Interfaces
 		/// Коллекция Тестов.
 		/// </summary>
 		List<Test> TestCollection { get; }
-
-		/// <summary>
-		/// Генерация рандомного теста.
-		/// </summary>
-		/// <param name="questionCount">Количество вопросов в тесте.</param>
-		/// <returns>Сгенерированный тест.</returns>
-		Test RandomGenerate(int questionCount);
 	}
 }
