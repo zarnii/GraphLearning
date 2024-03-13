@@ -36,19 +36,28 @@ namespace GraphApp.Model
 		/// Тип соединения вершин.
 		/// </summary>
 		public ConnectionType ConnectionType { get; set; }
+
+		/// <summary>
+		/// Номер связи.
+		/// </summary>
+		public int Number { get; set; }
 		#endregion
 
 		#region constructor
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
-		/// <param name="connectedVertices">Соеденяемые вершины.</param>
-		/// <param name="weight">Вес соединения.</param>
-		/// <param name="connectionType">Тип соединения.</param>
-		public Connection((Vertex, Vertex) vertices, 
-			double weight = 0, ConnectionType connectionType = ConnectionType.Unidirectional)
+		/// <param name="vertices">Связанные вершины.</param>
+		/// <param name="number">Номер свящи.</param>
+		/// <param name="weight">Вес связи.</param>
+		/// <param name="connectionType">Тип связи.</param>
+		public Connection((Vertex, Vertex) vertices,
+            int number,
+            double weight = 0,
+			ConnectionType connectionType = ConnectionType.Unidirectional)
 		{
 			_connectedVertices = vertices;
+			Number = number;
 			Weight = weight;
 			ConnectionType = connectionType;
 		}

@@ -62,13 +62,14 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Констурктор.
         /// </summary>
-        /// <param name="testCheckService">Сервис проверки теста.</param>
+        /// <param name="verifyTestService">Сервис проверки теста.</param>
         /// <param name="navigationService">Сервис навигации.</param>
-        public VerifyTestViewModel(IVerifyTestService testCheckService, INavigationService navigationService)
+        public VerifyTestViewModel(IVerifyTestService verifyTestService, 
+            INavigationService navigationService)
         {
             _navigationService = navigationService;
-            _testCheckService = testCheckService;
-            _testCheckService.CheckAnswer();
+            _testCheckService = verifyTestService;
+            
 
             QuestionVerifiedAnswerMap = new ObservableCollection<KeyValuePair<Question, List<VisualAnswer>>>(
                 _testCheckService.QuestionVerifiedAnswerMap.ToList()

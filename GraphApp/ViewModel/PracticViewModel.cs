@@ -20,7 +20,12 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Поставщик практических заданий.
         /// </summary>
-        private IPracticProvider _practicProvider;
+        private IAccessControlService _accsessControlService;
+
+        /// <summary>
+        /// Сервис проверки практических заданий.
+        /// </summary>
+        private IVerifyPracticTaskService _verifyPracticTaskService;
         #endregion
 
         #region properties
@@ -48,6 +53,11 @@ namespace GraphApp.ViewModel
         /// Команда перемещения вершины.
         /// </summary>
         public ICommand MoveVertex { get; private set; }
+
+        /// <summary>
+        /// Команда проверки задания.
+        /// </summary>
+        public ICommand VerifyTask { get; private set; }
 
         /// <summary>
         /// Связи.
@@ -86,7 +96,7 @@ namespace GraphApp.ViewModel
         {
             get
             {
-                return _practicProvider?.CurrentPractic?.Title;
+                return ((PracticTask)_accsessControlService?.CurrentEducationMaterial.EducationMaterial).Title;
             }
         }
 
@@ -94,7 +104,7 @@ namespace GraphApp.ViewModel
         {
             get
             {
-                return _practicProvider?.CurrentPractic?.Text;
+                return ((PracticTask)_accsessControlService?.CurrentEducationMaterial.EducationMaterial).Text;
             }
         }
         #endregion
@@ -105,16 +115,21 @@ namespace GraphApp.ViewModel
         /// </summary>
         /// <param name="visualEditorService">Сервис визуального редактора.</param>
         /// <param name="practicProvider">Поставщик практических заданий.</param>
-        public PracticViewModel(IVisualEditorService visualEditorService, 
-            IPracticProvider practicProvider)
+        public PracticViewModel(
+            IVisualEditorService visualEditorService, 
+            IAccessControlService accessControlService,
+            IVerifyPracticTaskService verifyPracticTaskService)
         {
             _visualEditorService = visualEditorService;
+            _accsessControlService = accessControlService;
+            _verifyPracticTaskService = verifyPracticTaskService;
 
             ChangeMouseMode = new RelayCommand(SetMouseMode);
             ClickOnField = new RelayCommand(ClickOnFieldCommand);
             ClickOnVertex = new RelayCommand(ClickOnVertexCommand);
             ClickOnConnection = new RelayCommand(ClickOnConnectionCommand);
             MoveVertex = new RelayCommand(MoveVertexCommand);
+            VerifyTask = new RelayCommand(VerifyTaskCommand);
         }
         #endregion
 
@@ -201,6 +216,55 @@ namespace GraphApp.ViewModel
         private void MoveVertexCommand(object parameter)
         {
             _visualEditorService.MoveVertex((DragDeltaEventArgs)parameter);
+        }
+
+        private void VerifyTaskCommand(object parameter)
+        {
+            var practicTask = (PracticTask)_accsessControlService.CurrentEducationMaterial.EducationMaterial;
+
+            var result = _verifyPracticTaskService.VerifyPracticTask(practicTask, Vertices, Connections);
+
+            var isDone = true;
+
+            if (practicTask.NeedCheckVertexCount && !result.VertexCountIsDone)
+            {
+                isDone = false;
+            }
+
+            if (practicTask.NeedCheckVertexPosition && !result.VertexPositionIsDone)
+            {
+                isDone = false;
+            }
+
+            if (practicTask.NeedCheckVertexSize && !result.VertexSizeIsDone)
+            {
+                isDone = false;
+            }
+
+            if (practicTask.NeedCheckVertexName && !result.VertexNameIsDone)
+            {
+                isDone = false;
+            }
+
+            if (practicTask.NeedCheckConnectionCount && !result.ConnectionCountIsDone)
+            {
+                isDone = false;
+            }
+
+            if (practicTask.NeedCheckConnection && !result.ConnectionIsDone)
+            {
+                isDone = false;
+            }
+
+            if (practicTask.NeedCheckConnectionWeight && !result.ConnectionWeightIsDone)
+            {
+                isDone = false;
+            }
+
+            if (practicTask.NeedCheckConnectionType && !result.ConnectionTypeIsDone)
+            {
+                isDone = false;
+            }
         }
         #endregion
     }

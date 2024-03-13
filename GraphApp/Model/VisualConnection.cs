@@ -7,7 +7,7 @@ namespace GraphApp.Model
 	/// <summary>
 	/// Графическое соединение, отвечающая за отображение связей на поле.
 	/// </summary>
-	public class VisualConnection : INotifyPropertyChanged
+	public class VisualConnection : INotifyPropertyChanged, IComparable<VisualConnection>
 	{
 		#region fields
 		/// <summary>
@@ -35,6 +35,22 @@ namespace GraphApp.Model
 			{
 				_connection.Weight = value;
 				OnPropertyChanged(nameof(Weight));
+			}
+		}
+
+		/// <summary>
+		/// Номер связи.
+		/// </summary>
+		public int Number
+		{
+			get
+			{
+				return _connection.Number;
+			}
+			set
+			{
+				_connection.Number = value;
+				OnPropertyChanged(nameof(Number));
 			}
 		}
 
@@ -154,6 +170,7 @@ namespace GraphApp.Model
 		/// <param name="weight">Вес связи.</param>
 		/// <param name="connectionType">Тип связи.</param>
 		public VisualConnection((VisualVertex, VisualVertex) connectedVertices,
+			int number,
 			double weight = 0,
 			ConnectionType connectionType = ConnectionType.Unidirectional)
 		{
@@ -164,6 +181,7 @@ namespace GraphApp.Model
 
 			_connection = new Connection(
 				(connectedVertices.Item1.Vertex, connectedVertices.Item2.Vertex),
+				number,
 				weight,
 				connectionType
 			);
@@ -194,14 +212,24 @@ namespace GraphApp.Model
 
 			OnDelete?.Invoke(this);
 		}
-		#endregion
 
-		#region private methods
-		/// <summary>
-		/// Оповещение подписчиков об изменении свойств.
-		/// </summary>
-		/// <param name="propertyName"></param>
-		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        /// <summary>
+        /// Реализация IComparable !!! Переделать.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(VisualConnection? other)
+        {
+			return Number.CompareTo(other?.Number);
+        }
+        #endregion
+
+        #region private methods
+        /// <summary>
+        /// Оповещение подписчиков об изменении свойств.
+        /// </summary>
+        /// <param name="propertyName"></param>
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
@@ -236,6 +264,6 @@ namespace GraphApp.Model
 				}
 			}
 		}
-		#endregion
-	}
+        #endregion
+    }
 }

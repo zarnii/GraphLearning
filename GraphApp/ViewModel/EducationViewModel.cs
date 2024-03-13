@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 
 namespace GraphApp.ViewModel
 {
@@ -29,6 +30,11 @@ namespace GraphApp.ViewModel
         /// Генератор тестов.
         /// </summary>
         private ITestGenerator _testGenerator;
+
+        /// <summary>
+        /// Сервис контроля доступа.
+        /// </summary>
+        private IAccessControlService _accessControlService;
 
         /// <summary>
         /// Сервис user control.
@@ -80,7 +86,7 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Команда перехода назад.
         /// </summary>
-        public ICommand OpenQuestion
+        public ICommand OpenMaterial
         {
             get
             {
@@ -140,11 +146,11 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Коллекция тестов.
         /// </summary>
-        public List<Test> Tests
+        public EducationMaterialNode[] EducationMaterials
         {
             get
             {
-                return _testProvider.TestCollection;
+                return _accessControlService.EducationMaterialsCollection;
             }
         }
 
@@ -174,11 +180,12 @@ namespace GraphApp.ViewModel
             _navigationService = navigationService;
             _testProvider = questionService;
             _testGenerator = testGenerator;
+            _accessControlService = accessControlService;
             _userControlService = userControlService;
 
             OpenWindow = new RelayCommand(OpenWindowCommand);
-            OpenQuestion = new RelayCommand(OpenQuestionCommand);
-            OpenTheory = new RelayCommand(OpenTheoryCommand, CheckCanExecute);
+            OpenMaterial = new RelayCommand(OpenMaterialCommand, CheckCanExecute);
+            OpenTheory = new RelayCommand(OpenTheoryCommand);
             GenerateTest = new RelayCommand(GenerateTestCommand);
         }
         #endregion
@@ -197,10 +204,21 @@ namespace GraphApp.ViewModel
         /// Открытие окна с вопросом.
         /// </summary>
         /// <param name="parameter">Открываемый вопрос.</param>
-        private void OpenQuestionCommand(object parameter)
+        private void OpenMaterialCommand(object parameter)
         {
-            _testProvider.CurrentTest = (Test)parameter;
-            _navigationService.NavigateTo<TestViewModel>();
+            var material = (EducationMaterialNode)parameter;
+            var type = material.EducationMaterial.GetType();
+
+            if (type == typeof(Test))
+            {
+                _accessControlService.CurrentEducationMaterial = material;
+                _navigationService.NavigateTo<TestViewModel>();
+            }
+            else if (type == typeof(PracticTask))
+            {
+                _accessControlService.CurrentEducationMaterial = material;
+                _navigationService.NavigateTo<PracticViewModel>();
+            }
         }
 
         /// <summary>
@@ -245,7 +263,7 @@ namespace GraphApp.ViewModel
 
         private bool CheckCanExecute(object parameter)
         {
-            return true;
+            return ((EducationMaterialNode)parameter).EducationMaterial != null;
         }
         #endregion
 

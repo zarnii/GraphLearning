@@ -77,7 +77,12 @@ namespace GraphApp.Services
             double weight = 0,
             ConnectionType connectionType = ConnectionType.NonDirectional)
         {
-            var connection = new VisualConnection(connectedVertices, weight, connectionType);
+            var connection = new VisualConnection(
+                connectedVertices,
+                Connections.Count + 1,
+                weight,
+                connectionType
+            );
             connection.OnDelete += DeleteConnection;
 
             Connections.Add(connection);

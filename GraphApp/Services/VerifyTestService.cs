@@ -104,9 +104,10 @@ namespace GraphApp.Services
         /// <summary>
         /// Провера ответов.
         /// </summary>
-        public void CheckAnswer()
+        public void VerifyTest()
         {
-            QuestionVerifiedAnswerMap.Clear();
+            Points = 0;
+             QuestionVerifiedAnswerMap.Clear();
 
             /*
                 Так как VerifableTest содержит те же ptr на инстансы Question и Answer,
@@ -131,6 +132,8 @@ namespace GraphApp.Services
 
                 QuestionVerifiedAnswerMap[question] = answerList;
             }
+
+            CountPoints();
         }
         #endregion
 
@@ -155,6 +158,20 @@ namespace GraphApp.Services
             }
 
             return new SolidColorBrush((Color)ColorConverter.ConvertFromString(_incorrectColorHex));
+        }
+
+        /// <summary>
+        /// Подсчет очков.
+        /// </summary>
+        private void CountPoints()
+        {
+            foreach (var answer in SelectedAnswerByQuestion.Values)
+            {
+                if (answer.Flag)
+                {
+                    Points++;
+                }
+            }
         }
         #endregion
     }

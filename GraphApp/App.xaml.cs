@@ -51,6 +51,7 @@ namespace GraphApp
             serviceCollection.AddSingleton<IQuestionProvider, QuestionProvider>();
             serviceCollection.AddSingleton<ITestGenerator, TestGenerator>();
             serviceCollection.AddSingleton<IAccessControlService, AccessControlService>();
+            serviceCollection.AddSingleton<IVerifyPracticTaskService, VerifyPracticTaskService>();
             #endregion
 
             #region viewModel
@@ -128,7 +129,7 @@ namespace GraphApp
                     var firstVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[0]).FirstOrDefault();
                     var secondVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[1]).FirstOrDefault();
 
-                    return new VisualConnection((firstVertex, secondVertex), sc.Weight, sc.ConnectionType);
+                    return new VisualConnection((firstVertex, secondVertex), sc.Number, sc.Weight, sc.ConnectionType);
                 }
                 catch (ArgumentNullException ex)
                 {

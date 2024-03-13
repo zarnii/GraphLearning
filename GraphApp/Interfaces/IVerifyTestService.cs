@@ -31,6 +31,6 @@ namespace GraphApp.Interfaces
         /// <summary>
         /// Провера ответов.
         /// </summary>
-        void CheckAnswer();
+        void VerifyTest();
     }
 }

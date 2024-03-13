@@ -11,16 +11,36 @@ using GraphApp.Model.Serializing;
 
 namespace GraphApp.Services
 {
+    /// <summary>
+    /// Поставщик практических заданий.
+    /// </summary>
     public class PracticProvider : IPracticProvider
     {
+        /// <summary>
+        /// Сервис загрузки данных.
+        /// </summary>
         private IDataLoader _dataLoader;
 
+        /// <summary>
+        /// Маппер.
+        /// </summary>
         private IMapper _mapper;
 
+        /// <summary>
+        /// Коллекция практических заданий.
+        /// </summary>
         public List<PracticTask> PracticCollection { get; private set; }
 
-        public PracticTask CurrentPractic { get; private set; }
+        /// <summary>
+        /// Текущее прктическое задание.
+        /// </summary>
+        public PracticTask CurrentPractic { get; set; }
 
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="dataLoader">Сервис загрузки данных.</param>
+        /// <param name="mapper">Маппер.</param>
         public PracticProvider(IDataLoader dataLoader, IMapper mapper)
         {
             _dataLoader = dataLoader;
@@ -28,6 +48,9 @@ namespace GraphApp.Services
             InitPractic();
         }
 
+        /// <summary>
+        /// Инициализация практических заданий.
+        /// </summary>
         private void InitPractic()
         {
             var pathToPratcits = ConfigurationManager.AppSettings["defaultPathToPracticTask"];

@@ -11,6 +11,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="100"/>
 			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
 		</Grid.RowDefinitions>
 
 		<Grid Grid.Row="0">
@@ -18,7 +19,7 @@
 			HorizontalScrollBarVisibility="Disabled"
 			VerticalScrollBarVisibility="Auto">
 				<ScrollViewer.Resources>
-					<Style 
+					<Style
 						TargetType="ScrollBar"
 						BasedOn="{StaticResource VerticalScrollBarStyle}"/>
 				</ScrollViewer.Resources>
@@ -32,6 +33,12 @@
 						Content="{Binding PracticTaskTitle}"
 						Style="{StaticResource Header1Style}"/>
 
+					<Button
+						Style="{StaticResource ButtonStyle}"
+						Content="Проверить"
+						HorizontalAlignment="Left"
+						Height="30"/>
+
 					<TextBlock
 						Grid.Row="1"
 						Style="{StaticResource TextStyle}"
@@ -42,6 +49,14 @@
 
 		<Grid Grid.Row="1">
 			<local:VisualEditorView/>
+		</Grid>
+
+		<Grid Grid.Row="2">
+			<Button
+				Style="{StaticResource ButtonStyle}"
+				Content="Проверить"
+				Width="100"
+				Command="{Binding VerifyTask}"/>
 		</Grid>
 	</Grid>
 </UserControl>

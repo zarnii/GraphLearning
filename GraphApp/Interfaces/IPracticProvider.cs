@@ -17,7 +17,7 @@ namespace GraphApp.Interfaces
         /// <summary>
         /// Текущее практическое задание.
         /// </summary>
-        public PracticTask CurrentPractic { get; }
+        public PracticTask CurrentPractic { get; set; }
 
     }
 }

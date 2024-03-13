@@ -5,12 +5,30 @@ using System.Collections.Generic;
 
 namespace GraphApp.Services
 {
+    /// <summary>
+    /// Сервис контроля доступа.
+    /// </summary>
     public class AccessControlService : IAccessControlService
     {
         /// <summary>
         /// Карта сопоставления флага, показывающий открыт ли материал, и материал. 
         /// </summary>
         private Dictionary<EducationMaterialNode, bool> _educationMaterialMap;
+
+        /// <summary>
+        /// Поставщик тестов.
+        /// </summary>
+        private ITestProvider _testProvider;
+
+        /// <summary>
+        /// Поставщик практических заданий.
+        /// </summary>
+        private IPracticProvider _practicProvider;
+
+        /// <summary>
+        /// Текущий обучающий материал.
+        /// </summary>
+        public EducationMaterialNode CurrentEducationMaterial { get; set; }
 
         /// <summary>
         /// Коллекция материла.
@@ -24,12 +42,15 @@ namespace GraphApp.Services
         /// <param name="practicProvider">Поставщик практик.</param>
         public AccessControlService(ITestProvider testProvider, IPracticProvider practicProvider)
         {
+            _testProvider = testProvider;
+            _practicProvider = practicProvider;
+
             EducationMaterialsCollection = new EducationMaterialNode[
                 testProvider.TestCollection.Count + practicProvider.PracticCollection.Count];
             _educationMaterialMap = new Dictionary<EducationMaterialNode, bool>(
                 testProvider.TestCollection.Count + practicProvider.PracticCollection.Count);
 
-            InitFields(testProvider, practicProvider);
+            InitFields();
         }
 
         public void OpenNext(EducationMaterialNode material)
@@ -41,7 +62,7 @@ namespace GraphApp.Services
 
             var materialIndex = EducationMaterialsCollection.FindIndex<EducationMaterialNode>(material);
 
-            _educationMaterialMap[EducationMaterialsCollection[materialIndex]] = true;
+            _educationMaterialMap[EducationMaterialsCollection[materialIndex + 1]] = true;
         }
 
         /// <summary>
@@ -64,11 +85,11 @@ namespace GraphApp.Services
         /// </summary>
         /// <param name="testProvider">Поставщик тестов.</param>
         /// <param name="practicProvider">Поставщик практик.</param>
-        private void InitFields(ITestProvider testProvider, IPracticProvider practicProvider)
+        private void InitFields()
         {
             {
                 var material = new EducationMaterialNode(
-                    testProvider.TestCollection[0],
+                    _testProvider.TestCollection[0],
                     CheckCanGetMaterial
                 );
                 EducationMaterialsCollection[0] = material;
@@ -76,7 +97,7 @@ namespace GraphApp.Services
             }
 
             {
-                var practic = practicProvider.PracticCollection[0];
+                var practic = _practicProvider.PracticCollection[0];
                 var material = new EducationMaterialNode(
                     practic,
                     CheckCanGetMaterial
@@ -84,6 +105,16 @@ namespace GraphApp.Services
                 EducationMaterialsCollection[1] = material;
                 _educationMaterialMap[material] = false;
             }
+        }
+
+        public void SetCurrentTest(Test test)
+        {
+            _testProvider.CurrentTest = test;
+        }
+
+        public void SetCurrentPractic(PracticTask practicTask)
+        {
+            _practicProvider.CurrentPractic = practicTask;
         }
     }
 }

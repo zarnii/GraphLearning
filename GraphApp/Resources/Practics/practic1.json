@@ -25,7 +25,8 @@
 		"Connections":
 		[
 			{
-				"ConnectedVerticesNumber":[1,2],
+				"ConnectedVerticesNumber": [ 1, 2 ],
+				"Number": 1,
 				"Weight":0,
 				"ConnectionType":1
 			}

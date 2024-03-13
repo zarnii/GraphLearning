@@ -44,7 +44,9 @@ namespace GraphApp.ViewModel
 		/// <summary>
 		/// Сервис проверки тестов.
 		/// </summary>
-		private IVerifyTestService _answerCheckService;
+		private IVerifyTestService _verifyTestService;
+
+		private IAccessControlService _accessControlService;
 
 		/// <summary>
 		/// Событие изменения свойства.
@@ -123,22 +125,23 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="testProvider">Поставщик тестов.</param>
+        /// <param name="accessControlService">Поставщик тестов.</param>
         /// <param name="navigationService">Сервис навигации.</param>
         /// <param name="answerCheckService">Сервис проверки теста.</param>
         public TestViewModel(
-			ITestProvider testProvider, 
+			IAccessControlService accessControlService, 
 			INavigationService navigationService, 
 			IVerifyTestService answerCheckService)
 		{
+			_accessControlService = accessControlService;
 			_navigationService = navigationService;
-			_answerCheckService = answerCheckService;
+			_verifyTestService = answerCheckService;
 			_selectedAnswerByQuestion = new Dictionary<Question, Answer>();
 
 			CheckAnswer = new RelayCommand(CheckAnswerCommand);
 			OpenEducation = new RelayCommand(OpenEducationCommand);
 			SelectAnswer = new RelayCommand(SelectAnswerCommand);
-			CurrentTest = testProvider.CurrentTest;
+			CurrentTest = (Test)accessControlService.CurrentEducationMaterial.EducationMaterial;
 		}
 		#endregion
 
@@ -149,8 +152,15 @@ namespace GraphApp.ViewModel
 		/// <param name="parameter"></param>
 		private void CheckAnswerCommand(object parameter)
 		{
-			_answerCheckService.VerifableTest = CurrentTest;
-			_answerCheckService.SelectedAnswerByQuestion = _selectedAnswerByQuestion;
+			_verifyTestService.VerifableTest = CurrentTest;
+			_verifyTestService.SelectedAnswerByQuestion = _selectedAnswerByQuestion;
+			_verifyTestService.VerifyTest();
+
+			if (_verifyTestService.Points == CurrentTest.Questions.Length)
+			{
+				_accessControlService.OpenNext(_accessControlService.CurrentEducationMaterial);
+			}
+
 			_navigationService.NavigateTo<VerifyTestViewModel>();
 		}
 

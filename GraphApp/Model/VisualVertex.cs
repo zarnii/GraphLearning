@@ -8,7 +8,7 @@ namespace GraphApp.Model
 	/// <summary>
 	/// Визуальная вершина, отвечающая за отрисовку на поле Canvas.
 	/// </summary>
-	public class VisualVertex : INotifyPropertyChanged
+	public class VisualVertex : INotifyPropertyChanged, IComparable<VisualVertex>
 	{
 		#region fields
 		/// <summary>
@@ -213,6 +213,16 @@ namespace GraphApp.Model
 			Height = height;
 			Color = new SolidColorBrush(color);
 		}
+
+        /// <summary>
+        /// Реализация IComparable.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(VisualVertex? other)
+		{
+			return Number.CompareTo(other?.Number);
+		}
 		#endregion
 
 		#region private methods
@@ -234,6 +244,6 @@ namespace GraphApp.Model
 		{
 			OnDelete?.Invoke();
 		}
-		#endregion
-	}
+        #endregion
+    }
 }
