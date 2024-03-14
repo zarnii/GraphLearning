@@ -3,6 +3,8 @@ using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Model.Exception;
 using GraphApp.Model.Serializing;
+using GraphApp.View;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -140,14 +142,14 @@ namespace GraphApp.ViewModel
             LoadGraph = new RelayCommand(LoadGraphCommand);
             GoBack = new RelayCommand(GoBackCommand);
 
-            AddVertex(new Point(200, 200));
-            AddVertex(new Point(100, 100));
-            AddVertex(new Point(100, 200));
+            _visualEditorService.AddVertex(new Point(200, 200), 10, "default");
+            //_visualEditorService.AddVertex(new Point(100, 100), 10, "default");
+            //_visualEditorService.AddVertex(new Point(100, 200), 10, "default");
 
 
-            AddConnection((Vertices[0], Vertices[1]));
+            //AddConnection((Vertices[0], Vertices[1]));
 
-            AddConnection((Vertices[0], Vertices[2]));
+            //AddConnection((Vertices[0], Vertices[2]));
         }
         #endregion
 
@@ -170,7 +172,28 @@ namespace GraphApp.ViewModel
         /// <param name="parameter">Аргументы события.</param>
         private void ClickOnFieldCommand(object parameter)
         {
-            _visualEditorService.ClickOnField((MouseButtonEventArgs)parameter);
+            if (_visualEditorService.MouseMode != MouseMode.Create)
+            {
+                return;
+            }
+
+            var mbEventArgs = parameter as MouseButtonEventArgs;
+            var point = mbEventArgs.GetPosition((UIElement)mbEventArgs.OriginalSource);
+
+
+            var createVertexWindow = new CreateVertexWindow();
+            
+            if ((bool)createVertexWindow.ShowDialog())
+            {
+                point.X -= createVertexWindow.VertexRadius;
+                point.Y -= createVertexWindow.VertexRadius;
+
+                _visualEditorService.AddVertex(
+                    point, 
+                    createVertexWindow.VertexRadius, 
+                    createVertexWindow.VertexName
+                );
+            }
         }
 
         /// <summary>
@@ -192,18 +215,9 @@ namespace GraphApp.ViewModel
         }
 
         /// <summary>
-        /// Команда добавление новой вершины.
-        /// </summary>
-        /// <param name="point">Координаты вершины.</param>
-        private void AddVertex(Point point)
-        {
-            _visualEditorService.AddVertex(point);
-        }
-
-        /// <summary>
         /// Удаление вершины.
         /// </summary>
-        /// <param name="vertex"></param>
+        /// <param name="vertex">Удаляемая вершина.</param>
         private void DeleteVertex(VisualVertex vertex)
         {
             _visualEditorService.DeleteVertex(vertex);
@@ -236,7 +250,13 @@ namespace GraphApp.ViewModel
         /// <param name="parameter">Аргументы события.</param>
         private void MoveVertexCommand(object parameter)
         {
-            _visualEditorService.MoveVertex((DragDeltaEventArgs)parameter);
+            var dragDeltaEventArgs = parameter as DragDeltaEventArgs;
+
+            _visualEditorService.MoveVertex(
+                (VisualVertex)((FrameworkElement)dragDeltaEventArgs.OriginalSource).DataContext,
+                dragDeltaEventArgs.HorizontalChange,
+                dragDeltaEventArgs.VerticalChange
+            );
         }
 
         /// <summary>

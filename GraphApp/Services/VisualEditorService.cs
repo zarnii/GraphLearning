@@ -16,16 +16,6 @@ namespace GraphApp.Services
     {
         #region fields
         /// <summary>
-        /// Ширина вершины по умолчанию.
-        /// </summary>
-        private int _defaultVertexWidth = 20;
-
-        /// <summary>
-        /// Высота вершины по умолчанию.
-        /// </summary>
-        private int _defaultVertexHeight = 20;
-
-        /// <summary>
         /// Цвет вершины по умолчанию.
         /// </summary>
         private Color _defaultVertexColor = Colors.Red;
@@ -37,6 +27,17 @@ namespace GraphApp.Services
         #endregion
 
         #region properties
+        /// <summary>
+        /// Режим мыши.
+        /// </summary>
+        public MouseMode MouseMode
+        {
+            get
+            {
+                return _mouseMode;
+            }
+        }
+
         /// <summary>
         /// Выбранные вершины.
         /// </summary>
@@ -92,14 +93,17 @@ namespace GraphApp.Services
         /// Создание вершины.
         /// </summary>
         /// <param name="point">Точка.</param>
-        public void AddVertex(Point point)
+        /// <param name = "radius" > Радиус.</param>
+        /// <param name="name">Имя.</param>
+        public void AddVertex(Point point, int radius, string name)
         {
             Vertices.Add(new VisualVertex(
-                (point.X - _defaultVertexWidth / 2, point.Y - _defaultVertexHeight / 2),
-                _defaultVertexWidth,
-                _defaultVertexHeight,
+                (point.X, point.Y),
+                radius * 2,
+                radius * 2,
                 Vertices.Count + 1,
-                _defaultVertexColor
+                _defaultVertexColor,
+                name
             ));
         }
 
@@ -113,23 +117,6 @@ namespace GraphApp.Services
             {
                 DeleteConnection(connection);
             }
-        }
-
-        /// <summary>
-        /// Нажатие на поле.
-        /// </summary>
-        /// <param name="mouseButtonEventArgs">События мыши.</param>
-        public void ClickOnField(MouseButtonEventArgs mouseButtonEventArgs)
-        {
-            if (_mouseMode != MouseMode.Create)
-            {
-                return;
-            }
-
-            var mbEventArgs = mouseButtonEventArgs;
-            var point = mbEventArgs.GetPosition((UIElement)mbEventArgs.OriginalSource);
-
-            AddVertex(point);
         }
 
         /// <summary>
@@ -183,25 +170,29 @@ namespace GraphApp.Services
         /// <summary>
         /// Передвижение вершины.
         /// </summary>
-        /// <param name="dragDeltaEventArgs">События передвижения.</param>
-        public void MoveVertex(DragDeltaEventArgs dragDeltaEventArgs)
+        /// <param name="vertex">Вершина.</param>
+        /// <param name="x">Новая координата X.</param>
+        /// <param name="y">Новая координата Y.</param>
+        public void MoveVertex(VisualVertex vertex, double x, double y)
         {
             if (_mouseMode != MouseMode.Default)
             {
                 return;
             }
 
+            /*
             var ddEventArgs = dragDeltaEventArgs;
             var vertex = (VisualVertex)((FrameworkElement)ddEventArgs.OriginalSource).DataContext;
+            */
 
-            if (vertex.X + ddEventArgs.HorizontalChange < 0
-                || vertex.Y + ddEventArgs.VerticalChange < 0)
+            if (vertex.X + x < 0
+                || vertex.Y + y < 0)
             {
                 return;
             }
 
-            vertex.X += ddEventArgs.HorizontalChange;
-            vertex.Y += ddEventArgs.VerticalChange;
+            vertex.X += x;
+            vertex.Y += y;
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using GraphApp.Command;
 using GraphApp.Interfaces;
 using GraphApp.Model;
+using GraphApp.View;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -149,7 +150,25 @@ namespace GraphApp.ViewModel
         /// <param name="parameter">Аргументы события.</param>
         private void ClickOnFieldCommand(object parameter)
         {
-            _visualEditorService.ClickOnField((MouseButtonEventArgs)parameter);
+            if (_visualEditorService.MouseMode != MouseMode.Create)
+            {
+                return;
+            }
+
+            var mbEventArgs = parameter as MouseButtonEventArgs;
+            var point = mbEventArgs.GetPosition((UIElement)mbEventArgs.OriginalSource);
+
+
+            var createVertexWindow = new CreateVertexWindow();
+
+            if ((bool)createVertexWindow.ShowDialog())
+            {
+                _visualEditorService.AddVertex(
+                    point,
+                    createVertexWindow.VertexRadius,
+                    createVertexWindow.VertexName
+                );
+            }
         }
 
         /// <summary>
@@ -168,15 +187,6 @@ namespace GraphApp.ViewModel
         private void ClickOnConnectionCommand(object parameter)
         {
             _visualEditorService.ClickOnConnection((VisualConnection)parameter);
-        }
-
-        /// <summary>
-        /// Команда добавление новой вершины.
-        /// </summary>
-        /// <param name="point">Координаты вершины.</param>
-        private void AddVertex(Point point)
-        {
-            _visualEditorService.AddVertex(point);
         }
 
         /// <summary>
@@ -215,7 +225,13 @@ namespace GraphApp.ViewModel
         /// <param name="parameter">Аргументы события.</param>
         private void MoveVertexCommand(object parameter)
         {
-            _visualEditorService.MoveVertex((DragDeltaEventArgs)parameter);
+            var dragDeltaEventArgs = parameter as DragDeltaEventArgs;
+
+            _visualEditorService.MoveVertex(
+                (VisualVertex)((FrameworkElement)dragDeltaEventArgs.OriginalSource).DataContext,
+                dragDeltaEventArgs.HorizontalChange,
+                dragDeltaEventArgs.VerticalChange
+            );
         }
 
         private void VerifyTaskCommand(object parameter)

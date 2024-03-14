@@ -13,6 +13,11 @@ namespace GraphApp.Interfaces
     public interface IVisualEditorService
     {
         /// <summary>
+        /// Режим мыши.
+        /// </summary>
+        public MouseMode MouseMode { get; }
+
+        /// <summary>
         /// Связи.
         /// </summary>
         ObservableCollection<VisualConnection> Connections { get; }
@@ -36,24 +41,20 @@ namespace GraphApp.Interfaces
         void AddConnection((VisualVertex, VisualVertex) connectedVertices, 
             double weight = 0, 
             ConnectionType connectionType = ConnectionType.NonDirectional);
-        
+
         /// <summary>
         /// Создание вершины.
         /// </summary>
         /// <param name="point">Точка.</param>
-        void AddVertex(Point point);
+        /// <param name="radius">Радиус.</param>
+        /// <param name="name">Имя.</param>
+        void AddVertex(Point point, int radius, string name);
 
         /// <summary>
         /// Нажатие на связь.
         /// </summary>
         /// <param name="connection">Связь.</param>
         void ClickOnConnection(VisualConnection connection);
-
-        /// <summary>
-        /// Нажатие на поле.
-        /// </summary>
-        /// <param name="mouseButtonEventArgs">События мыши.</param>
-        void ClickOnField(MouseButtonEventArgs mouseButtonEventArgs);
 
         /// <summary>
         /// Нажатие на вершину.
@@ -76,8 +77,10 @@ namespace GraphApp.Interfaces
         /// <summary>
         /// Передвижение вершины.
         /// </summary>
-        /// <param name="dragDeltaEventArgs">События передвижения.</param>
-        void MoveVertex(DragDeltaEventArgs dragDeltaEventArgs);
+        /// <param name="vertex">Вершина.</param>
+        /// <param name="x">Новая координата X.</param>
+        /// <param name="y">Новая координата Y.</param>
+        void MoveVertex(VisualVertex vertex, double x, double y);
 
         /// <summary>
         /// Установка режима мыши.
