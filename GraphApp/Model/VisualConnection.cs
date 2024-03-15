@@ -19,13 +19,18 @@ namespace GraphApp.Model
 		/// Соединенные вершины.
 		/// </summary>
 		private (VisualVertex, VisualVertex) _connectedVertices;
-		#endregion
 
-		#region properties
 		/// <summary>
-		/// Весь связи.
+		/// Толщина. линии.
 		/// </summary>
-		public double Weight
+		private int _thickness;
+        #endregion
+
+        #region properties
+        /// <summary>
+        /// Весь связи.
+        /// </summary>
+        public double Weight
 		{
 			get
 			{
@@ -90,11 +95,48 @@ namespace GraphApp.Model
 			}
 		}
 
+		/// <summary>
+		/// Первая соедененная вершина.
+		/// </summary>
+		public VisualVertex FirstConnectedVertex
+		{
+			get
+			{
+				return _connectedVertices.Item1;
+			}
+		}
 
 		/// <summary>
-		/// Ссылка на выполняемую функцию при удалении. 
+		/// Вторая соеденненая вершина.
 		/// </summary>
-		public Action<VisualConnection> OnDelete { get; set; }
+		public VisualVertex SecondConnectedVertex
+		{
+			get
+			{
+				return _connectedVertices.Item2;
+			}
+		}
+
+		/// <summary>
+		/// Толщина линии.
+		/// </summary>
+		public int Thickness 
+		{
+			get
+			{
+				return _thickness;
+			}
+			set
+			{
+				_thickness = value;
+				OnPropertyChanged(nameof(Thickness));
+			}
+		}
+
+        /// <summary>
+        /// Ссылка на выполняемую функцию при удалении. 
+        /// </summary>
+        public Action<VisualConnection> OnDelete { get; set; }
 
 		/// <summary>
 		/// Тип связи.
@@ -171,12 +213,18 @@ namespace GraphApp.Model
 		/// <param name="connectionType">Тип связи.</param>
 		public VisualConnection((VisualVertex, VisualVertex) connectedVertices,
 			int number,
-			double weight = 0,
+			int thickness,
+            double weight = 0,
 			ConnectionType connectionType = ConnectionType.Unidirectional)
 		{
 			if (connectedVertices.Item1 == null || connectedVertices.Item2 == null)
 			{
 				throw new ArgumentNullException(nameof(connectedVertices), "Пустая соеденяемая вершина.");
+			}
+
+			if (thickness < 1)
+			{
+				throw new ArgumentNullException(nameof(thickness), "Толщина не может быть меньше 1.");
 			}
 
 			_connection = new Connection(
@@ -189,6 +237,7 @@ namespace GraphApp.Model
 			ConnectedVertices = connectedVertices;
 			Weight = weight;
 			ConnectionType = connectionType;
+			Thickness = thickness;
 
 			ConnectedVertices.Item1.OnDelete += Delete;
 			ConnectedVertices.Item2.OnDelete += Delete;

@@ -38,6 +38,10 @@ namespace GraphApp.Interfaces
         /// </summary>
         ObservableCollection<VisualVertex> Vertices { get; }
 
+        int CanvasWidth { get; set; }
+
+        int CanvasHeight { get; set; }
+
         /// <summary>
         /// Добавление связь.
         /// </summary>
@@ -45,6 +49,7 @@ namespace GraphApp.Interfaces
         /// <param name="weight">Вес связи.</param>
         /// <param name="connectionType">Тип связи.</param>
         void AddConnection((VisualVertex, VisualVertex) connectedVertices, 
+            int thickness,
             double weight = 0, 
             ConnectionType connectionType = ConnectionType.NonDirectional);
 

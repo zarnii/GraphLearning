@@ -91,6 +91,30 @@ namespace GraphApp.ViewModel
         /// </summary>
         public ICommand GoBack { get; private set; }
 
+        public int CanvasWidth 
+        {
+            get
+            {
+                return _visualEditorService.CanvasWidth;
+            }
+            set
+            {
+                _visualEditorService.CanvasHeight = value;
+            } 
+        }
+
+        public int CanvasHeight 
+        {
+            get
+            {
+                return _visualEditorService.CanvasHeight;
+            }
+            set
+            {
+                _visualEditorService.CanvasWidth = value;
+            }
+        }
+
         /// <summary>
         /// Выбранный элемент графа.
         /// </summary>
@@ -155,15 +179,16 @@ namespace GraphApp.ViewModel
             IMapper mapper,
             INavigationService navigationService,
             IVisualEditorService visualEditorService,
-            Func<Type, ViewModel> vmFactory)
+            VertexViewModel vertexViewModel,
+            ConnectionViewModel connectionViewModel)
         {
             _dataHeandler = dataHeandler;
             _mapper = mapper;
             _navigationService = navigationService;
             _visualEditorService = visualEditorService;
 
-            _vertexVeiwModel = vmFactory.Invoke(typeof(VertexViewModel));
-            _connectionViewModel = vmFactory.Invoke(typeof(ConnectionViewModel));
+            _vertexVeiwModel = vertexViewModel;
+            _connectionViewModel = connectionViewModel;
 
             ChangeMouseMode = new RelayCommand(SetMouseMode);
             ClickOnField = new RelayCommand(ClickOnFieldCommand);
@@ -178,9 +203,9 @@ namespace GraphApp.ViewModel
             _visualEditorService.AddVertex(new Point(100, 200), 10, "default");
 
 
-            _visualEditorService.AddConnection((Vertices[0], Vertices[1]));
+            _visualEditorService.AddConnection((Vertices[0], Vertices[1]), 4);
 
-            _visualEditorService.AddConnection((Vertices[0], Vertices[2]));
+            _visualEditorService.AddConnection((Vertices[0], Vertices[2]), 4);
         }
         #endregion
 
@@ -231,7 +256,7 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Команда нажатия на вершину.
         /// </summary>
-        /// <param name="parameter">Нажатая вершина.</param>
+        /// <param name="vertex">Нажатая вершина.</param>
         private void ConnectVertices(VisualVertex vertex)
         {
             if (SelectedVerticesForConnection.Count < 2)
@@ -241,7 +266,7 @@ namespace GraphApp.ViewModel
 
             if (SelectedVerticesForConnection.Count == 2)
             {
-                _visualEditorService.AddConnection((SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]));
+                _visualEditorService.AddConnection((SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]), 4);
                 SelectedVerticesForConnection.Clear();
             }
         }
@@ -399,6 +424,9 @@ namespace GraphApp.ViewModel
             if (SelectedGraphElement is VertexViewModel)
             {
                 ((VertexViewModel)SelectedGraphElement).VisualVertex = (VisualVertex)parameter;
+
+                ((VertexViewModel)SelectedGraphElement).MaxXCoordinate = CanvasWidth - ((VisualVertex)parameter).Radius;
+                ((VertexViewModel)SelectedGraphElement).MaxYCoordinate = CanvasHeight - ((VisualVertex)parameter).Radius;
             }
             else if (SelectedGraphElement is ConnectionViewModel)
             {

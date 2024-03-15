@@ -7,9 +7,11 @@
 	{
 		public int[] ConnectedVerticesNumber { get; set; }
 
-		public int Number;
+		public int Number { get; set; }
 
-		public double Weight { get; set; }
+		public int Thickness { get; set; }
+
+        public double Weight { get; set; }
 
 		public ConnectionType ConnectionType { get; set; }
 	}

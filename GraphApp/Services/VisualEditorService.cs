@@ -55,6 +55,10 @@ namespace GraphApp.Services
         /// Лист связей.
         /// </summary>
         public ObservableCollection<VisualConnection> Connections { get; private set; }
+
+        public int CanvasWidth { get; set; }
+
+        public int CanvasHeight { get; set; }
         #endregion
 
         #region constructor
@@ -66,6 +70,9 @@ namespace GraphApp.Services
             Vertices = new ObservableCollection<VisualVertex>();
             Connections = new ObservableCollection<VisualConnection>();
             SelectedVerticesForConnection = new List<VisualVertex>();
+
+            CanvasWidth = 1000;
+            CanvasHeight = 900;
         }
         #endregion
 
@@ -78,12 +85,14 @@ namespace GraphApp.Services
         /// <param name="connectionType">Тип связи.</param>
         public void AddConnection(
             (VisualVertex, VisualVertex) connectedVertices,
+            int thickness,
             double weight = 0,
             ConnectionType connectionType = ConnectionType.NonDirectional)
         {
             var connection = new VisualConnection(
                 connectedVertices,
                 Connections.Count + 1,
+                thickness,
                 weight,
                 connectionType
             );
@@ -147,6 +156,12 @@ namespace GraphApp.Services
 
             if (vertex.X + x < 0
                 || vertex.Y + y < 0)
+            {
+                return;
+            }
+
+            if (vertex.X + vertex.Radius + x > CanvasWidth
+                || vertex.Y + vertex.Radius + y > CanvasHeight)
             {
                 return;
             }

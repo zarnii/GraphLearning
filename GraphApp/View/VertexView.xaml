@@ -4,28 +4,78 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GraphApp.View"
+			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="200">
+             d:DesignHeight="450" d:DesignWidth="250">
     <Grid Style="{StaticResource GridStyle}">
 		<StackPanel>
 			<DockPanel>
 				<Label 
-				Content="Название"
-				Foreground="White"/>
+					Content="Название"
+					Foreground="White"
+					FontSize="16"/>
 				<TextBox Text="{Binding VisualVertex.Name, 
 					Mode=TwoWay,
-					UpdateSourceTrigger=PropertyChanged}"/>
+					UpdateSourceTrigger=PropertyChanged}"
+					FontSize="16"/>
 			</DockPanel>
-			<DockPanel>
+			<DockPanel Margin="0, 20, 0, 0">
 				<Label
 					Content="Радиус"
-					Foreground="White"/>
+					Foreground="White"
+					FontSize="16"/>
 				<Slider
 					Minimum="1"
 					Maximum="100"
 					Value="{Binding VisualVertex.Radius,
-					Mode=TwoWay,
-					UpdateSourceTrigger=PropertyChanged}"/>
+						Mode=TwoWay,
+						UpdateSourceTrigger=PropertyChanged}"
+					AutoToolTipPlacement="TopLeft"
+					VerticalAlignment="Center"
+					Width="170"
+					HorizontalAlignment="Right">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="PreviewMouseUp">
+							<i:InvokeCommandAction Command="{Binding CheckCoordinates}"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</Slider>
+			</DockPanel>
+			<DockPanel Margin="0, 20, 0, 0">
+				<Label
+					Content="X"
+					Foreground="White"
+					FontSize="16"/>
+				<TextBox
+					Text="{Binding VisualVertex.X,
+						Mode=TwoWay,
+						UpdateSourceTrigger=PropertyChanged}"
+						FontSize="16"
+						PreviewTextInput="CheckInputSymbolIsDigit">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="KeyUp">
+							<i:InvokeCommandAction Command="{Binding CheckCoordinates}"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</TextBox>
+			</DockPanel>
+			<DockPanel Margin="0, 20, 0, 0">
+				<Label
+					Content="Y"
+					Foreground="White"
+					FontSize="16"/>
+				<TextBox
+					Text="{Binding VisualVertex.Y,
+						Mode=TwoWay,
+						UpdateSourceTrigger=PropertyChanged}"
+						FontSize="16"
+						PreviewTextInput="CheckInputSymbolIsDigit">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="KeyUp">
+							<i:InvokeCommandAction Command="{Binding CheckCoordinates}"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</TextBox>
 			</DockPanel>
 		</StackPanel>
     </Grid>

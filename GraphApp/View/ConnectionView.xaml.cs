@@ -24,5 +24,18 @@ namespace GraphApp.View
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Проверка введенного символа на то, что он цифра.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckInputSymbolIsDigit(object sender, TextCompositionEventArgs e)
+        {
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

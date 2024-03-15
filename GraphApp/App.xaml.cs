@@ -130,7 +130,7 @@ namespace GraphApp
                     var firstVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[0]).FirstOrDefault();
                     var secondVertex = vertices.Where(v => v.Number == sc.ConnectedVerticesNumber[1]).FirstOrDefault();
 
-                    return new VisualConnection((firstVertex, secondVertex), sc.Number, sc.Weight, sc.ConnectionType);
+                    return new VisualConnection((firstVertex, secondVertex), sc.Number, sc.Thickness, sc.Weight, sc.ConnectionType);
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -160,12 +160,15 @@ namespace GraphApp
                 var vc = tSource as VisualConnection;
                 var connectedVertices = vc.ConnectedVertices;
 
-                return new SerializableConnection()
+                var s = new SerializableConnection()
                 {
                     ConnectedVerticesNumber = new int[2] { connectedVertices.Item1.Number, connectedVertices.Item2.Number },
+                    Thickness = vc.Thickness,
                     Weight = vc.Weight,
                     ConnectionType = vc.ConnectionType
                 };
+
+                return s;
             });
 
             mapper.CreateMap<HealthData, SerializableHealthData>((tSource, param) =>

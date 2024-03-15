@@ -37,11 +37,5 @@ namespace GraphApp.View
                 e.Handled = true;
             }
         }
-
-        private void ConvertToNumber(object sender, TextCompositionEventArgs e)
-        {
-            var textBox = (TextComposition)sender;
-
-        }
     }
 }

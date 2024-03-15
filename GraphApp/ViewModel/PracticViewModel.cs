@@ -225,7 +225,7 @@ namespace GraphApp.ViewModel
 
                 if (SelectedVerticesForConnection.Count == 2)
                 {
-                    _visualEditorService.AddConnection((SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]));
+                    _visualEditorService.AddConnection((SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]), 4);
                     SelectedVerticesForConnection.Clear();
                 }
             }
