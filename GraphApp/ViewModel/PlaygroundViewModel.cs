@@ -7,8 +7,10 @@ using GraphApp.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -19,7 +21,7 @@ namespace GraphApp.ViewModel
     /// <summary>
     /// Модель представления страницы редактора.
     /// </summary>
-    public class PlaygroundViewModel : ViewModel
+    public class PlaygroundViewModel : ViewModel, INotifyPropertyChanged
     {
         #region fields
         /// <summary>
@@ -41,6 +43,16 @@ namespace GraphApp.ViewModel
         /// Сервис визуального редактора.
         /// </summary>
         private IVisualEditorService _visualEditorService;
+
+        /// <summary>
+        /// Модель представления вершины.
+        /// </summary>
+        private ViewModel _vertexVeiwModel;
+
+        /// <summary>
+        /// Модель представления связи.
+        /// </summary>
+        private ViewModel _connectionViewModel;
         #endregion
 
         #region properties
@@ -55,14 +67,9 @@ namespace GraphApp.ViewModel
         public ICommand ClickOnField { get; private set; }
 
         /// <summary>
-        /// Команда нажатия на вершину.
+        /// Команда нажатия на элемент графа.
         /// </summary>
-        public ICommand ClickOnVertex { get; private set; }
-
-        /// <summary>
-        /// Команда нажатия на связь.
-        /// </summary>
-        public ICommand ClickOnConnection { get; private set; }
+        public ICommand ClickOnGraphElement { get; private set; }
 
         /// <summary>
         /// Команда перемещения вершины.
@@ -85,13 +92,29 @@ namespace GraphApp.ViewModel
         public ICommand GoBack { get; private set; }
 
         /// <summary>
-        /// Выбранные вершины
+        /// Выбранный элемент графа.
         /// </summary>
-        public List<VisualVertex> SelectedVertices
+        public ViewModel SelectedGraphElement
         {
             get
             {
-                return _visualEditorService.SelectedVertices;
+                return _visualEditorService.SelectedGraphElement;
+            }
+            set
+            {
+                _visualEditorService.SelectedGraphElement = value;
+                OnPropertyChanged(nameof(SelectedGraphElement));
+            }
+        }
+
+        /// <summary>
+        /// Выбранные вершины для соединения.
+        /// </summary>
+        public List<VisualVertex> SelectedVerticesForConnection
+        {
+            get
+            {
+                return _visualEditorService.SelectedVerticesForConnection;
             }
         }
 
@@ -116,6 +139,11 @@ namespace GraphApp.ViewModel
                 return _visualEditorService.Connections;
             }
         }
+
+        /// <summary>
+        /// Событие изменения свойтва.
+        /// </summary>
+        public event PropertyChangedEventHandler? PropertyChanged;
         #endregion
 
         #region constructor
@@ -126,30 +154,33 @@ namespace GraphApp.ViewModel
             IDataHeandlerService dataHeandler,
             IMapper mapper,
             INavigationService navigationService,
-            IVisualEditorService visualEditorService)
+            IVisualEditorService visualEditorService,
+            Func<Type, ViewModel> vmFactory)
         {
             _dataHeandler = dataHeandler;
             _mapper = mapper;
             _navigationService = navigationService;
             _visualEditorService = visualEditorService;
 
+            _vertexVeiwModel = vmFactory.Invoke(typeof(VertexViewModel));
+            _connectionViewModel = vmFactory.Invoke(typeof(ConnectionViewModel));
+
             ChangeMouseMode = new RelayCommand(SetMouseMode);
             ClickOnField = new RelayCommand(ClickOnFieldCommand);
-            ClickOnVertex = new RelayCommand(ClickOnVertexCommand);
-            ClickOnConnection = new RelayCommand(ClickOnConnectionCommand);
             MoveVertex = new RelayCommand(MoveVertexCommand);
             SaveGraph = new RelayCommand(SaveGraphCommand);
             LoadGraph = new RelayCommand(LoadGraphCommand);
             GoBack = new RelayCommand(GoBackCommand);
+            ClickOnGraphElement = new RelayCommand(ClickOnGraphElementCommand);
 
             _visualEditorService.AddVertex(new Point(200, 200), 10, "default");
-            //_visualEditorService.AddVertex(new Point(100, 100), 10, "default");
-            //_visualEditorService.AddVertex(new Point(100, 200), 10, "default");
+            _visualEditorService.AddVertex(new Point(100, 100), 10, "default");
+            _visualEditorService.AddVertex(new Point(100, 200), 10, "default");
 
 
-            //AddConnection((Vertices[0], Vertices[1]));
+            _visualEditorService.AddConnection((Vertices[0], Vertices[1]));
 
-            //AddConnection((Vertices[0], Vertices[2]));
+            _visualEditorService.AddConnection((Vertices[0], Vertices[2]));
         }
         #endregion
 
@@ -163,6 +194,7 @@ namespace GraphApp.ViewModel
         /// <param name="mode">Режим мыши.</param>
         private void SetMouseMode(object parameter)
         {
+            SelectedGraphElement = null;
             _visualEditorService.SetMouseMode((MouseMode)parameter);
         }
 
@@ -182,15 +214,15 @@ namespace GraphApp.ViewModel
 
 
             var createVertexWindow = new CreateVertexWindow();
-            
+
             if ((bool)createVertexWindow.ShowDialog())
             {
                 point.X -= createVertexWindow.VertexRadius;
                 point.Y -= createVertexWindow.VertexRadius;
 
                 _visualEditorService.AddVertex(
-                    point, 
-                    createVertexWindow.VertexRadius, 
+                    point,
+                    createVertexWindow.VertexRadius,
                     createVertexWindow.VertexName
                 );
             }
@@ -200,48 +232,18 @@ namespace GraphApp.ViewModel
         /// Команда нажатия на вершину.
         /// </summary>
         /// <param name="parameter">Нажатая вершина.</param>
-        private void ClickOnVertexCommand(object parameter)
+        private void ConnectVertices(VisualVertex vertex)
         {
-            _visualEditorService.ClickOnVertex((VisualVertex)parameter);
-        }
+            if (SelectedVerticesForConnection.Count < 2)
+            {
+                SelectedVerticesForConnection.Add(vertex);
+            }
 
-        /// <summary>
-        /// Команда нажатия на связь.
-        /// </summary>
-        /// <param name="parameter"></param>
-        private void ClickOnConnectionCommand(object parameter)
-        {
-            _visualEditorService.ClickOnConnection((VisualConnection)parameter);
-        }
-
-        /// <summary>
-        /// Удаление вершины.
-        /// </summary>
-        /// <param name="vertex">Удаляемая вершина.</param>
-        private void DeleteVertex(VisualVertex vertex)
-        {
-            _visualEditorService.DeleteVertex(vertex);
-        }
-
-
-        /// <summary>
-        /// Создание связи.
-        /// </summary>
-        /// <param name="connectedVertices">Соеденяемые вершины.</param>
-        private void AddConnection((VisualVertex, VisualVertex) connectedVertices,
-            double weight = 0,
-            ConnectionType connectionType = ConnectionType.NonDirectional)
-        {
-            _visualEditorService.AddConnection(connectedVertices, weight, connectionType);
-        }
-
-        /// <summary>
-        /// Удаление связи.
-        /// </summary>
-        /// <param name="connection">Удаляемая связь.</param>
-        private void DeleteConnection(VisualConnection connection)
-        {
-            _visualEditorService.DeleteConnection(connection);
+            if (SelectedVerticesForConnection.Count == 2)
+            {
+                _visualEditorService.AddConnection((SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]));
+                SelectedVerticesForConnection.Clear();
+            }
         }
 
         /// <summary>
@@ -314,7 +316,7 @@ namespace GraphApp.ViewModel
                 {
                     var vertices = Vertices.ToList();
                     var connection = _mapper.Map<VisualConnection>(sConnection, vertices);
-                    connection.OnDelete += DeleteConnection;
+                    connection.OnDelete += _visualEditorService.DeleteConnection;
                     Connections.Add(connection);
                 }
             }
@@ -342,9 +344,66 @@ namespace GraphApp.ViewModel
 
         }
 
+        /// <summary>
+        /// Переход назад.
+        /// </summary>
+        /// <param name="parameter"></param>
         private void GoBackCommand(object parameter)
         {
             _navigationService.NavigateTo<MainMenuViewModel>();
+        }
+
+        /// <summary>
+        /// Оповещение подписчиков о изменении свойства.
+        /// </summary>
+        /// <param name="propertyName">Имя свойства.</param>
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Нажатие на элемент графа.
+        /// </summary>
+        /// <param name="parameter">Элемент графа.</param>
+        private void ClickOnGraphElementCommand(object parameter)
+        {
+            if (_visualEditorService.MouseMode == MouseMode.Delete)
+            {
+                if (parameter is VisualVertex)
+                {
+                    _visualEditorService.DeleteVertex((VisualVertex)parameter);
+                }
+                else
+                {
+                    _visualEditorService.DeleteConnection((VisualConnection)parameter);
+                }
+
+                return;
+            }
+
+            if (_visualEditorService.MouseMode == MouseMode.Connect)
+            {
+                if (parameter is VisualVertex)
+                {
+                    ConnectVertices((VisualVertex)parameter);
+                }
+
+                return;
+            }
+
+            SelectedGraphElement = parameter is VisualVertex
+                ? _vertexVeiwModel
+                : _connectionViewModel;
+
+            if (SelectedGraphElement is VertexViewModel)
+            {
+                ((VertexViewModel)SelectedGraphElement).VisualVertex = (VisualVertex)parameter;
+            }
+            else if (SelectedGraphElement is ConnectionViewModel)
+            {
+                ((ConnectionViewModel)SelectedGraphElement).VisualConnection = (VisualConnection)parameter;
+            }
         }
         #endregion
     }

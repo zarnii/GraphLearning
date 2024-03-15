@@ -102,11 +102,6 @@ namespace GraphApp.Model
 			}
 			set
 			{
-				if (String.IsNullOrWhiteSpace(value))
-				{
-					throw new ArgumentNullException(nameof(value), "Пустое имя вершины");
-				}
-
 				_name = value;
 			}
 		}

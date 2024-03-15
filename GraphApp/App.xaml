@@ -357,5 +357,13 @@
 			<view:PracticView/>
 		</DataTemplate>
 
+		<DataTemplate DataType="{x:Type viewModel:VertexViewModel}">
+			<view:VertexView/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type viewModel:ConnectionViewModel}">
+			<view:ConnectionView/>
+		</DataTemplate>
+
 	</Application.Resources>
 </Application>

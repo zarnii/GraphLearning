@@ -8,7 +8,7 @@ namespace GraphApp.Model
 	/// <summary>
 	/// Визуальная вершина, отвечающая за отрисовку на поле Canvas.
 	/// </summary>
-	public class VisualVertex : INotifyPropertyChanged, IComparable<VisualVertex>
+	public class VisualVertex : GraphElement, INotifyPropertyChanged, IComparable<VisualVertex>
 	{
 		#region fields
 		/// <summary>
@@ -20,6 +20,11 @@ namespace GraphApp.Model
 		/// Цвет.
 		/// </summary>
 		private Brush _color;
+
+		/// <summary>
+		/// Радиус.
+		/// </summary>
+		private int _radius;
 		#endregion
 
 		#region properties
@@ -44,14 +49,22 @@ namespace GraphApp.Model
 		}
 
 		/// <summary>
-		/// Ширина.
+		/// Радиус.
 		/// </summary>
-		public int Width { get; set; }
-
-		/// <summary>
-		/// Высота.
-		/// </summary>
-		public int Height { get; set; }
+		public int Radius 
+		{
+			get
+			{
+				return _radius;
+			}
+			set
+			{
+				_radius = value;
+				OnPropertyChanged(nameof(Radius));
+				OnPropertyChanged(nameof(X));
+				OnPropertyChanged(nameof(Y));
+			}
+		}
 
 		/// <summary>
 		/// Коориднаты.
@@ -155,7 +168,7 @@ namespace GraphApp.Model
 		}
 
 		/// <summary>
-		/// 
+		/// При удалении.
 		/// </summary>
 		public Action OnDelete { get; set; }
 
@@ -170,49 +183,43 @@ namespace GraphApp.Model
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
-		/// <param name="x">X координата.</param>
+		/// <param name="x">Х координата.</param>
 		/// <param name="y">Y координата.</param>
-		/// <param name="number">Номер вершины.</param>
+		/// <param name="radius">Радиус.</param>
+		/// <param name="number">Номер.</param>
 		/// <param name="color">Цвет.</param>
-		/// <param name="name">Название.</param>
-		public VisualVertex(double x, double y, int width, int height, int number, Color color, string name = "default")
-		{
-			_vertex = new Vertex(x, y, number, name);
-			Width = width;
-			Height = height;
-			Color = new SolidColorBrush(color);
-		}
+		/// <param name="name">Имя.</param>
+		public VisualVertex(double x, double y, int radius, int number, Color color, string name = "default")
+			: this ((x, y), radius, number, color, name)
+		{ }
 
 		/// <summary>
 		/// Конструктор.
 		/// </summary>
 		/// <param name="coordinates">Координаты.</param>
-		/// <param name="number">Номер вершины.</param>
+		/// <param name="radius">Радиус.</param>
+		/// <param name="number">Номер.</param>
 		/// <param name="color">Цвет.</param>
-		/// <param name="name">Название.</param>
-		public VisualVertex((double, double) coordinates, int width, int height, int number, Color color, string name = "default")
+		/// <param name="name">Имя.</param>
+		public VisualVertex((double, double) coordinates, int radius, int number, Color color, string name = "default")
 		{
 			_vertex = new Vertex(coordinates, number, name);
-			Width = width;
-			Height = height;
+			Radius = radius;
 			Color = new SolidColorBrush(color);
-		
 		}
 
-		/// <summary>
-		/// Конструктор.
-		/// </summary>
-		/// <param name="vertex">Вершина.</param>
-		/// <param name="width">Ширина.</param>
-		/// <param name="height">Высота.</param>
-		/// <param name="color">Цвет.</param>
-		public VisualVertex(Vertex vertex, int width, int height, Color color)
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="vertex">Вершина.</param>
+        /// <param name="radius">Радиус.</param>
+        /// <param name="color">Цвет.</param>
+        public VisualVertex(Vertex vertex, int radius, Color color)
 		{
 			Vertex = vertex;
-			Width = width;
-			Height = height;
+			Radius = radius;
 			Color = new SolidColorBrush(color);
-		}
+        }
 
         /// <summary>
         /// Реализация IComparable.

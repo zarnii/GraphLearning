@@ -21,8 +21,6 @@ namespace GraphApp.Model.Serializing
 
 		public string ColorString { get; set; }
 
-		public int Width { get; set; }
-
-		public int Height { get; set; }
+		public int Radius { get; set; }
 	}
 }

@@ -2,8 +2,11 @@
 using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.View;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -27,6 +30,8 @@ namespace GraphApp.ViewModel
         /// Сервис проверки практических заданий.
         /// </summary>
         private IVerifyPracticTaskService _verifyPracticTaskService;
+
+        private Func<Type, ViewModel> _vmFactory;
         #endregion
 
         #region properties
@@ -72,13 +77,13 @@ namespace GraphApp.ViewModel
         }
 
         /// <summary>
-        /// Выбранные вершины.
+        /// Выбранные вершины для соединения.
         /// </summary>
-        public List<VisualVertex> SelectedVertices
+        public List<VisualVertex> SelectedVerticesForConnection
         {
             get
             {
-                return _visualEditorService.SelectedVertices;
+                return _visualEditorService.SelectedVerticesForConnection;
             }
         }
 
@@ -108,6 +113,27 @@ namespace GraphApp.ViewModel
                 return ((PracticTask)_accsessControlService?.CurrentEducationMaterial.EducationMaterial).Text;
             }
         }
+
+        /// <summary>
+        /// Выбранный элемент графа.
+        /// </summary>
+        public ViewModel SelectedGraphElement
+        {
+            get
+            {
+                return _visualEditorService.SelectedGraphElement;
+            }
+            set
+            {
+                _visualEditorService.SelectedGraphElement = value;
+                OnPropertyChanged(nameof(SelectedGraphElement));
+            }
+        }
+
+        /// <summary>
+        /// Событие изменения свойтва.
+        /// </summary>
+        public event PropertyChangedEventHandler? PropertyChanged;
         #endregion
 
         #region constructor
@@ -119,11 +145,13 @@ namespace GraphApp.ViewModel
         public PracticViewModel(
             IVisualEditorService visualEditorService, 
             IAccessControlService accessControlService,
-            IVerifyPracticTaskService verifyPracticTaskService)
+            IVerifyPracticTaskService verifyPracticTaskService,
+            Func<Type, ViewModel> vmFactory)
         {
             _visualEditorService = visualEditorService;
             _accsessControlService = accessControlService;
             _verifyPracticTaskService = verifyPracticTaskService;
+            _vmFactory = vmFactory;
 
             ChangeMouseMode = new RelayCommand(SetMouseMode);
             ClickOnField = new RelayCommand(ClickOnFieldCommand);
@@ -177,46 +205,60 @@ namespace GraphApp.ViewModel
         /// <param name="parameter">Нажатая вершина.</param>
         private void ClickOnVertexCommand(object parameter)
         {
-            _visualEditorService.ClickOnVertex((VisualVertex)parameter);
+            var vertex = (VisualVertex)parameter;
+
+            if (_visualEditorService.MouseMode == MouseMode.Default)
+            {
+                SelectedGraphElement = _vmFactory.Invoke(typeof(VertexViewModel));
+                ((VertexViewModel)SelectedGraphElement).VisualVertex = vertex;
+            }
+            else if (_visualEditorService.MouseMode == MouseMode.Delete)
+            {
+                DeleteVertex(vertex);
+            }
+            else if (_visualEditorService.MouseMode == MouseMode.Connect)
+            {
+                if (SelectedVerticesForConnection.Count < 2)
+                {
+                    SelectedVerticesForConnection.Add(vertex);
+                }
+
+                if (SelectedVerticesForConnection.Count == 2)
+                {
+                    _visualEditorService.AddConnection((SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]));
+                    SelectedVerticesForConnection.Clear();
+                }
+            }
         }
 
         /// <summary>
         /// Команда нажатия на связь.
         /// </summary>
-        /// <param name="parameter"></param>
+        /// <param name="parameter">Связь.</param>
         private void ClickOnConnectionCommand(object parameter)
         {
-            _visualEditorService.ClickOnConnection((VisualConnection)parameter);
+            if (_visualEditorService.MouseMode == MouseMode.Delete)
+            {
+                _visualEditorService.DeleteConnection((VisualConnection)parameter);
+            }
         }
 
         /// <summary>
         /// Удаление вершины.
         /// </summary>
-        /// <param name="vertex"></param>
-        private void DeleteVertex(VisualVertex vertex)
+        /// <param name="parameter">Удаляемая вершина.</param>
+        private void DeleteVertex(object parameter)
         {
+            var vertex = (VisualVertex)parameter;
+
+            /*
+            if (SelectedVertex == vertex)
+            {
+                _visualEditorService.SelectedVertex = null;
+                OnPropertyChanged(nameof(SelectedVertex));
+            }
+            */
             _visualEditorService.DeleteVertex(vertex);
-        }
-
-
-        /// <summary>
-        /// Создание связи.
-        /// </summary>
-        /// <param name="connectedVertices">Соеденяемые вершины.</param>
-        private void AddConnection((VisualVertex, VisualVertex) connectedVertices,
-            double weight = 0,
-            ConnectionType connectionType = ConnectionType.NonDirectional)
-        {
-            _visualEditorService.AddConnection(connectedVertices, weight, connectionType);
-        }
-
-        /// <summary>
-        /// Удаление связи.
-        /// </summary>
-        /// <param name="connection">Удаляемая связь.</param>
-        private void DeleteConnection(VisualConnection connection)
-        {
-            _visualEditorService.DeleteConnection(connection);
         }
 
         /// <summary>
@@ -281,6 +323,15 @@ namespace GraphApp.ViewModel
             {
                 isDone = false;
             }
+        }
+
+        /// <summary>
+        /// Оповещение подписчиков о изменении свойства.
+        /// </summary>
+        /// <param name="propertyName">Имя свойства.</param>
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

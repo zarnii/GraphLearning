@@ -1,6 +1,7 @@
 ﻿using GraphApp.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -23,9 +24,14 @@ namespace GraphApp.Interfaces
         ObservableCollection<VisualConnection> Connections { get; }
 
         /// <summary>
-        /// Выбранные вершины.
+        /// Выбранный элемент графа.
         /// </summary>
-        List<VisualVertex> SelectedVertices { get; }
+        public ViewModel.ViewModel SelectedGraphElement { get; set; }
+
+        /// <summary>
+        /// Выбранные вершины для соединения.
+        /// </summary>
+        List<VisualVertex> SelectedVerticesForConnection { get; }
 
         /// <summary>
         /// Вершины.
@@ -49,18 +55,6 @@ namespace GraphApp.Interfaces
         /// <param name="radius">Радиус.</param>
         /// <param name="name">Имя.</param>
         void AddVertex(Point point, int radius, string name);
-
-        /// <summary>
-        /// Нажатие на связь.
-        /// </summary>
-        /// <param name="connection">Связь.</param>
-        void ClickOnConnection(VisualConnection connection);
-
-        /// <summary>
-        /// Нажатие на вершину.
-        /// </summary>
-        /// <param name="vertex">Вершина.</param>
-        void ClickOnVertex(VisualVertex vertex);
 
         /// <summary>
         /// Удаление связи.

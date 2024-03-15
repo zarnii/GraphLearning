@@ -3,20 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GraphApp.View"
+             xmlns:view="clr-namespace:GraphApp.View"
 			 xmlns:model="clr-namespace:GraphApp.Model"
+			 xmlns:viewModel="clr-namespace:GraphApp.ViewModel"
 			 xmlns:services="clr-namespace:GraphApp.Services"
 			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1000">
 	<UserControl.Resources>
 		<services:CoordinatesConverter x:Key="CoordinatesConverter"/>
+		<services:RadiusConverter x:Key="RadiusConverter"/>
 	</UserControl.Resources>
 	<Grid>
 
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="70"/>
 			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="200"/>
 		</Grid.ColumnDefinitions>
 
 		<Grid Grid.Column="0" Style="{StaticResource GridStyle}" />
@@ -80,7 +83,7 @@
 							<Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="Black" StrokeThickness="4">
 								<i:Interaction.Triggers>
 									<i:EventTrigger EventName="PreviewMouseDown">
-										<i:InvokeCommandAction Command="{Binding Path=DataContext.ClickOnConnection, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
+										<i:InvokeCommandAction Command="{Binding Path=DataContext.ClickOnGraphElement, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
 									</i:EventTrigger>
 								</i:Interaction.Triggers>
 							</Line>
@@ -101,7 +104,7 @@
 								<Setter.Value>
 									<MultiBinding Converter="{StaticResource CoordinatesConverter}">
 										<Binding Path="X"/>
-										<Binding Path="Width"/>
+										<Binding Path="Radius"/>
 									</MultiBinding>
 								</Setter.Value>
 							</Setter>
@@ -109,7 +112,7 @@
 								<Setter.Value>
 									<MultiBinding Converter="{StaticResource CoordinatesConverter}">
 										<Binding Path="Y"/>
-										<Binding Path="Width"/>
+										<Binding Path="Radius"/>
 									</MultiBinding>
 								</Setter.Value>
 							</Setter>
@@ -142,11 +145,16 @@
 							<Thumb>
 								<Thumb.Template>
 									<ControlTemplate>
-										<Ellipse Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Color}">
+										<Ellipse 
+											Width="{Binding Radius, 
+												Converter={StaticResource RadiusConverter}}" 
+											Height="{Binding Radius,
+												Converter={StaticResource RadiusConverter}}" 
+											Fill="{Binding Color}">
 											<i:Interaction.Triggers>
 												<i:EventTrigger EventName="PreviewMouseDown">
 													<i:InvokeCommandAction 
-														Command="{Binding Path=DataContext.ClickOnVertex, 
+														Command="{Binding Path=DataContext.ClickOnGraphElement, 
 															RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
 														CommandParameter="{Binding}"/>
 												</i:EventTrigger>
@@ -169,5 +177,10 @@
 				</ItemsControl>
 			</Grid>
 		</ScrollViewer>
+
+		<!--Отображение параметров вершин.-->
+		<Grid Grid.Column="2" Style="{StaticResource GridStyle}">
+			<ContentControl Content="{Binding SelectedGraphElement}"/>
+		</Grid>
 	</Grid>
 </UserControl>

@@ -9,8 +9,7 @@
 				"Number":1,
 				"Name":"default",
 				"ColorString":"#FFFF0000",
-				"Width":20,
-				"Height":20
+				"Radius": 10
 			},
 			{
 				"X":200,
@@ -18,8 +17,7 @@
 				"Number":2,
 				"Name":"default",
 				"ColorString":"#FFFF0000",
-				"Width":20,
-				"Height":20
+				"Radius": 10
 			}
 		],
 		"Connections":

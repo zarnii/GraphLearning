@@ -91,8 +91,7 @@ namespace GraphApp.Services
 
             for (var i = 0; i < expectexVertices.Count; i++)
             {
-                if (actualVertices[i].Width != expectexVertices[i].Width
-                    || actualVertices[i].Height != expectexVertices[i].Height)
+                if (actualVertices[i].Radius != expectexVertices[i].Radius)
                 {
                     return false;
                 }

@@ -64,6 +64,8 @@ namespace GraphApp
             serviceCollection.AddSingleton<ScrollTestViewModel>();
             serviceCollection.AddTransient<VerifyTestViewModel>();
             serviceCollection.AddTransient<PracticViewModel>();
+            serviceCollection.AddTransient<VertexViewModel>();
+            serviceCollection.AddTransient<ConnectionViewModel>();
             #endregion
 
             #region other
@@ -102,8 +104,7 @@ namespace GraphApp
 
                     return new VisualVertex(
                         (sv.X, sv.Y),
-                        sv.Width,
-                        sv.Height,
+                        sv.Radius,
                         sv.Number,
                         (Color)ColorConverter.ConvertFromString(sv.ColorString)
                     );
@@ -148,8 +149,7 @@ namespace GraphApp
                     Y = vv.Y,
                     Number = vv.Number,
                     Name = vv.Name,
-                    Height = vv.Height,
-                    Width = vv.Width,
+                    Radius = vv.Radius,
                     ColorString = _brushConverter.ConvertToString(vv.Color)
                 };
 

@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="GraphApp.View.VertexView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GraphApp.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="200">
+    <Grid Style="{StaticResource GridStyle}">
+		<StackPanel>
+			<DockPanel>
+				<Label 
+				Content="Название"
+				Foreground="White"/>
+				<TextBox Text="{Binding VisualVertex.Name, 
+					Mode=TwoWay,
+					UpdateSourceTrigger=PropertyChanged}"/>
+			</DockPanel>
+			<DockPanel>
+				<Label
+					Content="Радиус"
+					Foreground="White"/>
+				<Slider
+					Minimum="1"
+					Maximum="100"
+					Value="{Binding VisualVertex.Radius,
+					Mode=TwoWay,
+					UpdateSourceTrigger=PropertyChanged}"/>
+			</DockPanel>
+		</StackPanel>
+    </Grid>
+</UserControl>

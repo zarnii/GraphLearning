@@ -9,7 +9,7 @@ namespace GraphApp.Services
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var coordinate = (double)values[0];
-            var diameter = (int)values[1];
+            var diameter = (int)values[1] * 2;
 
             return coordinate + diameter;
         }

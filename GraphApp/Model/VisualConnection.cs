@@ -7,7 +7,7 @@ namespace GraphApp.Model
 	/// <summary>
 	/// Графическое соединение, отвечающая за отображение связей на поле.
 	/// </summary>
-	public class VisualConnection : INotifyPropertyChanged, IComparable<VisualConnection>
+	public class VisualConnection : GraphElement, INotifyPropertyChanged, IComparable<VisualConnection>
 	{
 		#region fields
 		/// <summary>
@@ -119,7 +119,7 @@ namespace GraphApp.Model
 		{
 			get
 			{
-				return ConnectedVertices.Item1.X + ConnectedVertices.Item1.Width / 2;
+				return ConnectedVertices.Item1.X + ConnectedVertices.Item1.Radius;
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace GraphApp.Model
 		{
 			get
 			{
-				return ConnectedVertices.Item1.Y + ConnectedVertices.Item1.Height / 2;
+				return ConnectedVertices.Item1.Y + ConnectedVertices.Item1.Radius;
 			}
 		}
 
@@ -141,7 +141,7 @@ namespace GraphApp.Model
 		{
 			get
 			{
-				return ConnectedVertices.Item2.X + ConnectedVertices.Item2.Width / 2;
+				return ConnectedVertices.Item2.X + ConnectedVertices.Item2.Radius;
 			}
 		}
 
@@ -152,7 +152,7 @@ namespace GraphApp.Model
 		{
 			get
 			{
-				return ConnectedVertices.Item2.Y + ConnectedVertices.Item2.Height / 2;
+				return ConnectedVertices.Item2.Y + ConnectedVertices.Item2.Radius;
 			}
 		}
 

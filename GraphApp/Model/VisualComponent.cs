@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphApp.Model
 {
-	public abstract class VisualComponent
+	public abstract class GraphElement
 	{
-		public abstract void Delete();
-
-		public abstract void Connect();
 	}
 }

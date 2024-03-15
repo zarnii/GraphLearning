@@ -3,8 +3,6 @@ using GraphApp.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace GraphApp.Services
@@ -23,7 +21,7 @@ namespace GraphApp.Services
         /// <summary>
         /// Режим мыши.
         /// </summary>
-        private static MouseMode _mouseMode;
+        private MouseMode _mouseMode;
         #endregion
 
         #region properties
@@ -39,9 +37,14 @@ namespace GraphApp.Services
         }
 
         /// <summary>
-        /// Выбранные вершины.
+        /// Выбранный элемент графа.
         /// </summary>
-        public List<VisualVertex> SelectedVertices { get; private set; }
+        public ViewModel.ViewModel SelectedGraphElement { get; set; }
+
+        /// <summary>
+        /// Выбранные вершины для соединения.
+        /// </summary>
+        public List<VisualVertex> SelectedVerticesForConnection { get; private set; }
 
         /// <summary>
         /// Лист вершин.
@@ -62,7 +65,7 @@ namespace GraphApp.Services
         {
             Vertices = new ObservableCollection<VisualVertex>();
             Connections = new ObservableCollection<VisualConnection>();
-            SelectedVertices = new List<VisualVertex>();
+            SelectedVerticesForConnection = new List<VisualVertex>();
         }
         #endregion
 
@@ -99,49 +102,11 @@ namespace GraphApp.Services
         {
             Vertices.Add(new VisualVertex(
                 (point.X, point.Y),
-                radius * 2,
-                radius * 2,
+                radius,
                 Vertices.Count + 1,
                 _defaultVertexColor,
                 name
             ));
-        }
-
-        /// <summary>
-        /// Нажатие на связь.
-        /// </summary>
-        /// <param name="connection">Связь.</param>
-        public void ClickOnConnection(VisualConnection connection)
-        {
-            if (_mouseMode == MouseMode.Delete)
-            {
-                DeleteConnection(connection);
-            }
-        }
-
-        /// <summary>
-        /// Нажатие на вершину.
-        /// </summary>
-        /// <param name="vertex">Вершина.</param>
-        public void ClickOnVertex(VisualVertex vertex)
-        {
-            if (_mouseMode == MouseMode.Delete)
-            {
-                DeleteVertex(vertex);
-            }
-            else if (_mouseMode == MouseMode.Connect)
-            {
-                if (SelectedVertices.Count < 2)
-                {
-                    SelectedVertices.Add(vertex);
-                }
-
-                if (SelectedVertices.Count == 2)
-                {
-                    AddConnection((SelectedVertices[0], SelectedVertices[1]));
-                    SelectedVertices.Clear();
-                }
-            }
         }
 
         /// <summary>
@@ -180,11 +145,6 @@ namespace GraphApp.Services
                 return;
             }
 
-            /*
-            var ddEventArgs = dragDeltaEventArgs;
-            var vertex = (VisualVertex)((FrameworkElement)ddEventArgs.OriginalSource).DataContext;
-            */
-
             if (vertex.X + x < 0
                 || vertex.Y + y < 0)
             {
@@ -202,7 +162,7 @@ namespace GraphApp.Services
         public void SetMouseMode(MouseMode mode)
         {
             _mouseMode = mode;
-            SelectedVertices.Clear();
+            SelectedVerticesForConnection.Clear();
         }
         #endregion
 
