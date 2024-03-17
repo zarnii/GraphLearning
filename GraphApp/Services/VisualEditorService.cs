@@ -56,8 +56,14 @@ namespace GraphApp.Services
         /// </summary>
         public ObservableCollection<VisualConnection> Connections { get; private set; }
 
+        /// <summary>
+        /// Ширина графического поля.
+        /// </summary>
         public int CanvasWidth { get; set; }
 
+        /// <summary>
+        /// Высота графического поля.
+        /// </summary>
         public int CanvasHeight { get; set; }
         #endregion
 

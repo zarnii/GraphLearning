@@ -35,9 +35,18 @@
 
 					<Button
 						Style="{StaticResource ButtonStyle}"
-						Content="Проверить"
+						Content="Назад"
 						HorizontalAlignment="Left"
-						Height="30"/>
+						Height="30"
+						Width="70"
+						Command="{Binding GoBack}"/>
+
+					<Label 
+						Content="{Binding ResultText}"
+						Foreground="{Binding ResultColor}"
+						Opacity="{Binding ResultOpasity}"
+						HorizontalAlignment="Right"
+						Style="{StaticResource Header1Style}"/>
 
 					<TextBlock
 						Grid.Row="1"

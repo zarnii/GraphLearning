@@ -12,7 +12,7 @@ namespace GraphApp.Services
     /// <summary>
     /// Сервис обработки данных.
     /// </summary>
-    public class JsonDataHeandlerService : IDataHeandlerService
+    public class JsonDataHandlerService : IDataHandlerService
 	{
 		#region fields
 		/// <summary>
@@ -33,7 +33,7 @@ namespace GraphApp.Services
 		/// <param name="dataLoader">Сервис загрузки данных.</param>
 		/// <param name="dataSaver">Сервис сохранения данных.</param>
 		/// <exception cref="ArgumentNullException">Пустые аргументы.</exception>
-		public JsonDataHeandlerService(IDataLoader dataLoader, IDataSaver dataSaver)
+		public JsonDataHandlerService(IDataLoader dataLoader, IDataSaver dataSaver)
 		{
 			if (dataLoader == null)
 			{

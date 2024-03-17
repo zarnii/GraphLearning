@@ -40,7 +40,7 @@ namespace GraphApp
             serviceCollection.AddSingleton<IMapper, Mapper>();
             serviceCollection.AddSingleton<IDataSaver, JsonSaverService>();
             serviceCollection.AddSingleton<IDataLoader, JsonLoaderService>();
-            serviceCollection.AddSingleton<IDataHeandlerService, JsonDataHeandlerService>();
+            serviceCollection.AddSingleton<IDataHandlerService, JsonDataHandlerService>();
             serviceCollection.AddSingleton<INavigationService, NavigationService>();
             serviceCollection.AddSingleton<ITestProvider, TestProvider>();
             serviceCollection.AddSingleton<ITheoryService, TheoryService>();
@@ -106,7 +106,8 @@ namespace GraphApp
                         (sv.X, sv.Y),
                         sv.Radius,
                         sv.Number,
-                        (Color)ColorConverter.ConvertFromString(sv.ColorString)
+                        (Color)ColorConverter.ConvertFromString(sv.ColorString),
+                        sv.Name
                     );
                 }
                 catch (FormatException ex)

@@ -38,7 +38,7 @@ namespace GraphApp.Services
 		/// <summary>
 		/// Сервис обработки данных.
 		/// </summary>
-		private IDataHeandlerService _dataHandler;
+		private IDataHandlerService _dataHandler;
 
 		/// <summary>
 		/// Маппер.
@@ -59,7 +59,7 @@ namespace GraphApp.Services
         #endregion
 
         #region constructor
-        public HealthPointService(IDataHeandlerService dataHeandler, IMapper mapper)
+        public HealthPointService(IDataHandlerService dataHeandler, IMapper mapper)
 		{
 			_timeoutDuration = TimeSpan.FromSeconds(
 				TryReadAppSettings(ConfigurationManager.AppSettings["defaultTimeOutDuration"])

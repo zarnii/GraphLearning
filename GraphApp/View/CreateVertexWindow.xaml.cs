@@ -65,7 +65,7 @@ namespace GraphApp.View
             Top = (SystemParameters.PrimaryScreenHeight / 2) - (Height / 2);
 
             VertexNameField.Text = "default";
-            VertexRadiusField.Text = "20";
+            VertexRadiusField.Text = _defautRadius.ToString();
 
             ResizeMode = ResizeMode.NoResize;
 

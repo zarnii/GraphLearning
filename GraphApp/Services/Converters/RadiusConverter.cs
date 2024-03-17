@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace GraphApp.Services
+namespace GraphApp.Services.Converters
 {
     /// <summary>
     /// Конвертор радиуса в высоту и ширину.
@@ -23,7 +23,7 @@ namespace GraphApp.Services
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((int)value) * 2;
+            return (int)value * 2;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

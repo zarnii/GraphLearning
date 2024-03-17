@@ -10,17 +10,13 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GraphApp.ViewModel
 {
-    public class PracticViewModel : ViewModel
+    public class PracticViewModel : VisualEditorViewModel
     {
         #region fields
-        /// <summary>
-        /// Сервис визуального редактора.
-        /// </summary>
-        private IVisualEditorService _visualEditorService;
-
         /// <summary>
         /// Поставщик практических заданий.
         /// </summary>
@@ -31,73 +27,32 @@ namespace GraphApp.ViewModel
         /// </summary>
         private IVerifyPracticTaskService _verifyPracticTaskService;
 
-        private Func<Type, ViewModel> _vmFactory;
+        /// <summary>
+        /// Сервис навигации.
+        /// </summary>
+        private INavigationService _navigationService;
+
+        private string _resultText;
+
+        private Brush _resultColor;
+
+        private int _resultOpasity;
         #endregion
 
         #region properties
-        /// <summary>
-        /// Свойство команды изменения режима мыши.
-        /// </summary>
-        public ICommand ChangeMouseMode { get; private set; }
-
-        /// <summary>
-        /// Команда добавления вершины.
-        /// </summary>
-        public ICommand ClickOnField { get; private set; }
-
-        /// <summary>
-        /// Команда нажатия на вершину.
-        /// </summary>
-        public ICommand ClickOnVertex { get; private set; }
-
-        /// <summary>
-        /// Команда нажатия на связь.
-        /// </summary>
-        public ICommand ClickOnConnection { get; private set; }
-
-        /// <summary>
-        /// Команда перемещения вершины.
-        /// </summary>
-        public ICommand MoveVertex { get; private set; }
-
         /// <summary>
         /// Команда проверки задания.
         /// </summary>
         public ICommand VerifyTask { get; private set; }
 
         /// <summary>
-        /// Связи.
+        /// Переход назад.
         /// </summary>
-        public ObservableCollection<VisualConnection> Connections
-        {
-            get
-            {
-                return _visualEditorService.Connections;
-            }
-        }
+        public ICommand GoBack { get; private set; }
 
         /// <summary>
-        /// Выбранные вершины для соединения.
+        /// Заголовок практического задания.
         /// </summary>
-        public List<VisualVertex> SelectedVerticesForConnection
-        {
-            get
-            {
-                return _visualEditorService.SelectedVerticesForConnection;
-            }
-        }
-
-        /// <summary>
-        /// Вершины.
-        /// </summary>
-        public ObservableCollection<VisualVertex> Vertices
-        {
-            get
-            {
-                return _visualEditorService.Vertices;
-            }
-        }
-
         public string PracticTaskTitle
         {
             get
@@ -106,6 +61,9 @@ namespace GraphApp.ViewModel
             }
         }
 
+        /// <summary>
+        /// Текст практического задания.
+        /// </summary>
         public string PracticTaskText
         {
             get
@@ -115,167 +73,89 @@ namespace GraphApp.ViewModel
         }
 
         /// <summary>
-        /// Выбранный элемент графа.
+        /// Текст ответа.
         /// </summary>
-        public ViewModel SelectedGraphElement
+        public string ResultText 
         {
             get
             {
-                return _visualEditorService.SelectedGraphElement;
+                return _resultText;
             }
-            set
+            private set
             {
-                _visualEditorService.SelectedGraphElement = value;
-                OnPropertyChanged(nameof(SelectedGraphElement));
+                _resultText = value;
+                OnPropertyChanged(nameof(ResultText));
             }
         }
 
         /// <summary>
-        /// Событие изменения свойтва.
+        /// Цвет ответа.
         /// </summary>
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public Brush ResultColor 
+        {
+            get
+            {
+                return _resultColor;
+            }
+            private set
+            {
+                _resultColor = value;
+                OnPropertyChanged(nameof(ResultColor));
+            }
+        }
+
+        /// <summary>
+        /// Прозрачность ответа.
+        /// </summary>
+        public int ResultOpasity 
+        {
+            get
+            {
+                return _resultOpasity;
+            } 
+            private set
+            {
+                _resultOpasity = value;
+                OnPropertyChanged(nameof(ResultOpasity));
+            }
+        }
         #endregion
 
         #region constructor
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="visualEditorService">Сервис визуального редактора.</param>
-        /// <param name="practicProvider">Поставщик практических заданий.</param>
+        /// <param name="vertexViewModel">Модель представления вершин.</param>
+        /// <param name="connectionViewModel">Модель представления связи.</param>
+        /// <param name="visualEditorService">Сервис графического редактора.</param>
+        /// <param name="accessControlService">Сервис контроля доступа.</param>
+        /// <param name="verifyPracticTaskService">Сервис проверки практических заданий.</param>
+        /// <param name="navigationService">Сервис навигации.</param>
         public PracticViewModel(
+            VertexViewModel vertexViewModel,
+            ConnectionViewModel connectionViewModel,
             IVisualEditorService visualEditorService, 
             IAccessControlService accessControlService,
             IVerifyPracticTaskService verifyPracticTaskService,
-            Func<Type, ViewModel> vmFactory)
+            INavigationService navigationService)
+            : base(vertexViewModel, connectionViewModel, visualEditorService)
         {
-            _visualEditorService = visualEditorService;
+            
             _accsessControlService = accessControlService;
             _verifyPracticTaskService = verifyPracticTaskService;
-            _vmFactory = vmFactory;
+            _navigationService = navigationService;
 
-            ChangeMouseMode = new RelayCommand(SetMouseMode);
-            ClickOnField = new RelayCommand(ClickOnFieldCommand);
-            ClickOnVertex = new RelayCommand(ClickOnVertexCommand);
-            ClickOnConnection = new RelayCommand(ClickOnConnectionCommand);
-            MoveVertex = new RelayCommand(MoveVertexCommand);
             VerifyTask = new RelayCommand(VerifyTaskCommand);
+            GoBack = new RelayCommand(GoBackCommand);
+            ResultOpasity = 0;
         }
         #endregion
 
         #region private methods
         /// <summary>
-        /// Изменение режима мыши.
+        /// Проверка практического задания.
         /// </summary>
-        /// <param name="mode">Режим мыши.</param>
-        private void SetMouseMode(object parameter)
-        {
-            _visualEditorService.SetMouseMode((MouseMode)parameter);
-        }
-
-        /// <summary>
-        /// Команда нажатия на поле.
-        /// </summary>
-        /// <param name="parameter">Аргументы события.</param>
-        private void ClickOnFieldCommand(object parameter)
-        {
-            if (_visualEditorService.MouseMode != MouseMode.Create)
-            {
-                return;
-            }
-
-            var mbEventArgs = parameter as MouseButtonEventArgs;
-            var point = mbEventArgs.GetPosition((UIElement)mbEventArgs.OriginalSource);
-
-
-            var createVertexWindow = new CreateVertexWindow();
-
-            if ((bool)createVertexWindow.ShowDialog())
-            {
-                _visualEditorService.AddVertex(
-                    point,
-                    createVertexWindow.VertexRadius,
-                    createVertexWindow.VertexName
-                );
-            }
-        }
-
-        /// <summary>
-        /// Команда нажатия на вершину.
-        /// </summary>
-        /// <param name="parameter">Нажатая вершина.</param>
-        private void ClickOnVertexCommand(object parameter)
-        {
-            var vertex = (VisualVertex)parameter;
-
-            if (_visualEditorService.MouseMode == MouseMode.Default)
-            {
-                SelectedGraphElement = _vmFactory.Invoke(typeof(VertexViewModel));
-                ((VertexViewModel)SelectedGraphElement).VisualVertex = vertex;
-            }
-            else if (_visualEditorService.MouseMode == MouseMode.Delete)
-            {
-                DeleteVertex(vertex);
-            }
-            else if (_visualEditorService.MouseMode == MouseMode.Connect)
-            {
-                if (SelectedVerticesForConnection.Count < 2)
-                {
-                    SelectedVerticesForConnection.Add(vertex);
-                }
-
-                if (SelectedVerticesForConnection.Count == 2)
-                {
-                    _visualEditorService.AddConnection((SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]), 4);
-                    SelectedVerticesForConnection.Clear();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Команда нажатия на связь.
-        /// </summary>
-        /// <param name="parameter">Связь.</param>
-        private void ClickOnConnectionCommand(object parameter)
-        {
-            if (_visualEditorService.MouseMode == MouseMode.Delete)
-            {
-                _visualEditorService.DeleteConnection((VisualConnection)parameter);
-            }
-        }
-
-        /// <summary>
-        /// Удаление вершины.
-        /// </summary>
-        /// <param name="parameter">Удаляемая вершина.</param>
-        private void DeleteVertex(object parameter)
-        {
-            var vertex = (VisualVertex)parameter;
-
-            /*
-            if (SelectedVertex == vertex)
-            {
-                _visualEditorService.SelectedVertex = null;
-                OnPropertyChanged(nameof(SelectedVertex));
-            }
-            */
-            _visualEditorService.DeleteVertex(vertex);
-        }
-
-        /// <summary>
-        /// Передвижение вершин.
-        /// </summary>
-        /// <param name="parameter">Аргументы события.</param>
-        private void MoveVertexCommand(object parameter)
-        {
-            var dragDeltaEventArgs = parameter as DragDeltaEventArgs;
-
-            _visualEditorService.MoveVertex(
-                (VisualVertex)((FrameworkElement)dragDeltaEventArgs.OriginalSource).DataContext,
-                dragDeltaEventArgs.HorizontalChange,
-                dragDeltaEventArgs.VerticalChange
-            );
-        }
-
+        /// <param name="parameter"></param>
         private void VerifyTaskCommand(object parameter)
         {
             var practicTask = (PracticTask)_accsessControlService.CurrentEducationMaterial.EducationMaterial;
@@ -323,15 +203,33 @@ namespace GraphApp.ViewModel
             {
                 isDone = false;
             }
+
+            CheckResult(isDone);
         }
 
         /// <summary>
-        /// Оповещение подписчиков о изменении свойства.
+        /// Команда перехода назад.
         /// </summary>
-        /// <param name="propertyName">Имя свойства.</param>
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        /// <param name="parameter"></param>
+        private void GoBackCommand(object parameter)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _navigationService.NavigateTo<EducationViewModel>();
+        }
+
+        private void CheckResult(bool isDone)
+        {
+            if (isDone)
+            {
+                ResultText = "Верно";
+                ResultColor = new SolidColorBrush(Colors.Green);
+                ResultOpasity = 1;
+
+                return;
+            }
+
+            ResultText = "Не верно";
+            ResultColor = new SolidColorBrush(Colors.Red);
+            ResultOpasity = 1;
         }
         #endregion
     }
