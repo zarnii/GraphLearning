@@ -1,0 +1,69 @@
+﻿<Window x:Class="GraphApp.View.CreateConnectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GraphApp.View"
+        mc:Ignorable="d"
+        Title="CreateConnectionWindow" Height="250" Width="350">
+    <Grid Style="{StaticResource GridStyle}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
+		</Grid.RowDefinitions>
+
+		<Label
+			Content="Введите параметры связи"
+			Foreground="White"
+			FontSize="16"
+			HorizontalAlignment="Center"/>
+
+		<Grid Grid.Row="1">
+			<StackPanel>
+				<DockPanel>
+					<Label
+						Content="Вес вершины"
+						Foreground="White"
+						FontSize="16"/>
+					<TextBox
+						VerticalContentAlignment="Center"
+						PreviewTextInput="CheckInputSymbolIsDigit"
+						Width="200"
+						FontSize="16"
+						HorizontalAlignment="Right"
+						x:Name="ConnectionWeightField"/>
+				</DockPanel>
+				<DockPanel Margin="0, 20 ,0 ,0">
+					<Label
+						Content="Тип связи"
+						Foreground="White"
+						FontSize="16"/>
+					<ComboBox
+						Width="200"
+						HorizontalAlignment="Right"
+						x:Name="ConnectionTypeComboBox"/>
+				</DockPanel>
+				<DockPanel Margin="0, 20 ,0 ,0">
+					<Label
+						Content="Толщина связи"
+						Foreground="White"
+						FontSize="16"/>
+					<Slider
+						Minimum="1"
+						Maximum="20"
+						AutoToolTipPlacement="TopLeft"
+						VerticalAlignment="Center"
+						x:Name="ConnectionThicknessSlider"/>
+				</DockPanel>
+			</StackPanel>
+		</Grid>
+
+		<Button
+			Grid.Row="2"
+			Style="{StaticResource ButtonStyle}"
+			Width="70"
+			Content="Соединить"
+			Click="Connect"/>
+	</Grid>
+</Window>

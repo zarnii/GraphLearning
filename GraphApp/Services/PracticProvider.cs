@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Configuration;
-using GraphApp.Interfaces;
+﻿using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Model.Serializing;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 
 namespace GraphApp.Services
 {
     /// <summary>
-    /// Поставщик практических заданий.
+    /// Поставщик практических заданий.s
     /// </summary>
     public class PracticProvider : IPracticProvider
     {

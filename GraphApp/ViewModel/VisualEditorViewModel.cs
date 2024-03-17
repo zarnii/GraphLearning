@@ -272,8 +272,18 @@ namespace GraphApp.ViewModel
 
             if (SelectedVerticesForConnection.Count == 2)
             {
-                _visualEditorService.AddConnection((SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]), 4);
-                SelectedVerticesForConnection.Clear();
+                var createConnectionWindow = new CreateConnectionWindow();
+
+                if ((bool)createConnectionWindow.ShowDialog())
+                {
+                    _visualEditorService.AddConnection(
+                        (SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]),
+                        createConnectionWindow.ConnectionThickness,
+                        createConnectionWindow.ConnectionWeight,
+                        createConnectionWindow.ConnectionType
+                    );
+                    SelectedVerticesForConnection.Clear();
+                }
             }
         }
 

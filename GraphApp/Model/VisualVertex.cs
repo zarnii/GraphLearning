@@ -5,6 +5,10 @@ using System.Windows.Media;
 
 namespace GraphApp.Model
 {
+	/*
+	 ВНИМАНИЕ! Если добовляешь поле, то меняй метод преобразования в SerializableVertex.
+	 */
+
 	/// <summary>
 	/// Визуальная вершина, отвечающая за отрисовку на поле Canvas.
 	/// </summary>

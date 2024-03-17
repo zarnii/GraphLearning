@@ -9,7 +9,7 @@
 
 		public int Number { get; set; }
 
-		public int Thickness { get; set; }
+		public double Thickness { get; set; }
 
         public double Weight { get; set; }
 

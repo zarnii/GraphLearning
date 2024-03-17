@@ -9,7 +9,7 @@ namespace GraphApp.Model
     /// <summary>
     /// Узел, инкапсулирующий материал.
     /// </summary>
-    public class EducationMaterialNode
+    public class EducationMaterialNode: IComparable<EducationMaterialNode>
     {
         /// <summary>
         /// Обучающий материал.
@@ -70,6 +70,16 @@ namespace GraphApp.Model
 
             _educationMaterial = educationMaterial;
             _checkCanGetMaterial = checkCanGetMaterial;
+        }
+
+        public int CompareTo(EducationMaterialNode? other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException("Пустой объект для сравнений.");
+            }
+
+            return _educationMaterial.CompareTo(other._educationMaterial);
         }
     }
 }

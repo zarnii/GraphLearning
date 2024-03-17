@@ -27,10 +27,10 @@ namespace GraphApp.View
         public int VertexRadius { get; private set; }
 
         /// <summary>
-        /// Окно создания вершины.
+        /// Конструктор.
         /// </summary>
         /// <param name="left">Позиция левого края окна относительно рабочего стола.</param>
-        /// <param name="top">Позиция правого края окна относительно рабочего стола.</param>
+        /// <param name="top">Позиция верхнего края окна относительно рабочего стола.</param>
         public CreateVertexWindow(double left, double top)
         {
             if (left < 0)
@@ -55,7 +55,7 @@ namespace GraphApp.View
         }
 
         /// <summary>
-        /// Окно создания вершины.
+        /// Конструктор.
         /// </summary>
         public CreateVertexWindow()
         {
@@ -73,11 +73,6 @@ namespace GraphApp.View
         
         private void Create(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(VertexNameField.Text))
-            {
-                throw new ArgumentNullException("Название вершины не может быть пустым.");
-            }
-
             var radius = int.Parse(VertexRadiusField.Text);
 
             if (radius < 1)

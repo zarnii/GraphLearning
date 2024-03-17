@@ -9,13 +9,8 @@ namespace GraphApp.Model.Serializing
     /// <summary>
     /// Сериализуемое практическое задание в виде составления графа.
     /// </summary>
-    public class SerializablePracticTask
+    public class SerializablePracticTask: EducationMaterial
     {
-        /// <summary>
-        /// Заголовок задания.
-        /// </summary>
-        public string Title { get; set; }
-
         /// <summary>
         /// Текст задания.
         /// </summary>

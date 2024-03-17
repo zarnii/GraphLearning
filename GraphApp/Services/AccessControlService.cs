@@ -87,34 +87,27 @@ namespace GraphApp.Services
         /// <param name="practicProvider">Поставщик практик.</param>
         private void InitFields()
         {
+            var iter = 0;
+
+            for (var i = 0; i < _testProvider.TestCollection.Count; i++)
             {
-                var material = new EducationMaterialNode(
-                    _testProvider.TestCollection[0],
+                EducationMaterialsCollection[iter] = new EducationMaterialNode(
+                    _testProvider.TestCollection[i],
                     CheckCanGetMaterial
                 );
-                EducationMaterialsCollection[0] = material;
-                _educationMaterialMap[material] = true;
+                iter++;
             }
 
+            for (var i = 0; i < _practicProvider.PracticCollection.Count; i++)
             {
-                var practic = _practicProvider.PracticCollection[0];
-                var material = new EducationMaterialNode(
-                    practic,
+                EducationMaterialsCollection[iter] = new EducationMaterialNode(
+                    _practicProvider.PracticCollection[i],
                     CheckCanGetMaterial
                 );
-                EducationMaterialsCollection[1] = material;
-                _educationMaterialMap[material] = false;
+                iter++;
             }
-        }
 
-        public void SetCurrentTest(Test test)
-        {
-            _testProvider.CurrentTest = test;
-        }
-
-        public void SetCurrentPractic(PracticTask practicTask)
-        {
-            _practicProvider.CurrentPractic = practicTask;
+            Array.Sort<EducationMaterialNode>(EducationMaterialsCollection);
         }
     }
 }

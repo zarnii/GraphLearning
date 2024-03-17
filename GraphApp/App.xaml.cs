@@ -224,6 +224,7 @@ namespace GraphApp
                 {
                     Title = pt.Title,
                     Text = pt.Text,
+                    IndexNumber = pt.IndexNumber,
                     Vertices = serVertices,
                     Connections = serConnections,
                     NeedCheckVertexCount = pt.NeedCheckVertexCount,
@@ -260,6 +261,7 @@ namespace GraphApp
                 {
                     Title = spt.Title,
                     Text = spt.Text,
+                    IndexNumber = spt.IndexNumber,
                     Vertices = vertices,
                     Connections = connections,
                     NeedCheckVertexCount = spt.NeedCheckVertexCount,

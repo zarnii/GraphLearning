@@ -49,7 +49,7 @@ namespace GraphApp.Interfaces
         /// <param name="weight">Вес связи.</param>
         /// <param name="connectionType">Тип связи.</param>
         void AddConnection((VisualVertex, VisualVertex) connectedVertices, 
-            int thickness,
+            double thickness,
             double weight = 0, 
             ConnectionType connectionType = ConnectionType.NonDirectional);
 

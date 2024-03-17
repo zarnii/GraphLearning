@@ -28,7 +28,7 @@
     <None Update="Resources\Img\GraphExample.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Practics\practic1.json">
+    <None Update="Resources\Practics\1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\questions\1.json">
@@ -37,12 +37,8 @@
     <None Update="Resources\questions\2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Tests\test.json">
+    <None Update="Resources\Tests\1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\Practics\" />
   </ItemGroup>
 </Project>

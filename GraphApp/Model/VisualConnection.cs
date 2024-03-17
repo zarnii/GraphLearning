@@ -4,6 +4,10 @@ using System.Runtime.CompilerServices;
 
 namespace GraphApp.Model
 {
+	/*
+	 ВНИМАНИЕ! Если добавляешь поле, то меняй метод преобразования в SerializableConnection.
+	 */
+
 	/// <summary>
 	/// Графическое соединение, отвечающая за отображение связей на поле.
 	/// </summary>
@@ -23,7 +27,7 @@ namespace GraphApp.Model
 		/// <summary>
 		/// Толщина. линии.
 		/// </summary>
-		private int _thickness;
+		private double _thickness;
         #endregion
 
         #region properties
@@ -120,7 +124,7 @@ namespace GraphApp.Model
 		/// <summary>
 		/// Толщина линии.
 		/// </summary>
-		public int Thickness 
+		public double Thickness 
 		{
 			get
 			{
@@ -213,7 +217,7 @@ namespace GraphApp.Model
 		/// <param name="connectionType">Тип связи.</param>
 		public VisualConnection((VisualVertex, VisualVertex) connectedVertices,
 			int number,
-			int thickness,
+			double thickness,
             double weight = 0,
 			ConnectionType connectionType = ConnectionType.Unidirectional)
 		{

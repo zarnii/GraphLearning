@@ -2,6 +2,10 @@
 
 namespace GraphApp.Model
 {
+    /*
+	 ВНИМАНИЕ! Если добавляешь поле, то меняй метод преобразования в SerializablePracticTask.
+	 */
+
     /// <summary>
     /// Практическое задание в виде построения графа.
     /// </summary>

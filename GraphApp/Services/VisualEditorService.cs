@@ -91,7 +91,7 @@ namespace GraphApp.Services
         /// <param name="connectionType">Тип связи.</param>
         public void AddConnection(
             (VisualVertex, VisualVertex) connectedVertices,
-            int thickness,
+            double thickness,
             double weight = 0,
             ConnectionType connectionType = ConnectionType.NonDirectional)
         {
