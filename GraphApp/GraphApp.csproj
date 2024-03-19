@@ -22,6 +22,9 @@
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\EducationMaterialMap\EducationMaterialMap.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Img\AdjacencyExample.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

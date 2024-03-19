@@ -22,24 +22,9 @@ namespace GraphApp.Model
         /// </summary>
         /// <param name="other">Сравниваемый объект.</param>
         /// <returns>1, если текущий объект больше other. -1, если текущий объект меньше other.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
         public int CompareTo(EducationMaterial? other)
         {
-            if (other == null)
-            {
-                throw new ArgumentNullException("Пустой объект для сравнения.");
-            }
-
-            if (IndexNumber > other.IndexNumber)
-            {
-                return 1;
-            }
-            else if (IndexNumber < other.IndexNumber)
-            {
-                return -1;
-            }
-
-            return 0;
+            return IndexNumber.CompareTo(other?.IndexNumber);
         }
     }
 }

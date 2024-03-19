@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace GraphApp.Model
 {
+    /*
+     ВНИМАНИЕ! Если меняешь поля, то меняй метод маппинга.
+     */
+
     /// <summary>
     /// Узел, инкапсулирующий материал.
     /// </summary>
@@ -45,6 +49,17 @@ namespace GraphApp.Model
             get
             {
                 return _educationMaterial.Title;
+            }
+        }
+
+        /// <summary>
+        /// Порядковый номер обучающего материала.
+        /// </summary>
+        public int EducationMaterialIndexNumber
+        {
+            get
+            {
+                return _educationMaterial.IndexNumber;
             }
         }
 

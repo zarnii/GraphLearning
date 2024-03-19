@@ -1,7 +1,12 @@
 ﻿using GraphApp.Interfaces;
 using GraphApp.Model;
+using GraphApp.Model.Exception;
+using GraphApp.Model.Serializing;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Windows;
 
 namespace GraphApp.Services
 {
@@ -16,14 +21,14 @@ namespace GraphApp.Services
         private Dictionary<EducationMaterialNode, bool> _educationMaterialMap;
 
         /// <summary>
-        /// Поставщик тестов.
+        /// Обработчик данных.
         /// </summary>
-        private ITestProvider _testProvider;
+        private IDataHandlerService _dataHandler;
 
         /// <summary>
-        /// Поставщик практических заданий.
+        /// Маппер.
         /// </summary>
-        private IPracticProvider _practicProvider;
+        private IMapper _mapper;
 
         /// <summary>
         /// Текущий обучающий материал.
@@ -40,19 +45,29 @@ namespace GraphApp.Services
         /// </summary>
         /// <param name="testProvider">Поставщик тестов.</param>
         /// <param name="practicProvider">Поставщик практик.</param>
-        public AccessControlService(ITestProvider testProvider, IPracticProvider practicProvider)
+        public AccessControlService(
+            ITestProvider testProvider, 
+            IPracticProvider practicProvider,
+            IDataHandlerService dataHandler, 
+            IMapper mapper)
         {
-            _testProvider = testProvider;
-            _practicProvider = practicProvider;
+            _dataHandler = dataHandler;
+            _mapper = mapper;
 
             EducationMaterialsCollection = new EducationMaterialNode[
                 testProvider.TestCollection.Count + practicProvider.PracticCollection.Count];
             _educationMaterialMap = new Dictionary<EducationMaterialNode, bool>(
                 testProvider.TestCollection.Count + practicProvider.PracticCollection.Count);
 
-            InitFields();
+            InitNodesCollection(testProvider, practicProvider);
+            LoadMap(dataHandler, mapper);
         }
 
+        /// <summary>
+        /// Открытие следующего материала.
+        /// </summary>
+        /// <param name="material">Текущий обучающий материал.</param>
+        /// <exception cref="ArgumentException"></exception>
         public void OpenNext(EducationMaterialNode material)
         {
             if (!_educationMaterialMap[material])
@@ -62,7 +77,11 @@ namespace GraphApp.Services
 
             var materialIndex = EducationMaterialsCollection.FindIndex<EducationMaterialNode>(material);
 
-            _educationMaterialMap[EducationMaterialsCollection[materialIndex + 1]] = true;
+            if (materialIndex + 1 != EducationMaterialsCollection.Length)
+            {
+                _educationMaterialMap[EducationMaterialsCollection[materialIndex + 1]] = true;
+                SaveMap();
+            }
         }
 
         /// <summary>
@@ -83,31 +102,132 @@ namespace GraphApp.Services
         /// <summary>
         /// Инициализация полей.
         /// </summary>
-        /// <param name="testProvider">Поставщик тестов.</param>
-        /// <param name="practicProvider">Поставщик практик.</param>
-        private void InitFields()
+        private void InitNodesCollection(ITestProvider testProvider, IPracticProvider practicProvider)
         {
             var iter = 0;
 
-            for (var i = 0; i < _testProvider.TestCollection.Count; i++)
+            for (var i = 0; i < testProvider.TestCollection.Count; i++)
             {
-                EducationMaterialsCollection[iter] = new EducationMaterialNode(
-                    _testProvider.TestCollection[i],
+                var educationMaterialNode = new EducationMaterialNode(
+                    testProvider.TestCollection[i],
                     CheckCanGetMaterial
                 );
+
+                EducationMaterialsCollection[iter] = educationMaterialNode;
+
                 iter++;
             }
 
-            for (var i = 0; i < _practicProvider.PracticCollection.Count; i++)
+            for (var i = 0; i < practicProvider.PracticCollection.Count; i++)
             {
-                EducationMaterialsCollection[iter] = new EducationMaterialNode(
-                    _practicProvider.PracticCollection[i],
+                var educationMaterialNode = new EducationMaterialNode(
+                    practicProvider.PracticCollection[i],
                     CheckCanGetMaterial
                 );
+
+                EducationMaterialsCollection[iter] = educationMaterialNode;
+
                 iter++;
             }
 
             Array.Sort<EducationMaterialNode>(EducationMaterialsCollection);
+        }
+
+        /// <summary>
+        /// Загрузка прогресса пользователя.
+        /// </summary>
+        /// <param name="dataLoader">Сервис загрузки.</param>
+        /// <param name="mapper">Маппер.</param>
+        private void LoadMap(IDataLoader dataLoader, IMapper mapper)
+        {
+            var pathToFile = ConfigurationManager.AppSettings["defaultPathToEducationMaterialMap"];
+            var fileName = ConfigurationManager.AppSettings["defaultEducationMaterialMapFileName"];
+
+            if (!Directory.Exists(pathToFile))
+            {
+                Directory.CreateDirectory(pathToFile);
+            }
+
+            if (!File.Exists($"{pathToFile}/{fileName}")) 
+            {
+                var fileStream = File.Create($"{pathToFile}/{fileName}");
+                fileStream.Close();
+                OnErrorLoadMap();
+
+                return;
+            }
+
+            try
+            {
+                var data = dataLoader.Load<SerializableEducationMaterialNode[]>($"{pathToFile}/{fileName}");
+
+                foreach (var node in data)
+                {
+                    var pair = mapper.Map<KeyValuePairClass<EducationMaterialNode, bool>>(node, EducationMaterialsCollection);
+                    _educationMaterialMap.Add(pair.Pair.Key, pair.Pair.Value);
+                }
+            }
+            catch(ArgumentNullException ex)
+            {
+                OnErrorLoadMap();
+
+                MessageBox.Show(
+                    "При загрузке прогресса не был найден обучающий модуль. " +
+                    "Возможно, файл был удален. Прогресс был сброшен.",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
+            catch(LoadDataException)
+            {
+                OnErrorLoadMap();
+            }
+        }
+
+        /// <summary>
+        /// Сохранение прогресса.
+        /// </summary>
+        private void SaveMap()
+        {
+            var pathToFile = ConfigurationManager.AppSettings["defaultPathToEducationMaterialMap"];
+            var fileName = ConfigurationManager.AppSettings["defaultEducationMaterialMapFileName"];
+
+            if (!Directory.Exists(pathToFile))
+            {
+                Directory.CreateDirectory(pathToFile);
+            }
+
+            if (!File.Exists(fileName))
+            {
+                File.Create(fileName);
+            }
+
+            var serializableEducationMaterialNodes = new List<SerializableEducationMaterialNode>(_educationMaterialMap.Count);
+
+            foreach (var node in EducationMaterialsCollection)
+            {
+                serializableEducationMaterialNodes.Add(
+                    _mapper.Map<SerializableEducationMaterialNode>(node, null)
+                );
+            }
+
+            _dataHandler.Save<List<SerializableEducationMaterialNode>>(
+                serializableEducationMaterialNodes, $"{pathToFile}/{fileName}");
+        }
+
+        /// <summary>
+        /// При ошибке загрузки прогресса пользователя.
+        /// </summary>
+        private void OnErrorLoadMap()
+        {
+            foreach (var node in EducationMaterialsCollection)
+            {
+                _educationMaterialMap[node] = false;
+            }
+
+            _educationMaterialMap[EducationMaterialsCollection[0]] = true;
+            SaveMap();
         }
     }
 }

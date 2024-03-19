@@ -205,6 +205,11 @@ namespace GraphApp.ViewModel
             }
 
             CheckResult(isDone);
+
+            if (isDone)
+            {
+                _accsessControlService.OpenNext(_accsessControlService.CurrentEducationMaterial);
+            }
         }
 
         /// <summary>

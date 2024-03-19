@@ -96,6 +96,8 @@ namespace GraphApp
         private void SettingMapper()
         {
             var mapper = _serviceProvider.GetRequiredService<IMapper>();
+
+            // SerializableVertex => VisualVertex.
             mapper.CreateMap<SerializableVertex, VisualVertex>((tSource, param) =>
             {
                 try
@@ -121,6 +123,7 @@ namespace GraphApp
 
             });
 
+            // SerializableConnection => VisualConnection.
             mapper.CreateMap<SerializableConnection, VisualConnection>((tSource, param) =>
             {
                 try
@@ -140,6 +143,7 @@ namespace GraphApp
 
             });
 
+            // VisualVertex => SerializableVertex.
             mapper.CreateMap<VisualVertex, SerializableVertex>((tSource, param) =>
             {
                 var vv = tSource as VisualVertex;
@@ -156,6 +160,7 @@ namespace GraphApp
 
             });
 
+            // VisualConnection => SerializableConnection.
             mapper.CreateMap<VisualConnection, SerializableConnection>((tSource, param) =>
             {
                 var vc = tSource as VisualConnection;
@@ -172,37 +177,7 @@ namespace GraphApp
                 return s;
             });
 
-            mapper.CreateMap<HealthData, SerializableHealthData>((tSource, param) =>
-            {
-                var hd = tSource as HealthData;
-                var byteHealthPoint = BitConverter.GetBytes(hd.HealthPoint);
-
-                return new SerializableHealthData()
-                {
-                    HealthPoint = String.Join(' ', byteHealthPoint),
-                    TimeoutEndTime = hd.TimeoutEndTime.ToBinary().ToString(),
-                };
-            });
-
-            mapper.CreateMap<SerializableHealthData, HealthData>((tSource, param) =>
-            {
-                var shd = tSource as SerializableHealthData;
-
-                var byteHealthPoint = new List<byte>();
-                var byteTimeoutEndTime = Int64.Parse(shd.TimeoutEndTime);
-
-                foreach (var bt in shd.HealthPoint.Split(' '))
-                {
-                    byteHealthPoint.Add(Byte.Parse(bt));
-                }
-
-                return new HealthData()
-                {
-                    HealthPoint = BitConverter.ToInt32(byteHealthPoint.ToArray(), 0),
-                    TimeoutEndTime = DateTime.FromBinary(byteTimeoutEndTime)
-                };
-            });
-
+            // PracticTask => SerializablePracticTask.
             mapper.CreateMap<PracticTask, SerializablePracticTask>((tSource, param) =>
             {
                 var pt = tSource as PracticTask;
@@ -240,6 +215,7 @@ namespace GraphApp
                 return spt;
             });
 
+            // SerializablePracticTask => PracticTask.
             mapper.CreateMap<SerializablePracticTask, PracticTask>((tSource, param) =>
             {
                 var spt = tSource as SerializablePracticTask;
@@ -275,6 +251,35 @@ namespace GraphApp
                 };
 
                 return pt;
+            });
+
+            // EducationMaterialNode => SerializableEducatuionMaterialNode
+            mapper.CreateMap<EducationMaterialNode, SerializableEducationMaterialNode>((tSource, param) =>
+            {
+                var emn = tSource as EducationMaterialNode;
+
+                return new SerializableEducationMaterialNode()
+                {
+                    IndexNumber = emn.EducationMaterialIndexNumber,
+                    Flag = emn.EducationMaterial != null
+                };
+            });
+
+            // SerializableEducationMaterialNode => KeyValuePair.
+            mapper.CreateMap<SerializableEducationMaterialNode, KeyValuePairClass<EducationMaterialNode, bool>>((tSource, param) =>
+            {
+                var serializableEmn = tSource as SerializableEducationMaterialNode;
+                var educationMaterialCollection = param as EducationMaterialNode[];
+                var node = educationMaterialCollection
+                    .Where(e => e.EducationMaterialIndexNumber == serializableEmn.IndexNumber)
+                    .FirstOrDefault();
+
+                if (node == null)
+                {
+                    throw new ArgumentNullException(nameof(node), "Обучающий элемент не найден.");
+                }
+
+                return new KeyValuePairClass<EducationMaterialNode, bool>(node, serializableEmn.Flag);
             });
         }
     }
