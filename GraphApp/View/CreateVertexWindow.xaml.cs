@@ -1,17 +1,6 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GraphApp.View
 {
@@ -49,7 +38,7 @@ namespace GraphApp.View
             Top = top;
 
             VertexNameField.Text = "default";
-            VertexRadiusField.Text = _defautRadius.ToString();
+            VertexRadiusSlider.Value = _defautRadius;
 
             ResizeMode = ResizeMode.NoResize;
         }
@@ -65,22 +54,22 @@ namespace GraphApp.View
             Top = (SystemParameters.PrimaryScreenHeight / 2) - (Height / 2);
 
             VertexNameField.Text = "default";
-            VertexRadiusField.Text = _defautRadius.ToString();
+            VertexRadiusSlider.Value = _defautRadius;
 
             ResizeMode = ResizeMode.NoResize;
 
         }
-        
+
         private void Create(object sender, RoutedEventArgs e)
         {
-            var radius = int.Parse(VertexRadiusField.Text);
+            var radius = VertexRadiusSlider.Value;
 
             if (radius < 1)
             {
                 throw new ArgumentOutOfRangeException("Радиус не может меньше 1.");
             }
 
-            VertexRadius = radius;
+            VertexRadius = (int)radius;
             VertexName = VertexNameField.Text;
 
             DialogResult = true;

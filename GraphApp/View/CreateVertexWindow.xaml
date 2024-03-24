@@ -39,19 +39,21 @@
 				</DockPanel>
 				<DockPanel
 					Margin="0, 20, 0, 0">
-					<Label
-						Content="Радиус"
+					<TextBlock
+						Text="Радиус (в пикселях)"
 						Foreground="White"
-						FontSize="16"/>
-					<TextBox 
-						Width="200"
-						Height="30"
-						HorizontalAlignment="Right"
-						Margin="0, 0, 10, 0"
-						VerticalContentAlignment="Center"
 						FontSize="16"
-						PreviewTextInput="CheckInputSymbolIsDigit"
-						x:Name="VertexRadiusField"/>
+						TextWrapping="Wrap"
+						Width="100"/>
+					<Slider
+						Minimum="5"
+						Maximum="100"
+						Width="200"
+						Margin="0, 0, 5, 0"
+						AutoToolTipPlacement="TopLeft"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right"
+						x:Name="VertexRadiusSlider"/>
 				</DockPanel>
 				<DockPanel
 					Margin="0, 20, 0, 0">

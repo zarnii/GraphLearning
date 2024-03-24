@@ -70,6 +70,11 @@ namespace GraphApp.Services
         /// <exception cref="ArgumentException"></exception>
         public void OpenNext(EducationMaterialNode material)
         {
+            if (!_educationMaterialMap.ContainsKey(material))
+            {
+                return;
+            }
+
             if (!_educationMaterialMap[material])
             {
                 throw new ArgumentException("Невозможно открыть следующий элемент, так как текущий элемент закрыт.");

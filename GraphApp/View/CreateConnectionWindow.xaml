@@ -45,10 +45,12 @@
 						x:Name="ConnectionTypeComboBox"/>
 				</DockPanel>
 				<DockPanel Margin="0, 20 ,0 ,0">
-					<Label
-						Content="Толщина связи"
+					<TextBlock
+						Text="Толщина связи (в пикселях)"
 						Foreground="White"
-						FontSize="16"/>
+						FontSize="16"
+						TextWrapping="Wrap"
+						Width="150"/>
 					<Slider
 						Minimum="1"
 						Maximum="20"

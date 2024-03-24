@@ -1,7 +1,7 @@
 ﻿using GraphApp.Command;
 using GraphApp.Interfaces;
 using GraphApp.Model;
-using InputBox;
+using GraphApp.View;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -24,7 +24,7 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Сервис вопросов.
         /// </summary>
-        private ITestProvider _testProvider;
+        private IQuestionProvider _questionService;
 
         /// <summary>
         /// Генератор тестов.
@@ -172,13 +172,13 @@ namespace GraphApp.ViewModel
         /// </summary>
         /// <param name="navigationService">Сервис навигации.</param>
         public EducationViewModel(INavigationService navigationService,
-            ITestProvider questionService,
+            IQuestionProvider questionService,
             ITheoryService userControlService,
             ITestGenerator testGenerator,
             IAccessControlService accessControlService)
         {
             _navigationService = navigationService;
-            _testProvider = questionService;
+            _questionService = questionService;
             _testGenerator = testGenerator;
             _accessControlService = accessControlService;
             _userControlService = userControlService;
@@ -237,16 +237,19 @@ namespace GraphApp.ViewModel
         /// <param name="parameter"></param>
         private void GenerateTestCommand(object parameter)
         {
-            var inputBox = new InputBoxWindow("Введите количество вопросов", "Введите количество вопросов");
 
-            if (!inputBox.ShowDialog())
+            var inputTestGenerateWindow = new TestGenerateWindow(_questionService.QuestionsCollection.Count);
+
+            if (!(bool)inputTestGenerateWindow.ShowDialog())
             {
                 return;
             }
 
             try
             {
-                _testProvider.CurrentTest = _testGenerator.RandomGenerate(inputBox.TextBoxResult);
+                var test = _testGenerator.RandomGenerate(inputTestGenerateWindow.Count);
+                var educationMaterialNode = new EducationMaterialNode(test, (material) => true);
+                _accessControlService.CurrentEducationMaterial = educationMaterialNode;
                 _navigationService.NavigateTo<TestViewModel>();
             }
             catch (ArgumentOutOfRangeException ex)

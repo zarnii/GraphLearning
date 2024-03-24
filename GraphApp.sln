@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphApp", "GraphApp\GraphA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "Console\Console.csproj", "{776E96FE-61E0-4C12-8AA4-B073B5DE936B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputBox", "InputBox\InputBox.csproj", "{0B9E09B1-5347-4F77-A379-8276E3D519BB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{776E96FE-61E0-4C12-8AA4-B073B5DE936B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{776E96FE-61E0-4C12-8AA4-B073B5DE936B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{776E96FE-61E0-4C12-8AA4-B073B5DE936B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B9E09B1-5347-4F77-A379-8276E3D519BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B9E09B1-5347-4F77-A379-8276E3D519BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B9E09B1-5347-4F77-A379-8276E3D519BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B9E09B1-5347-4F77-A379-8276E3D519BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
