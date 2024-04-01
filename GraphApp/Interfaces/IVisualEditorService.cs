@@ -1,10 +1,8 @@
 ﻿using GraphApp.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GraphApp.Interfaces
 {
@@ -48,9 +46,9 @@ namespace GraphApp.Interfaces
         /// <param name="connectedVertices">Соедененные вершины.</param>
         /// <param name="weight">Вес связи.</param>
         /// <param name="connectionType">Тип связи.</param>
-        void AddConnection((VisualVertex, VisualVertex) connectedVertices, 
+        void AddConnection((VisualVertex, VisualVertex) connectedVertices,
             double thickness,
-            double weight = 0, 
+            double weight = 0,
             ConnectionType connectionType = ConnectionType.NonDirectional);
 
         /// <summary>
@@ -59,7 +57,7 @@ namespace GraphApp.Interfaces
         /// <param name="point">Точка.</param>
         /// <param name="radius">Радиус.</param>
         /// <param name="name">Имя.</param>
-        void AddVertex(Point point, int radius, string name);
+        void AddVertex(Point point, int radius, string name, Color color);
 
         /// <summary>
         /// Удаление связи.

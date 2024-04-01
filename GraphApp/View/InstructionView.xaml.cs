@@ -12,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DocumentFormat.OpenXml.InkML;
-using GraphApp.Model;
 
 namespace GraphApp.View
 {
-	/// <summary>
-	/// Логика взаимодействия для TestView.xaml
-	/// </summary>
-	public partial class ScrollTestView : UserControl
-	{
-		public ScrollTestView()
-		{
-			InitializeComponent();
+    /// <summary>
+    /// Логика взаимодействия для Instruction.xaml
+    /// </summary>
+    public partial class InstructionView : UserControl
+    {
+        public InstructionView()
+        {
+            InitializeComponent();
         }
-	}
+    }
 }

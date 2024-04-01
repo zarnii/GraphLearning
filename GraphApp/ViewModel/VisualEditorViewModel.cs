@@ -166,43 +166,6 @@ namespace GraphApp.ViewModel
 
         #region public methods
         /// <summary>
-        /// Добавление вершины.
-        /// </summary>
-        /// <param name="coordinates">Координаты.</param>
-        /// <param name="radius">Радиус.</param>
-        /// <param name="name">Навзание.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Координаты заданы не верно.</exception>
-        public void AddVertrex(Point coordinates, int radius, string name)
-        {
-            if (coordinates.X < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(coordinates.X), "Координата X не может быть меньше нуля.");
-            }
-
-            if (coordinates.X > CanvasHeight)
-            {
-                throw new ArgumentOutOfRangeException(nameof(coordinates.X), $"Координата X не может быть больше {CanvasHeight}.");
-            }
-
-            if (coordinates.Y > CanvasWidth)
-            {
-                throw new ArgumentOutOfRangeException(nameof(coordinates.X), $"Координата Y не может быть больше {CanvasWidth}.");
-            }
-
-            if (coordinates.Y < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(coordinates.X), "Координата Y не может быть меньше нуля.");
-            }
-
-            if (radius < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(radius), "Радиус вершины не может быть меньше 1.");
-            }
-
-            _visualEditorService.AddVertex(coordinates, radius, name);
-        }
-
-        /// <summary>
         /// Добавление связи.
         /// </summary>
         /// <param name="connection">Связью</param>
@@ -254,7 +217,8 @@ namespace GraphApp.ViewModel
                 _visualEditorService.AddVertex(
                     point,
                     createVertexWindow.VertexRadius,
-                    createVertexWindow.VertexName
+                    createVertexWindow.VertexName,
+                    createVertexWindow.VertexColor
                 );
             }
         }

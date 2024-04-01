@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GraphApp.Model;
+using GraphApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

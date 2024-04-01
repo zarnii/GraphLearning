@@ -113,13 +113,13 @@ namespace GraphApp.Services
         /// <param name="point">Точка.</param>
         /// <param name = "radius" > Радиус.</param>
         /// <param name="name">Имя.</param>
-        public void AddVertex(Point point, int radius, string name)
+        public void AddVertex(Point point, int radius, string name, Color color)
         {
             Vertices.Add(new VisualVertex(
                 (point.X, point.Y),
                 radius,
                 Vertices.Count + 1,
-                _defaultVertexColor,
+                color,
                 name
             ));
         }

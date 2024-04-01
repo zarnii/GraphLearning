@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GraphApp.View
 {
     /// <summary>
-    /// Логика взаимодействия для CreateVertexWindow.xaml
+    /// Окно создания вершины.
     /// </summary>
     public partial class CreateVertexWindow : Window
     {
         private int _defautRadius = 10;
 
+        private Color _defaultColor = Colors.Red;
+
         public string VertexName { get; private set; }
 
         public int VertexRadius { get; private set; }
+
+        public Color VertexColor { get; private set; }
+
 
         /// <summary>
         /// Конструктор.
@@ -39,6 +45,7 @@ namespace GraphApp.View
 
             VertexNameField.Text = "default";
             VertexRadiusSlider.Value = _defautRadius;
+            ColorPicker.SelectedColor = _defaultColor;
 
             ResizeMode = ResizeMode.NoResize;
         }
@@ -55,6 +62,7 @@ namespace GraphApp.View
 
             VertexNameField.Text = "default";
             VertexRadiusSlider.Value = _defautRadius;
+            ColorPicker.SelectedColor = _defaultColor;
 
             ResizeMode = ResizeMode.NoResize;
 
@@ -81,6 +89,16 @@ namespace GraphApp.View
             {
                 e.Handled = true;
             }
+        }
+
+        private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
+        {
+            if (e.NewValue == null)
+            {
+                return;
+            }
+
+            VertexColor = e.NewValue.Value; 
         }
     }
 }

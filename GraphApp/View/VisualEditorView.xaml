@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:view="clr-namespace:GraphApp.View"
 			 xmlns:model="clr-namespace:GraphApp.Model"
+			 xmlns:arrowLib="clr-namespace:Petzold.Media2D;assembly=ArrowLib"
 			 xmlns:viewModel="clr-namespace:GraphApp.ViewModel"
 			 xmlns:converters="clr-namespace:GraphApp.Services.Converters"
 			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -19,6 +20,12 @@
 		
 		<converters:RadiusConverter 
 			x:Key="RadiusConverter"/>
+
+		<converters:ConnectionTypeVisualisator 
+			x:Key="ConnectionTypeVisualisator"/>
+
+		<converters:ConnectionCoordinatesConverter 
+			x:Key="ConnectionCoordinatesConverter"/>
 	</UserControl.Resources>
 	<Grid>
 
@@ -86,19 +93,64 @@
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<Line 
-								X1="{Binding X1}" 
-								Y1="{Binding Y1}" 
-								X2="{Binding X2}" 
-								Y2="{Binding Y2}" 
+							<arrowLib:ArrowLine 
 								Stroke="Black" 
-								StrokeThickness="{Binding Thickness}">
+								StrokeThickness="{Binding Thickness}"
+								ArrowEnds="{Binding ConnectionType, Converter={StaticResource ConnectionTypeVisualisator}}">
+								<arrowLib:ArrowLine.Style>
+									<Style TargetType="arrowLib:ArrowLine">
+										<Setter Property="X1">
+											<Setter.Value>
+												<MultiBinding ConverterParameter="X" Converter="{StaticResource ConnectionCoordinatesConverter}">
+													<Binding Path="X2"/>
+													<Binding Path="Y2"/>
+													<Binding Path="X1"/>
+													<Binding Path="Y1"/>
+													<Binding Path="FirstConnectedVertex.Radius"/>
+												</MultiBinding>
+											</Setter.Value>
+										</Setter>
+										<Setter Property="Y1">
+											<Setter.Value>
+												<MultiBinding ConverterParameter="Y" Converter="{StaticResource ConnectionCoordinatesConverter}">
+													<Binding Path="X2"/>
+													<Binding Path="Y2"/>
+													<Binding Path="X1"/>
+													<Binding Path="Y1"/>
+													<Binding Path="FirstConnectedVertex.Radius"/>
+												</MultiBinding>
+											</Setter.Value>
+										</Setter>
+										<Setter Property="X2">
+											<Setter.Value>
+												<MultiBinding ConverterParameter="X" Converter="{StaticResource ConnectionCoordinatesConverter}">
+													<Binding Path="X1"/>
+													<Binding Path="Y1"/>
+													<Binding Path="X2"/>
+													<Binding Path="Y2"/>
+													<Binding Path="SecondConnectedVertex.Radius"/>
+												</MultiBinding>
+											</Setter.Value>
+										</Setter>
+										<Setter Property="Y2">
+											<Setter.Value>
+												<MultiBinding ConverterParameter="Y" Converter="{StaticResource ConnectionCoordinatesConverter}">
+													<Binding Path="X1"/>
+													<Binding Path="Y1"/>
+													<Binding Path="X2"/>
+													<Binding Path="Y2"/>
+													<Binding Path="SecondConnectedVertex.Radius"/>
+												</MultiBinding>
+											</Setter.Value>
+										</Setter>
+									</Style>
+								</arrowLib:ArrowLine.Style>
 								<i:Interaction.Triggers>
 									<i:EventTrigger EventName="PreviewMouseDown">
 										<i:InvokeCommandAction Command="{Binding Path=DataContext.ClickOnGraphElement, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
 									</i:EventTrigger>
 								</i:Interaction.Triggers>
-							</Line>
+							</arrowLib:ArrowLine>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

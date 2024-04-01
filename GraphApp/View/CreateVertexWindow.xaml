@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphApp.View"
+		xmlns:toolKit="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Создание вершины" Height="250" Width="350">
     <Grid Style="{StaticResource GridStyle}">
@@ -61,14 +62,12 @@
 						Content="Цвет"
 						Foreground="White"
 						FontSize="16"/>
-					<TextBox
+					<toolKit:ColorPicker
 						Width="200"
-						Height="30"
 						HorizontalAlignment="Right"
-						Margin="0, 0, 10, 0"
-						VerticalContentAlignment="Center"
-						FontSize="16"
-						x:Name="VertexColorField"/>
+						Margin="0, 0, 7, 0"
+						SelectedColorChanged="ColorPicker_SelectedColorChanged"
+						x:Name="ColorPicker"/>
 				</DockPanel>
 			</StackPanel>
 		</Grid>

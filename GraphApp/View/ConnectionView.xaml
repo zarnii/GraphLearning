@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GraphApp.View"
+			 xmlns:converters="clr-namespace:GraphApp.Services.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="250">
+	<UserControl.Resources>
+		<converters:ConnectionTypeNameConverter x:Key="ConnectionTypeNameConverter"/>
+	</UserControl.Resources>
     <Grid Style="{StaticResource GridStyle}">
 		<StackPanel>
 			<DockPanel>
@@ -17,7 +21,13 @@
 					ItemsSource="{Binding ConnectionTypes}"
 					SelectedItem="{Binding VisualConnection.ConnectionType, 
 						Mode=TwoWay,
-						UpdateSourceTrigger=PropertyChanged}"/>
+						UpdateSourceTrigger=PropertyChanged}">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Converter={StaticResource ConnectionTypeNameConverter}}"/>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
 			</DockPanel>
 			<DockPanel Margin="0, 20, 0, 0">
 				<Label

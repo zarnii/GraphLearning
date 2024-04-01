@@ -43,7 +43,7 @@ namespace GraphApp.ViewModel
         public int CanvasWidth { get; set; }
         public ICommand MouseScale { get; set; }
         public ObservableCollection<Vertex> Shapes { get; set; }
-        public string Text { get; set; } = "Hello\nWorld!";
+        public string Text { get; set; }
 
         public ScrollTestViewModel()
         {

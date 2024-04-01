@@ -337,6 +337,10 @@
 			<view:EducationView/>
 		</DataTemplate>
 
+		<DataTemplate DataType="{x:Type viewModel:InstructionViewModel}">
+			<view:InstructionView/>
+		</DataTemplate>
+
 		<DataTemplate DataType="{x:Type viewModel:TestViewModel}">
 			<view:TestView/>
 		</DataTemplate>

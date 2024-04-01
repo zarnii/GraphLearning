@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GraphApp.View"
+        xmlns:converters="clr-namespace:GraphApp.Services.Converters"
         mc:Ignorable="d"
-        Title="CreateConnectionWindow" Height="250" Width="350">
+        Title="Создание связи" Height="250" Width="350">
+	<Window.Resources>
+		<converters:ConnectionTypeNameConverter x:Key="ConnectionTypeNameConverter"/>
+	</Window.Resources>
     <Grid Style="{StaticResource GridStyle}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30"/>
@@ -23,7 +26,7 @@
 			<StackPanel>
 				<DockPanel>
 					<Label
-						Content="Вес вершины"
+						Content="Вес связи"
 						Foreground="White"
 						FontSize="16"/>
 					<TextBox
@@ -42,7 +45,13 @@
 					<ComboBox
 						Width="200"
 						HorizontalAlignment="Right"
-						x:Name="ConnectionTypeComboBox"/>
+						x:Name="ConnectionTypeComboBox">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Converter={StaticResource ConnectionTypeNameConverter}}"/>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
 				</DockPanel>
 				<DockPanel Margin="0, 20 ,0 ,0">
 					<TextBlock

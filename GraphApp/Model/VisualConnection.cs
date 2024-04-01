@@ -154,6 +154,7 @@ namespace GraphApp.Model
 			set
 			{
 				_connection.ConnectionType = value;
+				OnPropertyChanged(nameof(ConnectionType));
 			}
 		}
 
@@ -273,7 +274,23 @@ namespace GraphApp.Model
         /// <returns></returns>
         public int CompareTo(VisualConnection? other)
         {
-			return Number.CompareTo(other?.Number);
+			var thisNumbers = new int[2] 
+			{
+				ConnectedVertices.Item1.Number,
+				ConnectedVertices.Item2.Number
+			};
+
+
+			var otherNumbers = new int[2]
+			{
+				other.ConnectedVertices.Item1.Number,
+				other.ConnectedVertices.Item2.Number
+			};
+
+			Array.Sort(thisNumbers);
+			Array.Sort(otherNumbers);
+
+			return String.Compare($"{thisNumbers[0]}{thisNumbers[1]}", $"{otherNumbers[0]}{otherNumbers[1]}");
         }
         #endregion
 

@@ -61,6 +61,7 @@ namespace GraphApp.View
             ConnectionTypeComboBox.ItemsSource = _connectionsType;
             ConnectionTypeComboBox.SelectedItem = ConnectionType.NonDirectional;
             ConnectionThicknessSlider.Value = _defaultConnectionThickness;
+            this.ResizeMode = ResizeMode.NoResize;
         }
 
         /// <summary>

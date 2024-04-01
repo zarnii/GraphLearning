@@ -66,6 +66,7 @@ namespace GraphApp
             serviceCollection.AddTransient<PracticViewModel>();
             serviceCollection.AddTransient<VertexViewModel>();
             serviceCollection.AddTransient<ConnectionViewModel>();
+            serviceCollection.AddSingleton<InstructionViewModel>();
             #endregion
 
             #region other
