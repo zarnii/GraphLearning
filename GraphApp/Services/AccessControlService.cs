@@ -203,9 +203,9 @@ namespace GraphApp.Services
                 Directory.CreateDirectory(pathToFile);
             }
 
-            if (!File.Exists(fileName))
+            if (!File.Exists($"{pathToFile}/{fileName}"))
             {
-                File.Create(fileName);
+                File.Create($"{pathToFile}/{fileName}");
             }
 
             var serializableEducationMaterialNodes = new List<SerializableEducationMaterialNode>(_educationMaterialMap.Count);
