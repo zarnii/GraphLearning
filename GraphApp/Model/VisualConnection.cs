@@ -268,9 +268,9 @@ namespace GraphApp.Model
 		}
 
         /// <summary>
-        /// Реализация IComparable !!! Переделать.
+        /// Реализация IComparable.
         /// </summary>
-        /// <param name="other"></param>
+        /// <param name="other">Сравнимаемый объект.</param>
         /// <returns></returns>
         public int CompareTo(VisualConnection? other)
         {

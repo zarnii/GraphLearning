@@ -29,7 +29,7 @@
 					Foreground="White"
 					FontSize="16"/>
 				<Slider
-					Minimum="1"
+					Minimum="5"
 					Maximum="100"
 					Value="{Binding VisualVertex.Radius,
 						Mode=TwoWay,

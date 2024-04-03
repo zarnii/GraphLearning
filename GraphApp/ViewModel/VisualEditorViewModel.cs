@@ -245,9 +245,10 @@ namespace GraphApp.ViewModel
                         createConnectionWindow.ConnectionThickness,
                         createConnectionWindow.ConnectionWeight,
                         createConnectionWindow.ConnectionType
-                    );
-                    SelectedVerticesForConnection.Clear();
+                    );  
                 }
+
+                SelectedVerticesForConnection.Clear();
             }
         }
 

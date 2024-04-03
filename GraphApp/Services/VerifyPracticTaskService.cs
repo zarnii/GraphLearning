@@ -116,7 +116,7 @@ namespace GraphApp.Services
                 }
             }
 
-            return false;
+            return true;
         }
 
         private bool ConnectionCountIsDone(IList<VisualConnection> actualConnections,
@@ -126,9 +126,9 @@ namespace GraphApp.Services
         }
 
         private bool ConnectionIsDone(IList<VisualConnection> actualConnection,
-            IList<VisualConnection> expectexConnection)
+            IList<VisualConnection> expectedConnection)
         {
-            if (!ConnectionCountIsDone(actualConnection, expectexConnection))
+            if (!ConnectionCountIsDone(actualConnection, expectedConnection))
             {
                 return false;
             }
@@ -136,10 +136,33 @@ namespace GraphApp.Services
             for (var i = 0; i < actualConnection.Count; i++)
             {
                 var actualConnectedVertices = actualConnection[i].ConnectedVertices;
-                var expectedConnectedVerices = expectexConnection[i].ConnectedVertices;
+                var expectedConnectedVerices = expectedConnection[i].ConnectedVertices;
 
-                if (actualConnectedVertices.Item1.Name != expectedConnectedVerices.Item1.Name
-                    || actualConnectedVertices.Item2.Name != expectedConnectedVerices.Item2.Name)
+                var actualName = new string[2]
+                {
+                    actualConnectedVertices.Item1.Name,
+                    actualConnectedVertices.Item2.Name
+                };
+
+                var expectedName = new string[2]
+                {
+                    expectedConnectedVerices.Item1.Name,
+                    expectedConnectedVerices.Item2.Name
+                };
+
+                /*
+                 Если связь двунаправленная, то связь "2<->5" и
+                 "5<->2" одна и та же. Так что для проверки нужно отсортировать.
+                 */
+                if (actualConnection[i].ConnectionType == ConnectionType.Bidirectional
+                    && expectedConnection[i].ConnectionType == ConnectionType.Bidirectional)
+                {
+                    Array.Sort(actualName);
+                    Array.Sort(expectedName);
+                }
+
+                if (actualName[0] != expectedName[0]
+                    || actualName[1] != expectedName[1])
                 {
                     return false;
                 }

@@ -29,6 +29,8 @@ namespace GraphApp.Model
 		/// Радиус.
 		/// </summary>
 		private int _radius;
+
+		private const int MinimalRadius = 5;
 		#endregion
 
 		#region properties
@@ -63,6 +65,11 @@ namespace GraphApp.Model
 			}
 			set
 			{
+				if (value < MinimalRadius)
+				{
+					throw new ArgumentOutOfRangeException($"Минимальный размер - {MinimalRadius}");
+				}
+
 				_radius = value;
 				OnPropertyChanged(nameof(Radius));
 				OnPropertyChanged(nameof(X));

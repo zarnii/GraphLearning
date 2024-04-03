@@ -23,9 +23,6 @@
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\EducationMaterialMap\EducationMaterialMap.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
     <None Update="Resources\Img\AdjacencyExample.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -53,6 +50,9 @@
     <None Update="Resources\Img\Instruction7.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Practics\2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Practics\1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -65,5 +65,9 @@
     <None Update="Resources\Tests\1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\EducationMaterialMap\" />
   </ItemGroup>
 </Project>
