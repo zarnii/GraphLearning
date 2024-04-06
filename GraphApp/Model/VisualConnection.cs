@@ -311,6 +311,29 @@ namespace GraphApp.Model
 		/// <param name="e">Аргументы.</param>
 		private void UpdateVertexCoords(object sender, PropertyChangedEventArgs e)
 		{
+			if (sender == ConnectedVertices.Item1 && sender == ConnectedVertices.Item2)
+			{
+                if (e.PropertyName == nameof(ConnectedVertices.Item1.Vertex.X))
+                {
+                    OnPropertyChanged(nameof(X1));
+                }
+
+                if (e.PropertyName == nameof(ConnectedVertices.Item1.Vertex.Y))
+                {
+                    OnPropertyChanged(nameof(Y1));
+                }
+
+                if (e.PropertyName == nameof(ConnectedVertices.Item2.Vertex.X))
+                {
+                    OnPropertyChanged(nameof(X2));
+                }
+
+                if (e.PropertyName == nameof(ConnectedVertices.Item2.Vertex.Y))
+                {
+                    OnPropertyChanged(nameof(Y2));
+                }
+            }
+
 			if (sender == ConnectedVertices.Item1)
 			{
 				if (e.PropertyName == nameof(ConnectedVertices.Item1.Vertex.X))

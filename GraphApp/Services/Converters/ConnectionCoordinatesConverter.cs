@@ -25,14 +25,12 @@ namespace GraphApp.Services.Converters
             
             if ((String)parameter == "X")
             {
-                var a = x2 - radius * Math.Cos(angleInRadians);
-                return a;
+                return x2 - radius * Math.Cos(angleInRadians);
             }
 
             if ((String)parameter == "Y")
             {
-                var a = y2 - radius * Math.Sin(angleInRadians);
-                return a;
+                return y2 - radius * Math.Sin(angleInRadians);
             }
 
             return null;

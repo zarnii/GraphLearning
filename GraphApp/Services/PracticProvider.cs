@@ -8,7 +8,7 @@ using System.IO;
 namespace GraphApp.Services
 {
     /// <summary>
-    /// Поставщик практических заданий.s
+    /// Поставщик практических заданий
     /// </summary>
     public class PracticProvider : IPracticProvider
     {
@@ -56,8 +56,8 @@ namespace GraphApp.Services
                 return;
             }
 
-            var files = Directory.GetFiles(pathToPratcits);
-            PracticCollection = new List<PracticTask>();
+            var files = Directory.GetFiles(pathToPratcits, "*json");
+            PracticCollection = new List<PracticTask>(files.Length);
 
             foreach (var file in files)
             {

@@ -26,6 +26,9 @@
 
 		<converters:ConnectionCoordinatesConverter 
 			x:Key="ConnectionCoordinatesConverter"/>
+
+		<converters:ConnectionVisibleConverter
+			x:Key="ConnectionVisibleConverter"/>
 	</UserControl.Resources>
 	<Grid>
 
@@ -154,6 +157,39 @@
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
+
+				<!--Отображение колцевых связей.-->
+				<ItemsControl ItemsSource="{Binding Connections}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Canvas/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemContainerStyle>
+						<Style>
+							<Setter Property="Canvas.Top" Value="{Binding Y1}"/>
+							<Setter Property="Canvas.Left" Value="{Binding X1}"/>
+						</Style>
+					</ItemsControl.ItemContainerStyle>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Ellipse 
+								Stroke="Black" 
+								Width="{Binding FirstConnectedVertex.Radius, 
+									Converter={StaticResource RadiusConverter}}" 
+								Height="{Binding FirstConnectedVertex.Radius, 
+									Converter={StaticResource RadiusConverter}}"
+								Opacity="{Binding Converter={StaticResource ConnectionVisibleConverter}}"
+								StrokeThickness="{Binding Thickness}">
+								<i:Interaction.Triggers>
+									<i:EventTrigger EventName="PreviewMouseDown">
+										<i:InvokeCommandAction Command="{Binding Path=DataContext.ClickOnGraphElement, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
+									</i:EventTrigger>
+								</i:Interaction.Triggers>
+							</Ellipse>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 				
 				<!--Отображение веса связи.-->
 				<ItemsControl ItemsSource="{Binding Connections}">
@@ -169,6 +205,7 @@
 									<MultiBinding Converter="{StaticResource ConnectionWeightCoordinatesConverter}">
 										<Binding Path="X1"/>
 										<Binding Path="X2"/>
+										<Binding Path=""/>
 									</MultiBinding>
 								</Setter.Value>
 							</Setter>
@@ -177,6 +214,7 @@
 									<MultiBinding Converter="{StaticResource ConnectionWeightCoordinatesConverter}">
 										<Binding Path="Y1"/>
 										<Binding Path="Y2"/>
+										<Binding Path=""/>
 									</MultiBinding>
 								</Setter.Value>
 							</Setter>
@@ -202,7 +240,9 @@
 						<Style>
 							<Setter Property="Canvas.Left">
 								<Setter.Value>
-									<MultiBinding Converter="{StaticResource VertexNameCoordinatesConverter}">
+									<MultiBinding 
+										Converter="{StaticResource VertexNameCoordinatesConverter}"
+										ConverterParameter="X">
 										<Binding Path="X"/>
 										<Binding Path="Radius"/>
 									</MultiBinding>
@@ -210,7 +250,9 @@
 							</Setter>
 							<Setter Property="Canvas.Top">
 								<Setter.Value>
-									<MultiBinding Converter="{StaticResource VertexNameCoordinatesConverter}">
+									<MultiBinding 
+										Converter="{StaticResource VertexNameCoordinatesConverter}"
+										ConverterParameter="Y">
 										<Binding Path="Y"/>
 										<Binding Path="Radius"/>
 									</MultiBinding>

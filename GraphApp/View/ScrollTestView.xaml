@@ -7,6 +7,7 @@
 			 xmlns:arrowLib="clr-namespace:Petzold.Media2D;assembly=ArrowLib"
              mc:Ignorable="d"
 			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+			 xmlns:p="clr-namespace:Petzold.Media2D;assembly=ArrowLib"
              d:DesignHeight="450" d:DesignWidth="800">
 	<Grid Style="{StaticResource GridStyle}">
 		<Grid.RowDefinitions>
@@ -17,7 +18,24 @@
 		<Grid Grid.Row="1">
 
 			<TextBlock Text="{Binding Text}"/>
-			<Canvas x:Name="canvas"/>
+			<Canvas>
+				<Ellipse Stroke="Red" Height="20" Width="20">
+					<Ellipse.Style>
+						<Style>
+							<Setter Property="Canvas.Top" Value="100"/>
+							<Setter Property="Canvas.Left" Value="100"/>
+						</Style>
+					</Ellipse.Style>
+				</Ellipse>
+				<Ellipse Stroke="Yellow" Height="20" Width="20">
+					<Ellipse.Style>
+						<Style>
+							<Setter Property="Canvas.Top" Value="90"/>
+							<Setter Property="Canvas.Left" Value="90"/>
+						</Style>
+					</Ellipse.Style>
+				</Ellipse>
+			</Canvas>
 
 			<!--
 			<DockPanel>

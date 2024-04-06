@@ -22,7 +22,12 @@ namespace GraphApp.Services.Converters
             var coordinate = (double)values[0];
             var diameter = (int)values[1] * 2;
 
-            return coordinate + diameter;
+            if ((string)parameter == "X")
+            {
+                return coordinate + diameter;
+            }
+
+            return coordinate - diameter;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

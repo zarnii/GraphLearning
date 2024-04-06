@@ -69,14 +69,15 @@ namespace GraphApp.Services
         /// </summary>
         private void InitTests(IDataLoader dataLoader)
         {
-            _testCollection = new List<Test>();
+            var pathToTests = ConfigurationManager.AppSettings["defaultPathToTests"];
 
-            if (!Directory.Exists(ConfigurationManager.AppSettings["defaultPathToQuestions"]))
+            if (!Directory.Exists(pathToTests))
             {
                 return;
             }
 
-            var files = Directory.GetFiles(ConfigurationManager.AppSettings["defaultPathToTests"]);
+            var files = Directory.GetFiles(pathToTests, "*json");
+            _testCollection = new List<Test>(files.Length);
 
             foreach (var file in files)
             {
