@@ -239,7 +239,7 @@ namespace GraphApp.Model
         /// <returns></returns>
         public int CompareTo(VisualVertex? other)
 		{
-			return Number.CompareTo(other?.Number);
+			return Name.CompareTo(other?.Name);
 		}
 		#endregion
 
