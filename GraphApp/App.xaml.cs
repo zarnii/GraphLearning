@@ -52,6 +52,7 @@ namespace GraphApp
             serviceCollection.AddSingleton<ITestGenerator, TestGenerator>();
             serviceCollection.AddSingleton<IAccessControlService, AccessControlService>();
             serviceCollection.AddSingleton<IVerifyPracticTaskService, VerifyPracticTaskService>();
+            serviceCollection.AddSingleton<IMessageBuffer, MessageBuffer>();
             #endregion
 
             #region viewModel
@@ -70,7 +71,7 @@ namespace GraphApp
             #endregion
 
             #region other
-            // Фабричная функция vm.
+            // Фабрика vm.
             serviceCollection.AddSingleton<Func<Type, ViewModel.ViewModel>>((vmType) =>
             {
                 return (ViewModel.ViewModel)_serviceProvider.GetRequiredService(vmType);
@@ -92,6 +93,9 @@ namespace GraphApp
             rootWindow.Show();
 
             base.OnStartup(e);
+            var time = new TimeSpan(0, 3, 0);
+
+            var s = System.Text.Json.JsonSerializer.Serialize(time);
         }
 
         private void SettingMapper()

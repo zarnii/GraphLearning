@@ -32,6 +32,11 @@
 				VerticalAlignment="Center"
 				HorizontalAlignment="Center"
 				Style="{StaticResource Header1Style}"/>
+			<Label
+				Content="{Binding TimerValue}"
+				HorizontalAlignment="Right"
+				Style="{StaticResource LabelStyle}"
+				Opacity="{Binding TimerOpasity}"/>
 		</Grid>
 
 		<Grid Grid.Row="3">

@@ -56,6 +56,11 @@ namespace GraphApp.ViewModel
         /// Проверенные ответы по вопросам.
         /// </summary>
         public ObservableCollection<KeyValuePair<Question, List<VisualAnswer>>> QuestionVerifiedAnswerMap { get; private set; }
+        
+        /// <summary>
+        /// Сообщение.
+        /// </summary>
+        public string Message { get; set; }
         #endregion
 
         #region constructor
@@ -65,11 +70,13 @@ namespace GraphApp.ViewModel
         /// <param name="verifyTestService">Сервис проверки теста.</param>
         /// <param name="navigationService">Сервис навигации.</param>
         public VerifyTestViewModel(IVerifyTestService verifyTestService, 
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IMessageBuffer messageBuffer)
         {
             _navigationService = navigationService;
             _testCheckService = verifyTestService;
-            
+            Message = messageBuffer.Message;
+            messageBuffer.Message = String.Empty;
 
             QuestionVerifiedAnswerMap = new ObservableCollection<KeyValuePair<Question, List<VisualAnswer>>>(
                 _testCheckService.QuestionVerifiedAnswerMap.ToList()

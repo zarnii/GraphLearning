@@ -18,6 +18,11 @@ namespace GraphApp.Model
         public int IndexNumber { get; set; }
 
         /// <summary>
+        /// Время выполнения задания.
+        /// </summary>
+        public TimeSpan? LeadTime { get; set; }
+
+        /// <summary>
         /// Сравнение двух объектов.
         /// </summary>
         /// <param name="other">Сравниваемый объект.</param>

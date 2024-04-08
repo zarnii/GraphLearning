@@ -10,6 +10,7 @@
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30"/>
+			<RowDefinition Height="50"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
@@ -20,7 +21,12 @@
 			HorizontalAlignment="Left"
 			Command="{Binding OpenTestView}"/>
 
-		<Grid Grid.Row="1">
+		<Label Grid.Row="1"
+			Content="{Binding Message}"
+			   Style="{StaticResource Header1Style}"
+			   Foreground="Red"/>
+
+		<Grid Grid.Row="2">
 			<ItemsControl ItemsSource="{Binding QuestionVerifiedAnswerMap}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
