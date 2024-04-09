@@ -84,5 +84,10 @@ namespace GraphApp.Interfaces
         /// </summary>
         /// <param name="mode">Режим мыши.</param>
         void SetMouseMode(MouseMode mode);
+
+        /// <summary>
+        /// Создание матрицы смежности.
+        /// </summary>
+        AdjacencyMatrix CreateAdjacencyMatrix();
     }
 }

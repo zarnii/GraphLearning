@@ -2,6 +2,7 @@
 using GraphApp.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -184,6 +185,18 @@ namespace GraphApp.Services
         {
             _mouseMode = mode;
             SelectedVerticesForConnection.Clear();
+        }
+
+        /// <summary>
+        /// Создание матрицы смежности.
+        /// </summary>
+        /// <returns></returns>
+        public AdjacencyMatrix CreateAdjacencyMatrix()
+        {
+            var vertices = Vertices.Select(v => v.Vertex).ToList();
+            var connections = Connections.Select(v => v.Connection).ToList();
+
+            return new AdjacencyMatrix(vertices, connections);
         }
         #endregion
 

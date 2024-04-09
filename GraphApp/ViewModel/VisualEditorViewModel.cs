@@ -57,6 +57,11 @@ namespace GraphApp.ViewModel
         public ICommand MoveVertex { get; private set; }
 
         /// <summary>
+        /// Команда создания матрицы смежности.
+        /// </summary>
+        public ICommand CreateAdjacencyMatrix { get; private set; }
+
+        /// <summary>
         /// Ширина графического поля.
         /// </summary>
         public int CanvasWidth
@@ -161,6 +166,7 @@ namespace GraphApp.ViewModel
             ClickOnField = new RelayCommand(ClickOnFieldCommand);
             MoveVertex = new RelayCommand(MoveVertexCommand);
             ClickOnGraphElement = new RelayCommand(ClickOnGraphElementCommand);
+            CreateAdjacencyMatrix = new RelayCommand(CreateAdjacencyMatrixCommand);
         }
         #endregion
 
@@ -265,6 +271,11 @@ namespace GraphApp.ViewModel
                 dragDeltaEventArgs.HorizontalChange,
                 dragDeltaEventArgs.VerticalChange
             );
+        }
+
+        private void CreateAdjacencyMatrixCommand(object parameter)
+        {
+            var matrix = _visualEditorService.CreateAdjacencyMatrix();
         }
 
         /// <summary>
