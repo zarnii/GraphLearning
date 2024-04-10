@@ -68,6 +68,7 @@ namespace GraphApp
             serviceCollection.AddTransient<VertexViewModel>();
             serviceCollection.AddTransient<ConnectionViewModel>();
             serviceCollection.AddSingleton<InstructionViewModel>();
+            serviceCollection.AddTransient<SettingsViewModel>();
             #endregion
 
             #region other
@@ -256,35 +257,6 @@ namespace GraphApp
                 };
 
                 return pt;
-            });
-
-            // EducationMaterialNode => SerializableEducatuionMaterialNode
-            mapper.CreateMap<EducationMaterialNode, SerializableEducationMaterialNode>((tSource, param) =>
-            {
-                var emn = tSource as EducationMaterialNode;
-
-                return new SerializableEducationMaterialNode()
-                {
-                    IndexNumber = emn.EducationMaterialIndexNumber,
-                    Flag = emn.EducationMaterial != null
-                };
-            });
-
-            // SerializableEducationMaterialNode => KeyValuePair.
-            mapper.CreateMap<SerializableEducationMaterialNode, KeyValuePairClass<EducationMaterialNode, bool>>((tSource, param) =>
-            {
-                var serializableEmn = tSource as SerializableEducationMaterialNode;
-                var educationMaterialCollection = param as EducationMaterialNode[];
-                var node = educationMaterialCollection
-                    .Where(e => e.EducationMaterialIndexNumber == serializableEmn.IndexNumber)
-                    .FirstOrDefault();
-
-                if (node == null)
-                {
-                    throw new ArgumentNullException(nameof(node), "Обучающий элемент не найден.");
-                }
-
-                return new KeyValuePairClass<EducationMaterialNode, bool>(node, serializableEmn.Flag);
             });
         }
     }

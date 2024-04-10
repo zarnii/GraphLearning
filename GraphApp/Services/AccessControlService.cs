@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace GraphApp.Services
@@ -15,11 +16,6 @@ namespace GraphApp.Services
     /// </summary>
     public class AccessControlService : IAccessControlService
     {
-        /// <summary>
-        /// Карта сопоставления флага, показывающий открыт ли материал, и материал. 
-        /// </summary>
-        private Dictionary<EducationMaterialNode, bool> _educationMaterialMap;
-
         /// <summary>
         /// Обработчик данных.
         /// </summary>
@@ -41,6 +37,11 @@ namespace GraphApp.Services
         public EducationMaterialNode[] EducationMaterialsCollection { get; private set; }
 
         /// <summary>
+        /// Карта сопоставления обучающего материала и доп информации. 
+        /// </summary>
+        public Dictionary<EducationMaterialNode, EducationMaterialInfo> EducationMaterialMap { get; private set; }
+
+        /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="testProvider">Поставщик тестов.</param>
@@ -56,7 +57,7 @@ namespace GraphApp.Services
 
             EducationMaterialsCollection = new EducationMaterialNode[
                 testProvider.TestCollection.Count + practicProvider.PracticCollection.Count];
-            _educationMaterialMap = new Dictionary<EducationMaterialNode, bool>(
+            EducationMaterialMap = new Dictionary<EducationMaterialNode, EducationMaterialInfo>(
                 testProvider.TestCollection.Count + practicProvider.PracticCollection.Count);
 
             InitNodesCollection(testProvider, practicProvider);
@@ -70,23 +71,44 @@ namespace GraphApp.Services
         /// <exception cref="ArgumentException"></exception>
         public void OpenNext(EducationMaterialNode material)
         {
-            if (!_educationMaterialMap.ContainsKey(material))
+            if (!EducationMaterialMap.ContainsKey(material))
             {
                 return;
             }
 
-            if (!_educationMaterialMap[material])
+            if (!EducationMaterialMap[material].IsOpen)
             {
                 throw new ArgumentException("Невозможно открыть следующий элемент, так как текущий элемент закрыт.");
             }
-
+            
             var materialIndex = EducationMaterialsCollection.FindIndex<EducationMaterialNode>(material);
 
             if (materialIndex + 1 != EducationMaterialsCollection.Length)
             {
-                _educationMaterialMap[EducationMaterialsCollection[materialIndex + 1]] = true;
+                EducationMaterialMap[EducationMaterialsCollection[materialIndex + 1]].IsOpen = true;
                 SaveMap();
             }
+        }
+
+        /// <summary>
+        /// Проверка, пройден ли обучающий материал.
+        /// </summary>
+        /// <param name="material">Обучающий материал.</param>
+        /// <returns>True, если пройден.</returns>
+        public bool CheckEducationMaterialIsPassed(EducationMaterialNode material)
+        {
+            var materialIndex = EducationMaterialsCollection.FindIndex(material);
+
+            return EducationMaterialMap[EducationMaterialsCollection[materialIndex + 1]].IsOpen;
+        }
+
+        /// <summary>
+        /// Добавление попытки прохождения к обучающему материалу.
+        /// </summary>
+        /// <param name="material"></param>
+        public void AddAttempt(EducationMaterialNode material)
+        {
+            EducationMaterialMap[material].AttemptsNumber++;
         }
 
         /// <summary>
@@ -96,7 +118,7 @@ namespace GraphApp.Services
         /// <returns>True, если можно.</returns>
         private bool CheckCanGetMaterial(EducationMaterialNode material)
         {
-            if (_educationMaterialMap[material])
+            if (EducationMaterialMap[material].IsOpen)
             {
                 return true;
             }
@@ -164,12 +186,20 @@ namespace GraphApp.Services
 
             try
             {
-                var data = dataLoader.Load<SerializableEducationMaterialNode[]>($"{pathToFile}/{fileName}");
+                var infoCollection = dataLoader.Load<EducationMaterialInfo[]>($"{pathToFile}/{fileName}");
 
-                foreach (var node in data)
+                foreach (var info in infoCollection)
                 {
-                    var pair = mapper.Map<KeyValuePairClass<EducationMaterialNode, bool>>(node, EducationMaterialsCollection);
-                    _educationMaterialMap.Add(pair.Pair.Key, pair.Pair.Value);
+                    var node = EducationMaterialsCollection
+                        .Where(e => e.EducationMaterialIndexNumber == info.IndexNumber)
+                        .FirstOrDefault();
+                    
+                    if (node == null)
+                    {
+                        throw new ArgumentNullException();
+                    }
+
+                    EducationMaterialMap[node] = info;
                 }
             }
             catch(ArgumentNullException ex)
@@ -208,17 +238,14 @@ namespace GraphApp.Services
                 File.Create($"{pathToFile}/{fileName}");
             }
 
-            var serializableEducationMaterialNodes = new List<SerializableEducationMaterialNode>(_educationMaterialMap.Count);
+            var educationMaterialInfoCollection = new List<EducationMaterialInfo>(EducationMaterialsCollection.Length);
 
             foreach (var node in EducationMaterialsCollection)
             {
-                serializableEducationMaterialNodes.Add(
-                    _mapper.Map<SerializableEducationMaterialNode>(node, null)
-                );
+                educationMaterialInfoCollection.Add(EducationMaterialMap[node]);
             }
 
-            _dataHandler.Save<List<SerializableEducationMaterialNode>>(
-                serializableEducationMaterialNodes, $"{pathToFile}/{fileName}");
+            _dataHandler.Save(educationMaterialInfoCollection, $"{pathToFile}/{fileName}");
         }
 
         /// <summary>
@@ -228,10 +255,10 @@ namespace GraphApp.Services
         {
             foreach (var node in EducationMaterialsCollection)
             {
-                _educationMaterialMap[node] = false;
+                EducationMaterialMap[node].IsOpen = false;
             }
 
-            _educationMaterialMap[EducationMaterialsCollection[0]] = true;
+            EducationMaterialMap[EducationMaterialsCollection[0]].IsOpen = true;
             SaveMap();
         }
     }

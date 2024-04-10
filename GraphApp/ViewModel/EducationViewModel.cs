@@ -208,15 +208,14 @@ namespace GraphApp.ViewModel
         {
             var material = (EducationMaterialNode)parameter;
             var type = material.EducationMaterial.GetType();
+            _accessControlService.CurrentEducationMaterial = material;
 
             if (type == typeof(Test))
             {
-                _accessControlService.CurrentEducationMaterial = material;
                 _navigationService.NavigateTo<TestViewModel>();
             }
             else if (type == typeof(PracticTask))
             {
-                _accessControlService.CurrentEducationMaterial = material;
                 _navigationService.NavigateTo<PracticViewModel>();
             }
         }

@@ -1,1 +1,17 @@
-[{"IndexNumber":1,"Flag":true},{"IndexNumber":2,"Flag":false},{"IndexNumber":3,"Flag":false}]
+[
+		{
+				"IndexNumber": 1,
+				"IsOpen": true,
+				"AttemptsNumber":  0
+		},
+		{
+				"IndexNumber": 2,
+				"IsOpen": false,
+				"AttemptsNumber": 0
+		},
+		{
+				"IndexNumber": 3,
+				"IsOpen": false,
+				"AttemptsNumber": 0
+		}
+]

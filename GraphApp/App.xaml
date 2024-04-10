@@ -369,5 +369,9 @@
 			<view:ConnectionView/>
 		</DataTemplate>
 
+		<DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
+			<view:SettingsView/>
+		</DataTemplate>
+
 	</Application.Resources>
 </Application>

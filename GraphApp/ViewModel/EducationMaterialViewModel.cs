@@ -1,4 +1,5 @@
 ﻿using GraphApp.Interfaces;
+using GraphApp.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,8 @@ namespace GraphApp.ViewModel
         private TimeSpan _timerValue;
 
         private double _timerOpasity;
+
+        private IAccessControlService _accessControlService;
 
         public TimeSpan TimerValue 
         {
@@ -45,6 +48,11 @@ namespace GraphApp.ViewModel
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public EducationMaterialViewModel(IAccessControlService accessControlService)
+        {
+            _accessControlService = accessControlService;
+        }
 
         protected virtual async void StartTimer(TimeSpan timerTime)
         {
@@ -77,6 +85,19 @@ namespace GraphApp.ViewModel
         protected void StopTimer()
         {
             _needInvokeCallback = false;
+        }
+
+        protected void CheckEducationMaterialIsPassed()
+        {
+            if(!_accessControlService.CheckEducationMaterialIsPassed(_accessControlService.CurrentEducationMaterial))
+            {
+                _accessControlService.AddAttempt(_accessControlService.CurrentEducationMaterial);
+            }
+        }
+
+        protected void OpenNextEducationMaterial()
+        {
+            _accessControlService.OpenNext(_accessControlService.CurrentEducationMaterial);
         }
 
         private void OnPropertyChanged([CallerMemberName]string propertyName = "")

@@ -45,10 +45,8 @@ namespace GraphApp.ViewModel
         private IVerifyTestService _verifyTestService;
 
         /// <summary>
-        /// Сервис контроля доступа.
+        /// Буфер сообщений.
         /// </summary>
-        private IAccessControlService _accessControlService;
-
         private IMessageBuffer _mesageBuffer;
 
         /// <summary>
@@ -136,8 +134,8 @@ namespace GraphApp.ViewModel
             INavigationService navigationService,
             IVerifyTestService answerCheckService,
             IMessageBuffer messageBuffer)
+            : base(accessControlService)
         {
-            _accessControlService = accessControlService;
             _navigationService = navigationService;
             _verifyTestService = answerCheckService;
             _mesageBuffer = messageBuffer;
@@ -173,9 +171,11 @@ namespace GraphApp.ViewModel
             _verifyTestService.SelectedAnswerByQuestion = _selectedAnswerByQuestion;
             _verifyTestService.VerifyTest();
 
+            CheckEducationMaterialIsPassed();
+
             if (_verifyTestService.Points == CurrentTest.Questions.Length)
             {
-                _accessControlService.OpenNext(_accessControlService.CurrentEducationMaterial);
+                OpenNextEducationMaterial();
             }
 
             _navigationService.NavigateTo<VerifyTestViewModel>();
