@@ -190,7 +190,7 @@ namespace GraphApp.Services
         /// <summary>
         /// Создание матрицы смежности.
         /// </summary>
-        /// <returns>Матрица смежности.</returns>
+         /// <returns>Матрица смежности.</returns>
         public AdjacencyMatrix CreateAdjacencyMatrix()
         {
             var vertices = Vertices.Select(v => v.Vertex).ToList();
