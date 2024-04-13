@@ -214,7 +214,7 @@ namespace GraphApp.Services
                     MessageBoxImage.Error
                 );
             }
-            catch(LoadDataException)
+            catch(LoadDataException ex)
             {
                 OnErrorLoadMap();
             }
@@ -255,7 +255,12 @@ namespace GraphApp.Services
         {
             foreach (var node in EducationMaterialsCollection)
             {
-                EducationMaterialMap[node].IsOpen = false;
+                EducationMaterialMap[node] = new EducationMaterialInfo()
+                {
+                    IndexNumber = node.EducationMaterialIndexNumber,
+                    AttemptsNumber = 0,
+                    IsOpen = false,
+                };
             }
 
             EducationMaterialMap[EducationMaterialsCollection[0]].IsOpen = true;

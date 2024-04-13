@@ -190,13 +190,25 @@ namespace GraphApp.Services
         /// <summary>
         /// Создание матрицы смежности.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Матрица смежности.</returns>
         public AdjacencyMatrix CreateAdjacencyMatrix()
         {
             var vertices = Vertices.Select(v => v.Vertex).ToList();
             var connections = Connections.Select(v => v.Connection).ToList();
 
             return new AdjacencyMatrix(vertices, connections);
+        }
+
+        /// <summary>
+        /// Создание матрица инцидентности.
+        /// </summary>
+        /// <returns>Матрица инцидентности.</returns>
+        public IncidenceMatrix CreateIncidenceMatrix()
+        {
+            var vertices = Vertices.Select(v => v.Vertex).ToList();
+            var connection = Connections.Select(v => v.Connection).ToList();
+
+            return new IncidenceMatrix(vertices, connection);
         }
         #endregion
 
