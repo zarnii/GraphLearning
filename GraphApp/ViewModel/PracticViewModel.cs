@@ -208,9 +208,8 @@ namespace GraphApp.ViewModel
         /// <param name="parameter"></param>
         private void VerifyTaskCommand(object parameter)
         {
+            _timer?.Stop();
             var result = _verifyPracticTaskService.VerifyPracticTask(CurrentPracticTask, Vertices, Connections);
-            
-
             var isDone = true;
 
             if (CurrentPracticTask.NeedCheckVertexCount && !result.VertexCountIsDone)

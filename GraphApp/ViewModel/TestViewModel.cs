@@ -202,12 +202,13 @@ namespace GraphApp.ViewModel
         /// <param name="parameter"></param>
         private void CheckAnswerCommand(object parameter)
         {
+            _timer?.Stop();
+
             if (parameter as string != null)
             {
                 _mesageBuffer.Message = (string)parameter;
             }
 
-            TimerOpasity = 0;
             _verifyTestService.VerifableTest = CurrentTest;
             _verifyTestService.SelectedAnswerByQuestion = _selectedAnswerByQuestion;
             _verifyTestService.VerifyTest();
