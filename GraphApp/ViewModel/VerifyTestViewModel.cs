@@ -69,7 +69,8 @@ namespace GraphApp.ViewModel
         /// </summary>
         /// <param name="verifyTestService">Сервис проверки теста.</param>
         /// <param name="navigationService">Сервис навигации.</param>
-        public VerifyTestViewModel(IVerifyTestService verifyTestService, 
+        public VerifyTestViewModel(
+            IVerifyTestService verifyTestService, 
             INavigationService navigationService,
             IMessageBuffer messageBuffer)
         {

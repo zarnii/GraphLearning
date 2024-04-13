@@ -80,6 +80,7 @@ namespace GraphApp.Services
             {
                 throw new ArgumentException("Невозможно открыть следующий элемент, так как текущий элемент закрыт.");
             }
+            EducationMaterialMap[material].IsCompleted = true;
             
             var materialIndex = EducationMaterialsCollection.FindIndex<EducationMaterialNode>(material);
 
@@ -97,9 +98,7 @@ namespace GraphApp.Services
         /// <returns>True, если пройден.</returns>
         public bool CheckEducationMaterialIsPassed(EducationMaterialNode material)
         {
-            var materialIndex = EducationMaterialsCollection.FindIndex(material);
-
-            return EducationMaterialMap[EducationMaterialsCollection[materialIndex + 1]].IsOpen;
+            return EducationMaterialMap[material].IsCompleted;
         }
 
         /// <summary>

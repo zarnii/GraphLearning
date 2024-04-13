@@ -25,5 +25,10 @@ namespace GraphApp.Model
         /// Номер попыткы с которой было пройдено задание. 
         /// </summary>
         public int AttemptsNumber { get; set; }
+
+        /// <summary>
+        /// Флаг, показывающий выполнено ли задание.
+        /// </summary>
+        public bool IsCompleted { get; set; }
     }
 }

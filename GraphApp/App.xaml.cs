@@ -69,6 +69,7 @@ namespace GraphApp
             serviceCollection.AddTransient<ConnectionViewModel>();
             serviceCollection.AddSingleton<InstructionViewModel>();
             serviceCollection.AddTransient<SettingsViewModel>();
+            serviceCollection.AddTransient<VerifyPracticViewModel>();
             #endregion
 
             #region other
@@ -206,6 +207,7 @@ namespace GraphApp
                     Title = pt.Title,
                     Text = pt.Text,
                     IndexNumber = pt.IndexNumber,
+                    LeadTime = pt.LeadTime,
                     Vertices = serVertices,
                     Connections = serConnections,
                     NeedCheckVertexCount = pt.NeedCheckVertexCount,
@@ -244,6 +246,7 @@ namespace GraphApp
                     Title = spt.Title,
                     Text = spt.Text,
                     IndexNumber = spt.IndexNumber,
+                    LeadTime = spt.LeadTime,
                     Vertices = vertices,
                     Connections = connections,
                     NeedCheckVertexCount = spt.NeedCheckVertexCount,

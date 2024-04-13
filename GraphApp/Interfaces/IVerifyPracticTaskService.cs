@@ -13,14 +13,24 @@ namespace GraphApp.Interfaces
     public interface IVerifyPracticTaskService
     {
         /// <summary>
+        /// Проверяемая коллекция вершин.
+        /// </summary>
+        public IList<VisualVertex> VerifiedVertices { get; set; }
+
+        /// <summary>
+        /// Проверяемая коллекция связей.
+        /// </summary>
+        public IList<VisualConnection> VerifiedConnections { get; set; }
+
+        /// <summary>
+        /// Проверяемое задание.
+        /// </summary>
+        public PracticTask VerifiedPracticTask { get; set; }
+
+        /// <summary>
         /// Проверка практического задания.
         /// </summary>
-        /// <param name="practicTask">Практическое задание.</param>
-        /// <param name="vertices">Коллекция вершин.</param>
-        /// <param name="connections">Коллекция связей.</param>
         /// <returns>Проверенное практическое задание.</returns>
-        VerifiedPracticTask VerifyPracticTask(PracticTask practicTask,
-            IList<VisualVertex> vertices,
-            IList<VisualConnection> connections);
+        VerifiedPracticTask VerifyPracticTask();
     }
 }

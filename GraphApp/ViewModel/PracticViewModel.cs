@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -173,7 +174,6 @@ namespace GraphApp.ViewModel
         public PracticViewModel(
             VertexViewModel vertexViewModel,
             ConnectionViewModel connectionViewModel,
-            VerifyPracticViewModel verifyPracticViewModel,
             IVisualEditorService visualEditorService, 
             IAccessControlService accessControlService,
             IVerifyPracticTaskService verifyPracticTaskService,
@@ -209,6 +209,11 @@ namespace GraphApp.ViewModel
         private void VerifyTaskCommand(object parameter)
         {
             _timer?.Stop();
+            _verifyPracticTaskService.VerifiedVertices = Vertices.ToList();
+            _verifyPracticTaskService.VerifiedConnections = Connections.ToList();
+            _verifyPracticTaskService.VerifiedPracticTask = CurrentPracticTask;
+
+            /*
             var result = _verifyPracticTaskService.VerifyPracticTask(CurrentPracticTask, Vertices, Connections);
             var isDone = true;
 
@@ -263,6 +268,8 @@ namespace GraphApp.ViewModel
             {
                 _accessControlService.OpenNext(_accessControlService.CurrentEducationMaterial);
             }
+            */
+            _navigationService.NavigateTo<VerifyPracticViewModel>();
         }
 
         /// <summary>
