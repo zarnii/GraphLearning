@@ -3,30 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GraphApp.Model;
 
 namespace GraphApp.Model
 {
     /// <summary>
     /// Матрица смежности.
     /// </summary>
-    public class AdjacencyMatrix
+    public class AdjacencyMatrix: BaseMatrix
     {
-        /// <summary>
-        /// Описание вершин в верхней части матрицы.
-        /// </summary>
-        public string[] TopSideDescription { get; private set; }
-
-        /// <summary>
-        /// Описание вершмн в нижней части матрицы.
-        /// </summary>
-        public string[] LeftSideDescription { get; private set; }
-
-        /// <summary>
-        /// Матрица смежности.
-        /// </summary>
-        public byte[,] Matrix { get; private set; }
-
         /// <summary>
         /// Конструктор.
         /// </summary>
@@ -44,25 +28,30 @@ namespace GraphApp.Model
                 throw new ArgumentNullException(nameof(connectionCollection), "Пустая коллекция связей.");
             }
 
-            var topSide = new Vertex[vertexCollection.Count];
-            topSide = vertexCollection.OrderBy(v => v.Number).ToArray();
+            var colums = vertexCollection.OrderBy(v => v.Number).ToArray();
 
-            var leftSide = new Vertex[vertexCollection.Count];
-            Array.Copy(topSide, leftSide, topSide.Length);
+            var rows = new Vertex[vertexCollection.Count];
+            Array.Copy(colums, rows, colums.Length);
 
-            Matrix = new byte[topSide.Length, leftSide.Length];
+            Matrix = new int[colums.Length][];
+
+            for (var i = 0; i < Matrix.Length; i++)
+            {
+                Matrix[i] = new int[rows.Length];
+            }
 
             foreach (var connection in connectionCollection)
             {
                 var firstIndex = connection.ConnectedVertices.Item1.Number - 1;
                 var secondIndex = connection.ConnectedVertices.Item2.Number - 1;
-                Matrix[firstIndex, secondIndex] = 1;
-                Matrix[secondIndex, firstIndex] = 1;
+
+                Matrix[firstIndex][secondIndex] = 1;
+                Matrix[secondIndex][firstIndex] = 1;
             }
 
-            TopSideDescription = topSide.Select(v => v.Name).ToArray();
-            LeftSideDescription = new string[leftSide.Length];
-            Array.Copy(TopSideDescription, LeftSideDescription, TopSideDescription.Length);
+            ColumnsDescription = colums.Select(v => v.Name).ToArray();
+            RowsDescription = new string[rows.Length];
+            Array.Copy(ColumnsDescription, RowsDescription, ColumnsDescription.Length);
         }
     }
 }
