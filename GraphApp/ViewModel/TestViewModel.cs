@@ -1,6 +1,7 @@
 ﻿using GraphApp.Command;
 using GraphApp.Interfaces;
 using GraphApp.Model;
+using GraphApp.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,13 +12,28 @@ using System.Windows.Media;
 
 namespace GraphApp.ViewModel
 {
-    public class TestViewModel : EducationMaterialViewModel
+    public class TestViewModel : ViewModel
     {
         #region fields
         /// <summary>
         /// Выбранные ответы по вопросам.
         /// </summary>
         private Dictionary<Question, Answer> _selectedAnswerByQuestion;
+
+        /// <summary>
+        /// Таймер.
+        /// </summary>
+        private Timer _timer;
+
+        /// <summary>
+        /// Прозрачность таймера.
+        /// </summary>
+        private double _timerOpasity;
+
+        /// <summary>
+        /// Сервис контроля доступа.
+        /// </summary>
+        private IAccessControlService _accessControlService;
 
         /// <summary>
         /// Команда проверки ответа.
@@ -48,11 +64,6 @@ namespace GraphApp.ViewModel
         /// Буфер сообщений.
         /// </summary>
         private IMessageBuffer _mesageBuffer;
-
-        /// <summary>
-        /// Событие изменения свойства.
-        /// </summary>
-        public event PropertyChangedEventHandler? PropertyChanged;
         #endregion
 
         #region properties
@@ -120,6 +131,30 @@ namespace GraphApp.ViewModel
         /// Вопрос.
         /// </summary>
         public Test CurrentTest { get; private set; }
+
+        /// <summary>
+        /// Значение таймера.
+        /// </summary>
+        public TimeSpan? TimerValue
+        {
+            get
+            {
+                return _timer?.TimerValue;
+            }
+        }
+
+        public double TimerOpasity
+        {
+            get
+            {
+                return _timerOpasity;
+            }
+            set
+            {
+                _timerOpasity = value;
+                OnPropertyChanged(nameof(TimerOpasity));
+            }
+        }
         #endregion
 
         #region constructor
@@ -134,8 +169,8 @@ namespace GraphApp.ViewModel
             INavigationService navigationService,
             IVerifyTestService answerCheckService,
             IMessageBuffer messageBuffer)
-            : base(accessControlService)
         {
+            _accessControlService = accessControlService;
             _navigationService = navigationService;
             _verifyTestService = answerCheckService;
             _mesageBuffer = messageBuffer;
@@ -148,8 +183,14 @@ namespace GraphApp.ViewModel
 
             if (CurrentTest.LeadTime != null)
             {
-                StartTimer(CurrentTest.LeadTime.Value);
-                SetTimer(CurrentTest.LeadTime.Value, CheckAnswerCommand, "Время истекло!");
+                _timer = new Timer(
+                    CurrentTest.LeadTime.Value,
+                    CheckAnswerCommand,
+                    "Время истекло!",
+                    UpdateTimerValue
+                );
+                _timer.Start();
+                TimerOpasity = 1;
             }
         }
         #endregion
@@ -166,16 +207,19 @@ namespace GraphApp.ViewModel
                 _mesageBuffer.Message = (string)parameter;
             }
 
-            StopTimer();
+            TimerOpasity = 0;
             _verifyTestService.VerifableTest = CurrentTest;
             _verifyTestService.SelectedAnswerByQuestion = _selectedAnswerByQuestion;
             _verifyTestService.VerifyTest();
 
-            CheckEducationMaterialIsPassed();
+            if (!_accessControlService.CheckEducationMaterialIsPassed(_accessControlService.CurrentEducationMaterial))
+            {
+                _accessControlService.AddAttempt(_accessControlService.CurrentEducationMaterial);
+            }
 
             if (_verifyTestService.Points == CurrentTest.Questions.Length)
             {
-                OpenNextEducationMaterial();
+                _accessControlService.OpenNext(_accessControlService.CurrentEducationMaterial);
             }
 
             _navigationService.NavigateTo<VerifyTestViewModel>();
@@ -187,7 +231,7 @@ namespace GraphApp.ViewModel
         /// <param name="parameter"></param>
         private void OpenEducationCommand(object parameter)
         {
-            StopTimer();
+            _timer?.Stop();
             _navigationService.NavigateTo<EducationViewModel>();
         }
 
@@ -203,6 +247,11 @@ namespace GraphApp.ViewModel
             var question = (Question)((System.Windows.Controls.StackPanel)VisualTreeHelper.GetParent(answer)).DataContext;
 
             _selectedAnswerByQuestion[question] = (Answer)((System.Windows.Controls.ContentPresenter)answer).Content;
+        }
+
+        private void UpdateTimerValue(object parameter)
+        {
+            OnPropertyChanged(nameof(TimerValue));
         }
         #endregion
     }

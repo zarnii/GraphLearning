@@ -29,6 +29,12 @@
 
 		<converters:ConnectionVisibleConverter
 			x:Key="ConnectionVisibleConverter"/>
+
+		<converters:MatrixToDataViewConverter
+			x:Key="MatrixToDataViewConverter"/>
+
+		<converters:ConnectionNumberCoordinatesConverter
+			x:Key="ConnectionNumberCoordinatesConverter"/>
 	</UserControl.Resources>
 	<Grid>
 
@@ -70,12 +76,6 @@
 						CommandParameter="{x:Static model:MouseMode.Delete}"
 						Style="{StaticResource ButtonStyle}"
 						Height="25"/>
-				<Button
-					Margin="0,5,0,0"
-					Content="Матрица"
-					Command="{Binding CreateAdjacencyMatrix}"
-					Style="{StaticResource ButtonStyle}"
-					Height="25"/>
 			</StackPanel>
 		</Grid>
 
@@ -93,6 +93,8 @@
 					</i:Interaction.Triggers>
 				</Rectangle>
 
+				
+			
 				<!--Отображение связей.-->
 				<ItemsControl ItemsSource="{Binding Connections}">
 					<ItemsControl.ItemsPanel>
@@ -235,6 +237,44 @@
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 
+				<!--Отображение номера связи.-->
+				<ItemsControl ItemsSource="{Binding Connections}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Canvas/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemContainerStyle>
+						<Style>
+							<Setter Property="Canvas.Left">
+								<Setter.Value>
+									<MultiBinding Converter="{StaticResource ConnectionNumberCoordinatesConverter}" ConverterParameter="X">
+										<Binding Path="X1"/>
+										<Binding Path="X2"/>
+										<Binding Path=""/>
+									</MultiBinding>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="Canvas.Top">
+								<Setter.Value>
+									<MultiBinding Converter="{StaticResource ConnectionNumberCoordinatesConverter}" ConverterParameter="Y">
+										<Binding Path="Y1"/>
+										<Binding Path="Y2"/>
+										<Binding Path=""/>
+									</MultiBinding>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</ItemsControl.ItemContainerStyle>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Label
+								Content="{Binding Number}"
+								Foreground="White"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+
 				<!--Отображение название вершин.-->
 				<ItemsControl ItemsSource="{Binding Vertices}">
 					<ItemsControl.ItemsPanel>
@@ -328,7 +368,47 @@
 
 		<!--Отображение параметров вершин.-->
 		<Grid Grid.Column="2" Style="{StaticResource GridStyle}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="200"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			
 			<ContentControl Content="{Binding SelectedGraphElement}"/>
+
+			<Grid Grid.Row="1">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="30"/>
+				</Grid.RowDefinitions>
+
+				<ScrollViewer
+					HorizontalScrollBarVisibility="Auto"
+					VerticalScrollBarVisibility="Auto">
+					<StackPanel>
+						<DataGrid 
+							ItemsSource="{Binding AdjancencyMatrix, Converter={StaticResource MatrixToDataViewConverter}}"
+							IsReadOnly="True"/>
+						<DataGrid
+							ItemsSource="{Binding IncidenceMatrix, Converter={StaticResource MatrixToDataViewConverter}}"
+							IsReadOnly="True"/>
+					</StackPanel>
+				</ScrollViewer>
+
+				<Grid Grid.Row="1">
+					<Button
+						Width="100" 
+						HorizontalAlignment="Left"
+						Content="Матрица"
+						Command="{Binding CreateAdjacencyMatrix}"
+						Style="{StaticResource ButtonStyle}"/>
+					<Button
+						Width="100"
+						HorizontalAlignment="Right"
+						Content="Матрица 2"
+						Command="{Binding CreateIncidenceMatrix}"
+						Style="{StaticResource ButtonStyle}"/>
+				</Grid>
+			</Grid>
 		</Grid>
 	</Grid>
 </UserControl>

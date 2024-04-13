@@ -1,6 +1,7 @@
 ﻿using GraphApp.Command;
 using GraphApp.Interfaces;
 using GraphApp.Model;
+using GraphApp.Services;
 using GraphApp.View;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,14 @@ namespace GraphApp.ViewModel
     {
         #region fields
         /// <summary>
-        /// Поставщик практических заданий.
+        /// Таймер.
         /// </summary>
-        private IAccessControlService _accsessControlService;
+        private Timer _timer;
+
+        /// <summary>
+        /// Прозрачноить таймера.
+        /// </summary>
+        private double _timerOpasity;
 
         /// <summary>
         /// Сервис проверки практических заданий.
@@ -31,6 +37,11 @@ namespace GraphApp.ViewModel
         /// Сервис навигации.
         /// </summary>
         private INavigationService _navigationService;
+
+        /// <summary>
+        /// Сервис контроля доступа.
+        /// </summary>
+        private IAccessControlService _accessControlService;
 
         private string _resultText;
 
@@ -57,7 +68,7 @@ namespace GraphApp.ViewModel
         {
             get
             {
-                return ((PracticTask)_accsessControlService?.CurrentEducationMaterial.EducationMaterial).Title;
+                return CurrentPracticTask.Title;
             }
         }
 
@@ -68,7 +79,7 @@ namespace GraphApp.ViewModel
         {
             get
             {
-                return ((PracticTask)_accsessControlService?.CurrentEducationMaterial.EducationMaterial).Text;
+                return CurrentPracticTask.Text;
             }
         }
 
@@ -119,6 +130,34 @@ namespace GraphApp.ViewModel
                 OnPropertyChanged(nameof(ResultOpasity));
             }
         }
+
+        /// <summary>
+        /// Значение таймера.
+        /// </summary>
+        public TimeSpan? TimerValue
+        {
+            get
+            {
+                return _timer?.TimerValue;
+            }
+        }
+
+        /// <summary>
+        /// Прозрачность таймера.
+        /// </summary>
+        public double TimerOpasity
+        {
+            get
+            {
+                return _timerOpasity;
+            }
+            set
+            {
+                _timerOpasity = value;
+                OnPropertyChanged(nameof(TimerOpasity));
+            }
+        }
+        public PracticTask CurrentPracticTask { get; private set; }
         #endregion
 
         #region constructor
@@ -134,20 +173,31 @@ namespace GraphApp.ViewModel
         public PracticViewModel(
             VertexViewModel vertexViewModel,
             ConnectionViewModel connectionViewModel,
+            VerifyPracticViewModel verifyPracticViewModel,
             IVisualEditorService visualEditorService, 
             IAccessControlService accessControlService,
             IVerifyPracticTaskService verifyPracticTaskService,
             INavigationService navigationService)
             : base(vertexViewModel, connectionViewModel, visualEditorService)
         {
-            
-            _accsessControlService = accessControlService;
+            _accessControlService = accessControlService;
             _verifyPracticTaskService = verifyPracticTaskService;
             _navigationService = navigationService;
+            CurrentPracticTask = (PracticTask)accessControlService.CurrentEducationMaterial.EducationMaterial;
 
             VerifyTask = new RelayCommand(VerifyTaskCommand);
             GoBack = new RelayCommand(GoBackCommand);
             ResultOpasity = 0;
+
+            if (CurrentPracticTask.LeadTime != null)
+            {
+                _timer = new Timer(
+                    CurrentPracticTask.LeadTime.Value,
+                    VerifyTaskCommand,
+                    null,
+                    UpdateTimer
+                );
+            }
         }
         #endregion
 
@@ -158,57 +208,61 @@ namespace GraphApp.ViewModel
         /// <param name="parameter"></param>
         private void VerifyTaskCommand(object parameter)
         {
-            var practicTask = (PracticTask)_accsessControlService.CurrentEducationMaterial.EducationMaterial;
-
-            var result = _verifyPracticTaskService.VerifyPracticTask(practicTask, Vertices, Connections);
+            var result = _verifyPracticTaskService.VerifyPracticTask(CurrentPracticTask, Vertices, Connections);
+            
 
             var isDone = true;
 
-            if (practicTask.NeedCheckVertexCount && !result.VertexCountIsDone)
+            if (CurrentPracticTask.NeedCheckVertexCount && !result.VertexCountIsDone)
             {
                 isDone = false;
             }
 
-            if (practicTask.NeedCheckVertexPosition && !result.VertexPositionIsDone)
+            if (CurrentPracticTask.NeedCheckVertexPosition && !result.VertexPositionIsDone)
             {
                 isDone = false;
             }
 
-            if (practicTask.NeedCheckVertexSize && !result.VertexSizeIsDone)
+            if (CurrentPracticTask.NeedCheckVertexSize && !result.VertexSizeIsDone)
             {
                 isDone = false;
             }
 
-            if (practicTask.NeedCheckVertexName && !result.VertexNameIsDone)
+            if (CurrentPracticTask.NeedCheckVertexName && !result.VertexNameIsDone)
             {
                 isDone = false;
             }
 
-            if (practicTask.NeedCheckConnectionCount && !result.ConnectionCountIsDone)
+            if (CurrentPracticTask.NeedCheckConnectionCount && !result.ConnectionCountIsDone)
             {
                 isDone = false;
             }
 
-            if (practicTask.NeedCheckConnection && !result.ConnectionIsDone)
+            if (CurrentPracticTask.NeedCheckConnection && !result.ConnectionIsDone)
             {
                 isDone = false;
             }
 
-            if (practicTask.NeedCheckConnectionWeight && !result.ConnectionWeightIsDone)
+            if (CurrentPracticTask.NeedCheckConnectionWeight && !result.ConnectionWeightIsDone)
             {
                 isDone = false;
             }
 
-            if (practicTask.NeedCheckConnectionType && !result.ConnectionTypeIsDone)
+            if (CurrentPracticTask.NeedCheckConnectionType && !result.ConnectionTypeIsDone)
             {
                 isDone = false;
+            }
+
+            if (!_accessControlService.CheckEducationMaterialIsPassed(_accessControlService.CurrentEducationMaterial))
+            {
+                _accessControlService.AddAttempt(_accessControlService.CurrentEducationMaterial);
             }
 
             CheckResult(isDone);
 
             if (isDone)
             {
-                _accsessControlService.OpenNext(_accsessControlService.CurrentEducationMaterial);
+                _accessControlService.OpenNext(_accessControlService.CurrentEducationMaterial);
             }
         }
 
@@ -218,6 +272,7 @@ namespace GraphApp.ViewModel
         /// <param name="parameter"></param>
         private void GoBackCommand(object parameter)
         {
+            _timer?.Stop();
             _navigationService.NavigateTo<EducationViewModel>();
         }
 
@@ -235,6 +290,14 @@ namespace GraphApp.ViewModel
             ResultText = "Не верно";
             ResultColor = new SolidColorBrush(Colors.Red);
             ResultOpasity = 1;
+        }
+
+        /// <summary>
+        /// Обновление таймера.
+        /// </summary>
+        private void UpdateTimer(object parameter)
+        {
+            OnPropertyChanged(nameof(TimerValue));
         }
         #endregion
     }

@@ -5,8 +5,7 @@ using GraphApp.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -16,7 +15,7 @@ namespace GraphApp.ViewModel
     /// <summary>
     /// Базовый класс, для моделей вредставления, которые имеют графический редактор.
     /// </summary>
-    public class VisualEditorViewModel : ViewModel, INotifyPropertyChanged
+    public class VisualEditorViewModel : ViewModel
     {
         #region fields
         /// <summary>
@@ -33,6 +32,10 @@ namespace GraphApp.ViewModel
         /// Модель представления связи.
         /// </summary>
         private ViewModel _connectionViewModel;
+
+        private AdjacencyMatrix _adjacencyMatrix;
+
+        private IncidenceMatrix _incidenceMatrix;
         #endregion
 
         #region properties
@@ -60,6 +63,11 @@ namespace GraphApp.ViewModel
         /// Команда создания матрицы смежности.
         /// </summary>
         public ICommand CreateAdjacencyMatrix { get; private set; }
+
+        /// <summary>
+        /// Команда построения матрицы инцидентности.
+        /// </summary>
+        public ICommand CreateIncidenceMatrix { get; private set; }
 
         /// <summary>
         /// Ширина графического поля.
@@ -140,10 +148,31 @@ namespace GraphApp.ViewModel
             }
         }
 
-        /// <summary>
-        /// Событие изменения свойства.
-        /// </summary>
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public AdjacencyMatrix AdjancencyMatrix
+        {
+            get
+            {
+                return _adjacencyMatrix;
+            }
+            private set
+            {
+                _adjacencyMatrix = value;
+                OnPropertyChanged(nameof(this.AdjancencyMatrix));
+            }
+        }
+
+        public IncidenceMatrix IncidenceMatrix
+        {
+            get
+            {
+                return _incidenceMatrix;
+            }
+            private set
+            {
+                _incidenceMatrix = value;
+                OnPropertyChanged(nameof(this.IncidenceMatrix));
+            }
+        }
         #endregion
 
         #region constructor
@@ -167,6 +196,7 @@ namespace GraphApp.ViewModel
             MoveVertex = new RelayCommand(MoveVertexCommand);
             ClickOnGraphElement = new RelayCommand(ClickOnGraphElementCommand);
             CreateAdjacencyMatrix = new RelayCommand(CreateAdjacencyMatrixCommand);
+            CreateIncidenceMatrix = new RelayCommand(CreateIncidenceMatrixCommand);
         }
         #endregion
 
@@ -251,7 +281,7 @@ namespace GraphApp.ViewModel
                         createConnectionWindow.ConnectionThickness,
                         createConnectionWindow.ConnectionWeight,
                         createConnectionWindow.ConnectionType
-                    );  
+                    );
                 }
 
                 SelectedVerticesForConnection.Clear();
@@ -275,7 +305,36 @@ namespace GraphApp.ViewModel
 
         private void CreateAdjacencyMatrixCommand(object parameter)
         {
-            var matrix = _visualEditorService.CreateAdjacencyMatrix();
+            try
+            {
+                AdjancencyMatrix = _visualEditorService.CreateAdjacencyMatrix();
+            }
+            catch (DuplicateNameException)
+            {
+                MessageBox.Show(
+                    "Нельза составить матрицу, так как есть дубликат в названии вершин",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
+        }
+
+        private void CreateIncidenceMatrixCommand(object parameter)
+        {
+            try
+            {
+                IncidenceMatrix = _visualEditorService.CreateIncidenceMatrix();
+            }
+            catch (DuplicateNameException)
+            {
+                MessageBox.Show(
+                    "Нельза составить матрицу, так как есть дубликат в названии вершин",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
         }
 
         /// <summary>
@@ -323,15 +382,6 @@ namespace GraphApp.ViewModel
             {
                 ((ConnectionViewModel)SelectedGraphElement).VisualConnection = (VisualConnection)parameter;
             }
-        }
-
-        /// <summary>
-        /// Оповещение подписчиков о изменении свойства.
-        /// </summary>
-        /// <param name="propertyName">Имя свойства.</param>
-        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }
