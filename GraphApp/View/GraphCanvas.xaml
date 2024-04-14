@@ -40,8 +40,13 @@
 			Grid.Column="1" 
 			HorizontalScrollBarVisibility="Auto"
 			VerticalScrollBarVisibility="Auto"
+			Height="Auto"
+			Width="Auto"
 			Background="#1a1a1a">
-			<Grid Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}">
+			<Grid x:Name="MainGrid" MouseWheel="MainGrid_MouseWheel">
+				<Grid.LayoutTransform>
+					<ScaleTransform x:Name="scaleTransformGrid"/>
+				</Grid.LayoutTransform>
 				<Rectangle Fill="#FF252526" Stroke="#424242">
 					<i:Interaction.Triggers>
 						<i:EventTrigger EventName="MouseLeftButtonDown">

@@ -24,10 +24,6 @@ namespace GraphApp.ViewModel
 
         public Brush ResultColor { get; set; }
 
-        public double CanvasWidth { get; set; }
-
-        public double CanvasHeight { get; set; }
-
         public VerifyPracticViewModel(
             INavigationService navigationService,
             IVerifyPracticTaskService verifyPracticTaskService,
@@ -36,8 +32,6 @@ namespace GraphApp.ViewModel
             _navigationService = navigationService;
             Vertices = (List<VisualVertex>)verifyPracticTaskService.VerifiedVertices;
             Connections = (List<VisualConnection>)verifyPracticTaskService.VerifiedConnections;
-            CanvasWidth = 1000;
-            CanvasHeight = 900;
 
             Verify(verifyPracticTaskService, accessControlService);
 

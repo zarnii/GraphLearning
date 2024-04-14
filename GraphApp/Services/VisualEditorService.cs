@@ -76,7 +76,7 @@ namespace GraphApp.Services
         {
             Vertices = new ObservableCollection<VisualVertex>();
             Connections = new ObservableCollection<VisualConnection>();
-            SelectedVerticesForConnection = new List<VisualVertex>();
+            SelectedVerticesForConnection = new List<VisualVertex>(2);
 
             CanvasWidth = 1000;
             CanvasHeight = 900;
@@ -117,7 +117,7 @@ namespace GraphApp.Services
         public void AddVertex(Point point, int radius, string name, Color color)
         {
             Vertices.Add(new VisualVertex(
-                (point.X, point.Y),
+                ((int)point.X, (int)point.Y),
                 radius,
                 Vertices.Count + 1,
                 color,
@@ -154,7 +154,7 @@ namespace GraphApp.Services
         /// <param name="vertex">Вершина.</param>
         /// <param name="x">Новая координата X.</param>
         /// <param name="y">Новая координата Y.</param>
-        public void MoveVertex(VisualVertex vertex, double x, double y)
+        public void MoveVertex(VisualVertex vertex, int x, int y)
         {
             if (_mouseMode != MouseMode.Default)
             {

@@ -75,11 +75,6 @@ namespace GraphApp.ViewModel
 
         }
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private void MouseScaleCommand(object parameter)
         {
             double zoom = ((MouseWheelEventArgs)parameter).Delta > 0

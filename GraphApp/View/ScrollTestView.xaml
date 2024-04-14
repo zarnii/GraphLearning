@@ -16,28 +16,6 @@
 		</Grid.RowDefinitions>
 
 		<Grid Grid.Row="1">
-
-			<TextBlock Text="{Binding Text}"/>
-			<Canvas>
-				<Ellipse Stroke="Red" Height="20" Width="20">
-					<Ellipse.Style>
-						<Style>
-							<Setter Property="Canvas.Top" Value="100"/>
-							<Setter Property="Canvas.Left" Value="100"/>
-						</Style>
-					</Ellipse.Style>
-				</Ellipse>
-				<Ellipse Stroke="Yellow" Height="20" Width="20">
-					<Ellipse.Style>
-						<Style>
-							<Setter Property="Canvas.Top" Value="90"/>
-							<Setter Property="Canvas.Left" Value="90"/>
-						</Style>
-					</Ellipse.Style>
-				</Ellipse>
-			</Canvas>
-
-			<!--
 			<DockPanel>
 				<Rectangle/>
 				<ItemsControl>
@@ -67,6 +45,7 @@
 					</ItemsControl.ItemContainerStyle>
 				</ItemsControl>
 				
+				
 				<Canvas 
 					Background="Gray" 
 					RenderTransformOrigin="0.5, 0.5" 
@@ -85,7 +64,7 @@
 				</Canvas>
 				
 			</DockPanel>
-			-->
+			
 		
 		</Grid>
 

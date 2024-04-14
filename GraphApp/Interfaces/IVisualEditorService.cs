@@ -77,7 +77,7 @@ namespace GraphApp.Interfaces
         /// <param name="vertex">Вершина.</param>
         /// <param name="x">Новая координата X.</param>
         /// <param name="y">Новая координата Y.</param>
-        void MoveVertex(VisualVertex vertex, double x, double y);
+        void MoveVertex(VisualVertex vertex, int x, int y);
 
         /// <summary>
         /// Установка режима мыши.

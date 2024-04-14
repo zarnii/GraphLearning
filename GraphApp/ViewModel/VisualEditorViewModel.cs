@@ -298,8 +298,8 @@ namespace GraphApp.ViewModel
 
             _visualEditorService.MoveVertex(
                 (VisualVertex)((FrameworkElement)dragDeltaEventArgs.OriginalSource).DataContext,
-                dragDeltaEventArgs.HorizontalChange,
-                dragDeltaEventArgs.VerticalChange
+                (int)dragDeltaEventArgs.HorizontalChange,
+                (int)dragDeltaEventArgs.VerticalChange
             );
         }
 

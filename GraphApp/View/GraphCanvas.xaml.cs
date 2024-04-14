@@ -20,9 +20,33 @@ namespace GraphApp.View
     /// </summary>
     public partial class GraphCanvas : UserControl
     {
+        private const int GridWidth = 1000;
+
+        private const int GridHeight = 900;
+
         public GraphCanvas()
         {
             InitializeComponent();
+            MainGrid.Width = GridWidth;
+            MainGrid.Height = GridHeight;
+        }
+
+        private void MainGrid_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            
+            double zoom = e.Delta > 0
+                ? 0.1
+                : -0.1;
+
+
+            if (scaleTransformGrid.ScaleX + zoom < 0.1 || scaleTransformGrid.ScaleY + zoom < 0.1)
+            {
+                return;
+            }
+
+            scaleTransformGrid.ScaleX += zoom;
+            scaleTransformGrid.ScaleY += zoom;
+
         }
     }
 }
