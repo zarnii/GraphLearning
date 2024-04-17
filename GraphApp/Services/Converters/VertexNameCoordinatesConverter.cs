@@ -12,9 +12,9 @@ namespace GraphApp.Services.Converters
         /// <summary>
         /// Конвертирование.
         /// </summary>
-        /// <param name="values">Конвертируемые значения.</param>
+        /// <param name="values">Координата (X или Y) и радиус.</param>
         /// <param name="targetType"></param>
-        /// <param name="parameter"></param>
+        /// <param name="parameter">Строка, показывающая какая коордианта была передана (X или Y).</param>
         /// <param name="culture"></param>
         /// <returns>Координаты.</returns>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

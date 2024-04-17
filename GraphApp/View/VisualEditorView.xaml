@@ -73,15 +73,21 @@
 						CommandParameter="{x:Static model:MouseMode.Delete}"
 						Style="{StaticResource ButtonStyle}"
 						Height="25"/>
+				<Button
+					Margin="0,5,0,0"
+					Content="PNG"
+					Command="{Binding SaveGraphAsPng}"
+					Style="{StaticResource ButtonStyle}"
+					CommandParameter="{Binding ElementName=GraphCanvas}"/>
 			</StackPanel>
 		</Grid>
 
-		<view:GraphCanvas Grid.Column="1"/>
+		<view:GraphCanvas Grid.Column="1" x:Name="GraphCanvas"/>
 
 		<!--Отображение параметров вершин.-->
 		<Grid Grid.Column="2" Style="{StaticResource GridStyle}">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="200"/>
+				<RowDefinition Height="250"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 			

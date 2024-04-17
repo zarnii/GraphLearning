@@ -13,11 +13,12 @@ namespace GraphApp.Services.Converters
         {
             var coord1 = (double)values[0];
             var coord2 = (double)values[1];
-            var connection = (VisualConnection)values[2];
+            var firstConnectedVertex = (VisualVertex)values[2];
+            var secondConnectedVertex = (VisualVertex)values[3];
 
-            if (connection.FirstConnectedVertex == connection.SecondConnectedVertex)
+            if (firstConnectedVertex == secondConnectedVertex)
             {
-                return (coord1 + connection.FirstConnectedVertex.Radius + coord2 + connection.FirstConnectedVertex.Radius) / 2;
+                return (coord1 + firstConnectedVertex.Radius + coord2 + firstConnectedVertex.Radius) / 2;
             }
 
             if ((string)parameter == "Y")

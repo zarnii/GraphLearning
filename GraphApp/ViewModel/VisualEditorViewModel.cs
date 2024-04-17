@@ -9,6 +9,11 @@ using System.Data;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
+using System.IO;
+using GraphApp.Services;
 
 namespace GraphApp.ViewModel
 {
@@ -68,6 +73,11 @@ namespace GraphApp.ViewModel
         /// Команда построения матрицы инцидентности.
         /// </summary>
         public ICommand CreateIncidenceMatrix { get; private set; }
+
+        /// <summary>
+        /// Команда сохранение графа в виде png файла.
+        /// </summary>
+        public ICommand SaveGraphAsPng { get; private set; }
 
         /// <summary>
         /// Ширина графического поля.
@@ -197,6 +207,7 @@ namespace GraphApp.ViewModel
             ClickOnGraphElement = new RelayCommand(ClickOnGraphElementCommand);
             CreateAdjacencyMatrix = new RelayCommand(CreateAdjacencyMatrixCommand);
             CreateIncidenceMatrix = new RelayCommand(CreateIncidenceMatrixCommand);
+            SaveGraphAsPng = new RelayCommand(SaveGraphAsPngCommand);
         }
         #endregion
 
@@ -382,6 +393,12 @@ namespace GraphApp.ViewModel
             {
                 ((ConnectionViewModel)SelectedGraphElement).VisualConnection = (VisualConnection)parameter;
             }
+        }
+
+        private void SaveGraphAsPngCommand(object parameter)
+        {
+            var saver = new GraphImageSaver();
+            saver.SaveAsPng(Vertices, Connections, "F:\\img\\img.png", CanvasWidth, CanvasHeight);
         }
         #endregion
     }

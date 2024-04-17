@@ -29,6 +29,7 @@ namespace GraphApp.View
             InitializeComponent();
             MainGrid.Width = GridWidth;
             MainGrid.Height = GridHeight;
+            
         }
 
         private void MainGrid_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -46,7 +47,6 @@ namespace GraphApp.View
 
             scaleTransformGrid.ScaleX += zoom;
             scaleTransformGrid.ScaleY += zoom;
-
         }
     }
 }

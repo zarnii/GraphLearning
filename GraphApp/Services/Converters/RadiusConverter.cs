@@ -14,9 +14,9 @@ namespace GraphApp.Services.Converters
     public class RadiusConverter : IValueConverter
     {
         /// <summary>
-        /// Конвертация.
+        /// Конвертирование радиуса в ширину и высоту элипса.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Радиус.</param>
         /// <param name="targetType"></param>
         /// <param name="parameter"></param>
         /// <param name="culture"></param>

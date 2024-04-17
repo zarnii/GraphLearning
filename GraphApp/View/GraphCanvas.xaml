@@ -56,10 +56,10 @@
 				</Rectangle>
 
 				<!--Отображение связей.-->
-				<ItemsControl ItemsSource="{Binding Connections}">
+				<ItemsControl ItemsSource="{Binding Connections}" x:Name="CanvasConnections">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
-							<Canvas/>
+							<Canvas x:Name="Canvas" IsItemsHost="True"/>
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
@@ -127,7 +127,7 @@
 				</ItemsControl>
 
 				<!--Отображение колцевых связей.-->
-				<ItemsControl ItemsSource="{Binding Connections}">
+				<ItemsControl ItemsSource="{Binding Connections}" x:Name="CanvasCycrleConnections">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<Canvas/>
@@ -160,7 +160,7 @@
 				</ItemsControl>
 
 				<!--Отображение веса связи.-->
-				<ItemsControl ItemsSource="{Binding Connections}">
+				<ItemsControl ItemsSource="{Binding Connections}" x:Name="CanvasConnectionWeight">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<Canvas/>
@@ -173,7 +173,8 @@
 									<MultiBinding Converter="{StaticResource ConnectionWeightCoordinatesConverter}">
 										<Binding Path="X1"/>
 										<Binding Path="X2"/>
-										<Binding Path=""/>
+										<Binding Path="FirstConnectedVertex"/>
+										<Binding Path="SecondConnectedVertex"/>
 									</MultiBinding>
 								</Setter.Value>
 							</Setter>
@@ -182,7 +183,8 @@
 									<MultiBinding Converter="{StaticResource ConnectionWeightCoordinatesConverter}">
 										<Binding Path="Y1"/>
 										<Binding Path="Y2"/>
-										<Binding Path=""/>
+										<Binding Path="FirstConnectedVertex"/>
+										<Binding Path="SecondConnectedVertex"/>
 									</MultiBinding>
 								</Setter.Value>
 							</Setter>
@@ -198,7 +200,7 @@
 				</ItemsControl>
 
 				<!--Отображение номера связи.-->
-				<ItemsControl ItemsSource="{Binding Connections}">
+				<ItemsControl ItemsSource="{Binding Connections}" x:Name="CanvasConnectionNumber">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<Canvas/>
@@ -211,7 +213,8 @@
 									<MultiBinding Converter="{StaticResource ConnectionNumberCoordinatesConverter}" ConverterParameter="X">
 										<Binding Path="X1"/>
 										<Binding Path="X2"/>
-										<Binding Path=""/>
+										<Binding Path="FirstConnectedVertex"/>
+										<Binding Path="SecondConnectedVertex"/>
 									</MultiBinding>
 								</Setter.Value>
 							</Setter>
@@ -220,7 +223,8 @@
 									<MultiBinding Converter="{StaticResource ConnectionNumberCoordinatesConverter}" ConverterParameter="Y">
 										<Binding Path="Y1"/>
 										<Binding Path="Y2"/>
-										<Binding Path=""/>
+										<Binding Path="FirstConnectedVertex"/>
+										<Binding Path="SecondConnectedVertex"/>
 									</MultiBinding>
 								</Setter.Value>
 							</Setter>
@@ -236,7 +240,7 @@
 				</ItemsControl>
 
 				<!--Отображение название вершин.-->
-				<ItemsControl ItemsSource="{Binding Vertices}">
+				<ItemsControl ItemsSource="{Binding Vertices}" x:Name="CanvasVertexName">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<Canvas/>
@@ -276,7 +280,7 @@
 				</ItemsControl>
 
 				<!--Отображение вершин.-->
-				<ItemsControl ItemsSource="{Binding Vertices}">
+				<ItemsControl ItemsSource="{Binding Vertices}" x:Name="CanvasVertices">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<Canvas/>
