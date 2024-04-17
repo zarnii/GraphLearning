@@ -2,7 +2,9 @@
 using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Services;
+using GraphApp.Services.FactoryViewModel;
 using GraphApp.View;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,9 +32,9 @@ namespace GraphApp.ViewModel
         private double _timerOpasity;
 
         /// <summary>
-        /// Сервис проверки практических заданий.
+        /// Фабрика VerifyPracticTaskViewModel.
         /// </summary>
-        private IVerifyPracticTaskService _verifyPracticTaskService;
+        private IFactoryViewModel _factoryVerifyPracticTaskVm;
 
         /// <summary>
         /// Сервис навигации.
@@ -166,23 +168,23 @@ namespace GraphApp.ViewModel
         /// Конструктор.
         /// </summary>
         /// <param name="vertexViewModel">Модель представления вершин.</param>
-        /// <param name="connectionViewModel">Модель представления связи.</param>
-        /// <param name="visualEditorService">Сервис графического редактора.</param>
-        /// <param name="accessControlService">Сервис контроля доступа.</param>
-        /// <param name="verifyPracticTaskService">Сервис проверки практических заданий.</param>
+        /// <param name="connectionViewModel">Модель предстваления связей.</param>
+        /// <param name="visualEditorService">Сервис визуального редактора.</param>
+        /// <param name="accessControlService">Сервси доступа.</param>
         /// <param name="navigationService">Сервис навигации.</param>
+        /// <param name="factoryVerifyPracticTaskVm">Фабрика FactoryVerifyPracticTaskViewModel.</param>
         public PracticViewModel(
             VertexViewModel vertexViewModel,
             ConnectionViewModel connectionViewModel,
             IVisualEditorService visualEditorService, 
             IAccessControlService accessControlService,
-            IVerifyPracticTaskService verifyPracticTaskService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            [FromKeyedServices(typeof(FactoryVerifyPracticTaskViewModel))] IFactoryViewModel factoryVerifyPracticTaskVm)
             : base(vertexViewModel, connectionViewModel, visualEditorService)
         {
             _accessControlService = accessControlService;
-            _verifyPracticTaskService = verifyPracticTaskService;
             _navigationService = navigationService;
+            _factoryVerifyPracticTaskVm = factoryVerifyPracticTaskVm;
             CurrentPracticTask = (PracticTask)accessControlService.CurrentEducationMaterial.EducationMaterial;
 
             VerifyTask = new RelayCommand(VerifyTaskCommand);
@@ -209,67 +211,13 @@ namespace GraphApp.ViewModel
         private void VerifyTaskCommand(object parameter)
         {
             _timer?.Stop();
-            _verifyPracticTaskService.VerifiedVertices = Vertices.ToList();
-            _verifyPracticTaskService.VerifiedConnections = Connections.ToList();
-            _verifyPracticTaskService.VerifiedPracticTask = CurrentPracticTask;
+            var verifyPracticTaskService = new VerifyPracticTaskService();
+            var result = verifyPracticTaskService.VerifyPracticTask(Vertices.ToList(), Connections.ToList(), CurrentPracticTask);
 
-            /*
-            var result = _verifyPracticTaskService.VerifyPracticTask(CurrentPracticTask, Vertices, Connections);
-            var isDone = true;
-
-            if (CurrentPracticTask.NeedCheckVertexCount && !result.VertexCountIsDone)
-            {
-                isDone = false;
-            }
-
-            if (CurrentPracticTask.NeedCheckVertexPosition && !result.VertexPositionIsDone)
-            {
-                isDone = false;
-            }
-
-            if (CurrentPracticTask.NeedCheckVertexSize && !result.VertexSizeIsDone)
-            {
-                isDone = false;
-            }
-
-            if (CurrentPracticTask.NeedCheckVertexName && !result.VertexNameIsDone)
-            {
-                isDone = false;
-            }
-
-            if (CurrentPracticTask.NeedCheckConnectionCount && !result.ConnectionCountIsDone)
-            {
-                isDone = false;
-            }
-
-            if (CurrentPracticTask.NeedCheckConnection && !result.ConnectionIsDone)
-            {
-                isDone = false;
-            }
-
-            if (CurrentPracticTask.NeedCheckConnectionWeight && !result.ConnectionWeightIsDone)
-            {
-                isDone = false;
-            }
-
-            if (CurrentPracticTask.NeedCheckConnectionType && !result.ConnectionTypeIsDone)
-            {
-                isDone = false;
-            }
-
-            if (!_accessControlService.CheckEducationMaterialIsPassed(_accessControlService.CurrentEducationMaterial))
-            {
-                _accessControlService.AddAttempt(_accessControlService.CurrentEducationMaterial);
-            }
-
-            CheckResult(isDone);
-
-            if (isDone)
-            {
-                _accessControlService.OpenNext(_accessControlService.CurrentEducationMaterial);
-            }
-            */
-            _navigationService.NavigateTo<VerifyPracticViewModel>();
+            _navigationService.NavigateTo(
+                _factoryVerifyPracticTaskVm, 
+                new object[4] { result, CurrentPracticTask, Vertices.ToList(), Connections.ToList()}
+            );
         }
 
         /// <summary>

@@ -26,114 +26,44 @@ namespace GraphApp.Services
         /// Цвет ответа по умолчанию.
         /// </summary>
         private const string _defaultColorHex = "#FF252526";
-
-        /// <summary>
-        /// Проверяемый тест.
-        /// </summary>
-        private Test _verifableTest;
-
-        /// <summary>
-        /// Выбранные ответы по вопросам.
-        /// </summary>
-        private Dictionary<Question, Answer> _selectedAnswerByQuestion;
         #endregion
 
         #region properties
-        /// <summary>
-        /// Набранное количество очков.
-        /// </summary>
-        public int Points { get; private set; }
-
-        /// <summary>
-        /// Проверяемый тест.
-        /// </summary>
-        public Test VerifableTest 
-        { 
-            get
-            {
-                return _verifableTest;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Пустой проверяемый тест");
-                }
-
-                _verifableTest = value;
-            } 
-        }
-
-        /// <summary>
-        /// Выбранные ответы по вопросам.
-        /// </summary>
-        public Dictionary<Question, Answer> SelectedAnswerByQuestion 
-        {
-            get
-            {
-                return _selectedAnswerByQuestion;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Пустой словарь.");
-                }
-
-                _selectedAnswerByQuestion = value;
-            }
-        }
-
-        /// <summary>
-        /// Проверенные ответы.
-        /// </summary>
-        public Dictionary<Question, List<VisualAnswer>> QuestionVerifiedAnswerMap { get; private set; }
         #endregion
 
         #region constructor
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        public VerifyTestService()
-        {
-            QuestionVerifiedAnswerMap = new Dictionary<Question, List<VisualAnswer>>();
-        }
         #endregion
 
         #region public methods
-        /// <summary>
-        /// Провера ответов.
-        /// </summary>
-        public void VerifyTest()
+        public (int, Dictionary<Question, List<VisualAnswer>>) VerifyTest(Dictionary<Question, Answer> selectedAnswerByQuestion, Test verifableTest)
         {
-            Points = 0;
-             QuestionVerifiedAnswerMap.Clear();
+            var point = CountPoints(selectedAnswerByQuestion);
+            var questionVerifiedAnswerMap = new Dictionary<Question, List<VisualAnswer>>();
 
             /*
                 Так как VerifableTest содержит те же ptr на инстансы Question и Answer,
                 что и SelectedAnswerByQuestion, то мы можем их стравнивать.
             */
 
-
             // Бежим по VerifableTest.Question для того, чтоб сохранить порядок вопросов.
-            foreach (var question in VerifableTest.Questions)
+            foreach (var question in verifableTest.Questions)
             {
                 var answerList = new List<VisualAnswer>();
 
                 foreach (var answer in question.Answers)
                 {
                     Answer? selectedAnswer;
-                    SelectedAnswerByQuestion.TryGetValue(question, out selectedAnswer);
+                    selectedAnswerByQuestion.TryGetValue(question, out selectedAnswer);
 
                     var color = SelectColorForAnswer(answer, selectedAnswer == answer);
 
                     answerList.Add(new VisualAnswer(answer, color));
                 }
 
-                QuestionVerifiedAnswerMap[question] = answerList;
+                questionVerifiedAnswerMap[question] = answerList;
             }
 
-            CountPoints();
+            return (point, questionVerifiedAnswerMap);
         }
         #endregion
 
@@ -160,18 +90,19 @@ namespace GraphApp.Services
             return new SolidColorBrush((Color)ColorConverter.ConvertFromString(_incorrectColorHex));
         }
 
-        /// <summary>
-        /// Подсчет очков.
-        /// </summary>
-        private void CountPoints()
+        private int CountPoints(Dictionary<Question, Answer> selectedAnswerByQuestion)
         {
-            foreach (var answer in SelectedAnswerByQuestion.Values)
+            var point = 0;
+
+            foreach (var answer in selectedAnswerByQuestion.Values)
             {
                 if (answer.Flag)
                 {
-                    Points++;
+                    point++;
                 }
             }
+
+            return point;
         }
         #endregion
     }

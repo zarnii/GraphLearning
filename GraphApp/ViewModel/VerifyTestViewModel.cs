@@ -16,41 +16,16 @@ namespace GraphApp.ViewModel
     {
         #region fields
         /// <summary>
-        /// Сервис проверки ответов.
-        /// </summary>
-        private IVerifyTestService _testCheckService;
-
-        /// <summary>
         /// Сервис навигации.
         /// </summary>
         private INavigationService _navigationService;
-
-        /// <summary>
-        /// Команда открытия TestView.
-        /// </summary>
-        private ICommand _openTestView;
         #endregion
 
         #region properties
         /// <summary>
         /// Команда открытия TestView.
         /// </summary>
-        public ICommand OpenTestView
-        {
-            get
-            {
-                return _openTestView;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Пустая команда перехода.");
-                }
-
-                _openTestView = value;
-            }
-        }
+        public ICommand OpenTestView { get; private set; }
 
         /// <summary>
         /// Проверенные ответы по вопросам.
@@ -65,22 +40,21 @@ namespace GraphApp.ViewModel
 
         #region constructor
         /// <summary>
-        /// Констурктор.
+        /// Конструктор.
         /// </summary>
-        /// <param name="verifyTestService">Сервис проверки теста.</param>
         /// <param name="navigationService">Сервис навигации.</param>
+        /// <param name="questionVerifiedAnswerMap">Проверенные ответы по вопросам.</param>
+        /// <param name="message">Сообщение.</param>
         public VerifyTestViewModel(
-            IVerifyTestService verifyTestService, 
             INavigationService navigationService,
-            IMessageBuffer messageBuffer)
+            Dictionary<Question, List<VisualAnswer>> questionVerifiedAnswerMap,
+            string message)
         {
             _navigationService = navigationService;
-            _testCheckService = verifyTestService;
-            Message = messageBuffer.Message;
-            messageBuffer.Message = String.Empty;
+            Message = message;
 
             QuestionVerifiedAnswerMap = new ObservableCollection<KeyValuePair<Question, List<VisualAnswer>>>(
-                _testCheckService.QuestionVerifiedAnswerMap.ToList()
+                questionVerifiedAnswerMap.ToList()
             );
 
             OpenTestView = new RelayCommand(OpenTestViewCommand);

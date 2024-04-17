@@ -12,5 +12,7 @@ namespace GraphApp.Interfaces
             where TViewModel: ViewModel.ViewModel;
 
         void NavigateTo(Type viewModelType);
+
+        void NavigateTo(IFactoryViewModel factory, object[] param);
     }
 }

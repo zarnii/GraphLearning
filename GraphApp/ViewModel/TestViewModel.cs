@@ -2,9 +2,10 @@
 using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Services;
+using GraphApp.Services.FactoryViewModel;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -56,14 +57,9 @@ namespace GraphApp.ViewModel
         private INavigationService _navigationService;
 
         /// <summary>
-        /// Сервис проверки тестов.
+        /// Фабрика VerifyTestVM.
         /// </summary>
-        private IVerifyTestService _verifyTestService;
-
-        /// <summary>
-        /// Буфер сообщений.
-        /// </summary>
-        private IMessageBuffer _mesageBuffer;
+        private IFactoryViewModel _factoryVerifyTestVM;
         #endregion
 
         #region properties
@@ -163,17 +159,15 @@ namespace GraphApp.ViewModel
         /// </summary>
         /// <param name="accessControlService">Поставщик тестов.</param>
         /// <param name="navigationService">Сервис навигации.</param>
-        /// <param name="answerCheckService">Сервис проверки теста.</param>
+        /// <param name="factoryVerifyTestVM">Фабрика FactoryVerifyTestViewModel.</param>
         public TestViewModel(
             IAccessControlService accessControlService,
             INavigationService navigationService,
-            IVerifyTestService answerCheckService,
-            IMessageBuffer messageBuffer)
+            [FromKeyedServices(typeof(FactoryVerifyTestViewModel))] IFactoryViewModel factoryVerifyTestVM)
         {
             _accessControlService = accessControlService;
             _navigationService = navigationService;
-            _verifyTestService = answerCheckService;
-            _mesageBuffer = messageBuffer;
+            _factoryVerifyTestVM = factoryVerifyTestVM;
             _selectedAnswerByQuestion = new Dictionary<Question, Answer>();
 
             CheckAnswer = new RelayCommand(CheckAnswerCommand);
@@ -203,27 +197,27 @@ namespace GraphApp.ViewModel
         private void CheckAnswerCommand(object parameter)
         {
             _timer?.Stop();
+            string message = string.Empty;
 
             if (parameter as string != null)
             {
-                _mesageBuffer.Message = (string)parameter;
+                message = (string)parameter;
             }
 
-            _verifyTestService.VerifableTest = CurrentTest;
-            _verifyTestService.SelectedAnswerByQuestion = _selectedAnswerByQuestion;
-            _verifyTestService.VerifyTest();
+            var verifyTestService = new VerifyTestService();
+            var result = verifyTestService.VerifyTest(_selectedAnswerByQuestion, CurrentTest);
 
             if (!_accessControlService.CheckEducationMaterialIsPassed(_accessControlService.CurrentEducationMaterial))
             {
                 _accessControlService.AddAttempt(_accessControlService.CurrentEducationMaterial);
             }
 
-            if (_verifyTestService.Points == CurrentTest.Questions.Length)
+            if (result.Item1 == CurrentTest.Questions.Length)
             {
                 _accessControlService.OpenNext(_accessControlService.CurrentEducationMaterial);
             }
 
-            _navigationService.NavigateTo<VerifyTestViewModel>();
+            _navigationService.NavigateTo(_factoryVerifyTestVM, new object[2] { result.Item2, message });
         }
 
         /// <summary>

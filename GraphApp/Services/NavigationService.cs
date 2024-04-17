@@ -85,17 +85,22 @@ namespace GraphApp.Services
 			var view = _viewModelFactory.Invoke(viewModelType);
 			CurrentView = view;
 		}
-		#endregion
 
-		#region private methods
-		/// <summary>
-		/// Оповещение подписчиков об изменении свойства.
-		/// </summary>
-		/// <param name="propertyName"></param>
-		private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        public void NavigateTo(IFactoryViewModel factory, object[] param)
+        {
+           CurrentView = factory.Create(param);
+        }
+        #endregion
+
+        #region private methods
+        /// <summary>
+        /// Оповещение подписчиков об изменении свойства.
+        /// </summary>
+        /// <param name="propertyName"></param>
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -3,6 +3,7 @@ using GraphApp.Model;
 using GraphApp.Model.Exception;
 using GraphApp.Model.Serializing;
 using GraphApp.Services;
+using GraphApp.Services.FactoryViewModel;
 using GraphApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -30,57 +31,85 @@ namespace GraphApp
         {
             _brushConverter = new BrushConverter();
 
-            var serviceCollection = new ServiceCollection();
+            var dependencyCollection = new ServiceCollection();
 
             #region window
-            serviceCollection.AddSingleton<RootWindow>();
+            dependencyCollection.AddSingleton<RootWindow>();
             #endregion
 
             #region services
-            serviceCollection.AddSingleton<IMapper, Mapper>();
-            serviceCollection.AddSingleton<IDataSaver, JsonSaverService>();
-            serviceCollection.AddSingleton<IDataLoader, JsonLoaderService>();
-            serviceCollection.AddSingleton<IDataHandlerService, JsonDataHandlerService>();
-            serviceCollection.AddSingleton<INavigationService, NavigationService>();
-            serviceCollection.AddSingleton<ITestProvider, TestProvider>();
-            serviceCollection.AddSingleton<ITheoryService, TheoryService>();
-            serviceCollection.AddSingleton<IHealthPointService, HealthPointService>();
-            serviceCollection.AddSingleton<IVerifyTestService, VerifyTestService>();
-            serviceCollection.AddSingleton<IPracticProvider, PracticProvider>();
-            serviceCollection.AddTransient<IVisualEditorService, VisualEditorService>();
-            serviceCollection.AddSingleton<IQuestionProvider, QuestionProvider>();
-            serviceCollection.AddSingleton<ITestGenerator, TestGenerator>();
-            serviceCollection.AddSingleton<IAccessControlService, AccessControlService>();
-            serviceCollection.AddSingleton<IVerifyPracticTaskService, VerifyPracticTaskService>();
-            serviceCollection.AddSingleton<IMessageBuffer, MessageBuffer>();
+            dependencyCollection.AddSingleton<IMapper, Mapper>();
+            dependencyCollection.AddSingleton<IDataSaver, JsonSaverService>();
+            dependencyCollection.AddSingleton<IDataLoader, JsonLoaderService>();
+            dependencyCollection.AddSingleton<IDataHandlerService, JsonDataHandlerService>();
+            dependencyCollection.AddSingleton<INavigationService, NavigationService>();
+            dependencyCollection.AddSingleton<ITestProvider, TestProvider>();
+            dependencyCollection.AddSingleton<ITheoryService, TheoryService>();
+            dependencyCollection.AddSingleton<IHealthPointService, HealthPointService>();
+            dependencyCollection.AddSingleton<IPracticProvider, PracticProvider>();
+            dependencyCollection.AddTransient<IVisualEditorService, VisualEditorService>();
+            dependencyCollection.AddSingleton<IQuestionProvider, QuestionProvider>();
+            dependencyCollection.AddSingleton<ITestGenerator, TestGenerator>();
+            dependencyCollection.AddSingleton<IAccessControlService, AccessControlService>();
+            dependencyCollection.AddSingleton<IMessageBuffer, MessageBuffer>();
+            dependencyCollection.AddKeyedSingleton<IFactoryViewModel, FactoryVerifyTestViewModel>(typeof(FactoryVerifyTestViewModel));
+            dependencyCollection.AddKeyedSingleton<IFactoryViewModel, FactoryVerifyPracticTaskViewModel>(typeof(FactoryVerifyPracticTaskViewModel));
             #endregion
 
             #region viewModel
-            serviceCollection.AddSingleton<RootViewModel>();
-            serviceCollection.AddSingleton<MainMenuViewModel>();
-            serviceCollection.AddTransient<PlaygroundViewModel>();
-            serviceCollection.AddSingleton<EducationViewModel>();
-            serviceCollection.AddTransient<TestViewModel>();
-            serviceCollection.AddSingleton<TheoryViewModel>();
-            serviceCollection.AddSingleton<ScrollTestViewModel>();
-            serviceCollection.AddTransient<VerifyTestViewModel>();
-            serviceCollection.AddTransient<PracticViewModel>();
-            serviceCollection.AddTransient<VertexViewModel>();
-            serviceCollection.AddTransient<ConnectionViewModel>();
-            serviceCollection.AddSingleton<InstructionViewModel>();
-            serviceCollection.AddTransient<SettingsViewModel>();
-            serviceCollection.AddTransient<VerifyPracticViewModel>();
+            dependencyCollection.AddSingleton<RootViewModel>();
+            dependencyCollection.AddSingleton<MainMenuViewModel>();
+            dependencyCollection.AddTransient<PlaygroundViewModel>();
+            dependencyCollection.AddSingleton<EducationViewModel>();
+            dependencyCollection.AddTransient<TestViewModel>();
+            dependencyCollection.AddSingleton<TheoryViewModel>();
+            dependencyCollection.AddSingleton<ScrollTestViewModel>();
+            dependencyCollection.AddTransient<VerifyTestViewModel>();
+            dependencyCollection.AddTransient<PracticViewModel>();
+            dependencyCollection.AddTransient<VertexViewModel>();
+            dependencyCollection.AddTransient<ConnectionViewModel>();
+            dependencyCollection.AddSingleton<InstructionViewModel>();
+            dependencyCollection.AddTransient<SettingsViewModel>();
             #endregion
 
-            #region other
+            #region factory
             // Фабрика vm.
-            serviceCollection.AddSingleton<Func<Type, ViewModel.ViewModel>>((vmType) =>
+            dependencyCollection.AddSingleton<Func<Type, ViewModel.ViewModel>>((vmType) =>
             {
                 return (ViewModel.ViewModel)_serviceProvider.GetRequiredService(vmType);
             });
+
+            // Фабрика VerifyTestViewModel.
+            dependencyCollection.AddSingleton<Func<Dictionary<Question, List<VisualAnswer>>, string, ViewModel.VerifyTestViewModel>>((dict, message) =>
+            {
+                return new VerifyTestViewModel(
+                    _serviceProvider.GetRequiredService<INavigationService>(),
+                    dict,
+                    message
+                );
+            });
+
+            // Фабрика VerifyPracticTaskViewModel.
+            dependencyCollection.AddSingleton<
+                Func<VerifiedPracticTask, 
+                    PracticTask, 
+                    IList<VisualVertex>, 
+                    IList<VisualConnection>,
+                    ViewModel.VerifyPracticViewModel>
+            >((verifiedTask, verifableTask, vertices, connections) =>
+            {
+                return new VerifyPracticViewModel(
+                    _serviceProvider.GetRequiredService<INavigationService>(),
+                    _serviceProvider.GetRequiredService<IAccessControlService>(),
+                    verifiedTask,
+                    verifableTask,
+                    vertices,
+                    connections
+                );
+            });
             #endregion
 
-            _serviceProvider = serviceCollection.BuildServiceProvider();
+            _serviceProvider = dependencyCollection.BuildServiceProvider();
 
             SettingMapper();
         }

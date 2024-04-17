@@ -12,9 +12,9 @@ namespace GraphApp.ViewModel
     {
         private INavigationService _navigationService;
 
-        public List<VisualVertex> Vertices { get; set; }
+        public IList<VisualVertex> Vertices { get; set; }
 
-        public List<VisualConnection> Connections { get; set; }
+        public IList<VisualConnection> Connections { get; set; }
 
         public ICommand GoBack { get; private set; }
 
@@ -26,61 +26,64 @@ namespace GraphApp.ViewModel
 
         public VerifyPracticViewModel(
             INavigationService navigationService,
-            IVerifyPracticTaskService verifyPracticTaskService,
-            IAccessControlService accessControlService)
+            IAccessControlService accessControlService,
+            VerifiedPracticTask verifiedPracticTask,
+            PracticTask verifablePracticTask,
+            IList<VisualVertex> vertices,
+            IList<VisualConnection> connections)
         {
             _navigationService = navigationService;
-            Vertices = (List<VisualVertex>)verifyPracticTaskService.VerifiedVertices;
-            Connections = (List<VisualConnection>)verifyPracticTaskService.VerifiedConnections;
+            Vertices = vertices;
+            Connections = connections;
 
-            Verify(verifyPracticTaskService, accessControlService);
+            Verify(accessControlService, verifiedPracticTask, verifablePracticTask);
 
             GoBack = new RelayCommand(GoBackCommand);
         }
 
         private void Verify(
-            IVerifyPracticTaskService verifyPracticTaskService, 
-            IAccessControlService accessControlService)
+            IAccessControlService accessControlService,
+            VerifiedPracticTask verifiedPracticTask,
+            PracticTask verifablePracticTask)
         {
-            var result = verifyPracticTaskService.VerifyPracticTask();
             var isDone = true;
 
-            if (verifyPracticTaskService.VerifiedPracticTask.NeedCheckVertexCount && !result.VertexCountIsDone)
+            if (verifablePracticTask.NeedCheckVertexCount && !verifiedPracticTask.VertexCountIsDone)
             {
                 isDone = false;
             }
 
-            if (verifyPracticTaskService.VerifiedPracticTask.NeedCheckVertexPosition && !result.VertexPositionIsDone)
+            if (verifablePracticTask.NeedCheckVertexPosition && !verifiedPracticTask.VertexPositionIsDone)
             {
                 isDone = false;
             }
 
-            if (verifyPracticTaskService.VerifiedPracticTask.NeedCheckVertexSize && !result.VertexSizeIsDone)
+            if (verifablePracticTask.NeedCheckVertexSize && !verifiedPracticTask.VertexSizeIsDone)
             {
                 isDone = false;
             }
 
-            if (verifyPracticTaskService.VerifiedPracticTask.NeedCheckVertexName && !result.VertexNameIsDone)
+            if (verifablePracticTask.NeedCheckVertexName && !verifiedPracticTask.VertexNameIsDone)
             {
                 isDone = false;
             }
 
-            if (verifyPracticTaskService.VerifiedPracticTask.NeedCheckConnectionCount && !result.ConnectionCountIsDone)
+            if (verifablePracticTask.NeedCheckConnectionCount && !verifiedPracticTask.ConnectionCountIsDone)
             {
                 isDone = false;
             }
 
-            if (verifyPracticTaskService.VerifiedPracticTask.NeedCheckConnection && !result.ConnectionIsDone)
+            if (verifablePracticTask.NeedCheckConnection && !verifiedPracticTask.ConnectionIsDone)
             {
                 isDone = false;
             }
 
-            if (verifyPracticTaskService.VerifiedPracticTask.NeedCheckConnectionWeight && !result.ConnectionWeightIsDone)
+            if (verifablePracticTask.NeedCheckConnectionWeight && !verifiedPracticTask.ConnectionWeightIsDone)
             {
                 isDone = false;
             }
 
-            if (verifyPracticTaskService.VerifiedPracticTask.NeedCheckConnectionType && !result.ConnectionTypeIsDone)
+            if (verifablePracticTask.NeedCheckConnectionType && !verifiedPracticTask.ConnectionTypeIsDone)
             {
                 isDone = false;
             }

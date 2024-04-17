@@ -13,81 +13,29 @@ namespace GraphApp.Services
     /// </summary>
     public class VerifyPracticTaskService : IVerifyPracticTaskService
     {
-        #region fields
-        private IList<VisualVertex> _verifiedVertices;
-        private IList<VisualConnection> _verifiedConnections;
-        private PracticTask _verifiedPracticTask;
-        #endregion
-
-        public IList<VisualVertex> VerifiedVertices 
-        {
-            get
-            {
-                return _verifiedVertices;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                _verifiedVertices = value;
-            } 
-        }
-
-        public IList<VisualConnection> VerifiedConnections 
-
-        {
-            get
-            {
-                return _verifiedConnections;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                _verifiedConnections = value;
-            } 
-        }
-
-        public PracticTask VerifiedPracticTask 
-        { 
-            get
-            {
-                return _verifiedPracticTask;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                _verifiedPracticTask = value;
-            } 
-        }
-
         /// <summary>
-        /// Проверить практическое задание.
+        /// Проверка практического задания.
         /// </summary>
+        /// <param name="vertices">Коллекция вершин.</param>
+        /// <param name="connections">Коллекция связей.</param>
+        /// <param name="practicTask">Проверяемое задание.</param>
         /// <returns>Проверенное задание.</returns>
-        public VerifiedPracticTask VerifyPracticTask()
+        public VerifiedPracticTask VerifyPracticTask(
+            IList<VisualVertex> vertices, 
+            IList<VisualConnection> connections, 
+            PracticTask practicTask)
         {
             var verifiedPracticTask = new VerifiedPracticTask();
 
-            var verticesCopyActual = new VisualVertex[VerifiedVertices.Count];
-            VerifiedVertices.CopyTo(verticesCopyActual, 0);
-            var connectionsCopyActual = new VisualConnection[VerifiedConnections.Count];
-            VerifiedConnections.CopyTo(connectionsCopyActual, 0);
+            var verticesCopyActual = new VisualVertex[vertices.Count];
+            vertices.CopyTo(verticesCopyActual, 0);
+            var connectionsCopyActual = new VisualConnection[connections.Count];
+            connections.CopyTo(connectionsCopyActual, 0);
 
-            var verticesCopyExpectex = new VisualVertex[VerifiedPracticTask.Vertices.Count];
-            VerifiedPracticTask.Vertices.CopyTo(verticesCopyExpectex, 0);
-            var connectionsCopyExpected = new VisualConnection[VerifiedPracticTask.Connections.Count];
-            VerifiedPracticTask.Connections.CopyTo(connectionsCopyExpected, 0);
+            var verticesCopyExpectex = new VisualVertex[practicTask.Vertices.Count];
+            practicTask.Vertices.CopyTo(verticesCopyExpectex, 0);
+            var connectionsCopyExpected = new VisualConnection[practicTask.Connections.Count];
+            practicTask.Connections.CopyTo(connectionsCopyExpected, 0);
 
             Array.Sort<VisualVertex>(verticesCopyActual);
             Array.Sort<VisualConnection>(connectionsCopyActual);
