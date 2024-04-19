@@ -1,7 +1,11 @@
-﻿using GraphApp.Command;
+﻿using DocumentFormat.OpenXml.InkML;
+using GraphApp.Command;
 using GraphApp.Interfaces;
 using GraphApp.Model;
+using GraphApp.Services.FactoryViewModel;
+using GraphApp.ViewModel.Verify;
 using Gu.Wpf.DataGrid2D;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
@@ -23,6 +27,8 @@ namespace GraphApp.ViewModel
         /// Сервис контроля доступа.
         /// </summary>
         private IAccessControlService _accessControlService;
+
+        private IFactoryViewModel _factoryVerifyCreateMatrixTask;
 
         /// <summary>
         /// Матрица смежности.
@@ -105,9 +111,9 @@ namespace GraphApp.ViewModel
         public RowColumnIndex SelectedCell { get; set; }
 
         /// <summary>
-        /// Заголовок.
+        /// Цвет заголовка.
         /// </summary>
-        public string Title { get; private set; }
+        public Brush TitleColor { get; private set; }
         #endregion
 
         #region constructor
@@ -116,9 +122,11 @@ namespace GraphApp.ViewModel
         /// </summary>
         /// <param name="navigationService">Сервис навигации.</param>
         /// <param name="accessControlService">Сервис констроля доступа.</param>
+        /// <param name="factoryVerifyCreateMatrixTask">Фабрика VerifyCreateMatrixTaskViewModel.</param>
         public CreateMatrixTaskViewModel(
             INavigationService navigationService,
-            IAccessControlService accessControlService)
+            IAccessControlService accessControlService,
+            [FromKeyedServices(typeof(FactoryVerifyCreateMatrixTask))]IFactoryViewModel factoryVerifyCreateMatrixTask)
         {
             _navigationService = navigationService;
             _accessControlService = accessControlService;
@@ -136,7 +144,7 @@ namespace GraphApp.ViewModel
             var rowCount = _adjacencyMatrix.Matrix.GetUpperBound(0) + 1;
             var columnCount = _adjacencyMatrix.Matrix.Length / rowCount;
             Matrix = new int[rowCount, rowCount];
-            Title = "Постройте матрицу смежности по рисунку";
+            _factoryVerifyCreateMatrixTask = factoryVerifyCreateMatrixTask;
         }
         #endregion
 
@@ -147,36 +155,15 @@ namespace GraphApp.ViewModel
         /// <param name="parameter"></param>
         private void VerifyTaskCommand(object parameter)
         {
-            var flag = true;
-            var rows = Matrix.GetUpperBound(0) + 1;
-            var colums = Matrix.Length / rows;
-
-            for (var i = 0; i < rows; i++)
-            {
-                for (var j = 0; j < colums; j++)
-                {
-                    if (_adjacencyMatrix.Matrix[i, j] != Matrix[i, j])
-                    {
-                        flag = false;
-                        break;
-                    }
+            _navigationService.NavigateTo(_factoryVerifyCreateMatrixTask, 
+                new object[4] 
+                { 
+                    _adjacencyMatrix, 
+                    Matrix,
+                    Vertices,
+                    Connections
                 }
-            }
-
-            if (!_accessControlService.CheckEducationMaterialIsPassed(_accessControlService.CurrentEducationMaterial))
-            {
-                _accessControlService.AddAttempt(_accessControlService.CurrentEducationMaterial);
-            }
-
-            if (flag)
-            {
-                _accessControlService.OpenNext(_accessControlService.CurrentEducationMaterial);
-            }
-
-            Title = flag
-                ? "Верно"
-                : "Неверно";
-            OnPropertyChanged(nameof(Title));
+            );
         }
 
         /// <summary>

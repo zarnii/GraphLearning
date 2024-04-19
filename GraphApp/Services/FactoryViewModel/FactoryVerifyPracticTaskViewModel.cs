@@ -1,5 +1,6 @@
 ﻿using GraphApp.Interfaces;
 using GraphApp.Model;
+using GraphApp.ViewModel.Verify;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace GraphApp.Services.FactoryViewModel
             PracticTask, 
             IList<VisualVertex>, 
             IList<VisualConnection>, 
-            ViewModel.VerifyPracticViewModel> _factory;
+            VerifyPracticViewModel> _factory;
 
         /// <summary>
         /// Конструктор.
@@ -30,7 +31,7 @@ namespace GraphApp.Services.FactoryViewModel
             PracticTask, 
             IList<VisualVertex>, 
             IList<VisualConnection>,
-            ViewModel.VerifyPracticViewModel> factory) 
+            VerifyPracticViewModel> factory) 
         {
             _factory = factory;
         }

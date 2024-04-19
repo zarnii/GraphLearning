@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace GraphApp.ViewModel
+namespace GraphApp.ViewModel.Verify
 {
-    public class VerifyPracticViewModel: ViewModel
+    public class VerifyPracticViewModel : ViewModel
     {
         private INavigationService _navigationService;
 

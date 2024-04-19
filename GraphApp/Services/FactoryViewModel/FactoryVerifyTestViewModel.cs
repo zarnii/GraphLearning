@@ -1,5 +1,6 @@
 ﻿using GraphApp.Interfaces;
 using GraphApp.Model;
+using GraphApp.ViewModel.Verify;
 using System;
 using System.Collections.Generic;
 
@@ -10,13 +11,13 @@ namespace GraphApp.Services.FactoryViewModel
     /// </summary>
     public class FactoryVerifyTestViewModel : IFactoryViewModel
     {
-        private Func<Dictionary<Question, List<VisualAnswer>>, string, ViewModel.VerifyTestViewModel> _factory;
+        private Func<Dictionary<Question, List<VisualAnswer>>, string, VerifyTestViewModel> _factory;
 
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="factory">Конкретная фабрика.</param>
-        public FactoryVerifyTestViewModel(Func<Dictionary<Question, List<VisualAnswer>>, string, ViewModel.VerifyTestViewModel> factory)
+        public FactoryVerifyTestViewModel(Func<Dictionary<Question, List<VisualAnswer>>, string, VerifyTestViewModel> factory)
         {
             _factory = factory;
         }

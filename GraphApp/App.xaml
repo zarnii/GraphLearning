@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GraphApp"
 			 xmlns:viewModel="clr-namespace:GraphApp.ViewModel" 
+			 xmlns:viewModelVerify="clr-namespace:GraphApp.ViewModel.Verify" 
 			 xmlns:view="clr-namespace:GraphApp.View">
 	<Application.Resources>
 		<!--Стиль для Заголовка вопроса-->
@@ -353,7 +354,7 @@
 			<view:ScrollTestView/>
 		</DataTemplate>
 
-		<DataTemplate DataType="{x:Type viewModel:VerifyTestViewModel}">
+		<DataTemplate DataType="{x:Type viewModelVerify:VerifyTestViewModel}">
 			<view:VerifyTestView/>
 		</DataTemplate>
 
@@ -373,12 +374,16 @@
 			<view:SettingsView/>
 		</DataTemplate>
 
-		<DataTemplate DataType="{x:Type viewModel:VerifyPracticViewModel}">
+		<DataTemplate DataType="{x:Type viewModelVerify:VerifyPracticViewModel}">
 			<view:VerifyPracticView/>
 		</DataTemplate>
 
 		<DataTemplate DataType="{x:Type viewModel:CreateMatrixTaskViewModel}">
 			<view:CreateMatrixTaskView/>
+		</DataTemplate>
+
+		<DataTemplate DataType="{x:Type viewModelVerify:VerifyCreateMatrixTaskViewModel}">
+			<view:VerifyCreateMatrixTaskView/>
 		</DataTemplate>
 
 	</Application.Resources>

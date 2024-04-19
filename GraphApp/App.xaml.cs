@@ -6,6 +6,7 @@ using GraphApp.Services;
 using GraphApp.Services.FactoryViewModel;
 using GraphApp.Services.Providers;
 using GraphApp.ViewModel;
+using GraphApp.ViewModel.Verify;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,7 @@ namespace GraphApp
             dependencyCollection.AddSingleton<IMessageBuffer, MessageBuffer>();
             dependencyCollection.AddKeyedSingleton<IFactoryViewModel, FactoryVerifyTestViewModel>(typeof(FactoryVerifyTestViewModel));
             dependencyCollection.AddKeyedSingleton<IFactoryViewModel, FactoryVerifyPracticTaskViewModel>(typeof(FactoryVerifyPracticTaskViewModel));
+            dependencyCollection.AddKeyedSingleton<IFactoryViewModel, FactoryVerifyCreateMatrixTask>(typeof(FactoryVerifyCreateMatrixTask));
             #endregion
 
             #region viewModel
@@ -83,7 +85,7 @@ namespace GraphApp
             });
 
             // Фабрика VerifyTestViewModel.
-            dependencyCollection.AddSingleton<Func<Dictionary<Question, List<VisualAnswer>>, string, ViewModel.VerifyTestViewModel>>((dict, message) =>
+            dependencyCollection.AddSingleton<Func<Dictionary<Question, List<VisualAnswer>>, string, VerifyTestViewModel>>((dict, message) =>
             {
                 return new VerifyTestViewModel(
                     _serviceProvider.GetRequiredService<INavigationService>(),
@@ -98,7 +100,7 @@ namespace GraphApp
                     PracticTask, 
                     IList<VisualVertex>, 
                     IList<VisualConnection>,
-                    ViewModel.VerifyPracticViewModel>
+                    VerifyPracticViewModel>
             >((verifiedTask, verifableTask, vertices, connections) =>
             {
                 return new VerifyPracticViewModel(
@@ -106,6 +108,25 @@ namespace GraphApp
                     _serviceProvider.GetRequiredService<IAccessControlService>(),
                     verifiedTask,
                     verifableTask,
+                    vertices,
+                    connections
+                );
+            });
+
+            // Фабрика VerifyCreateMatrixTaskViewModel.
+            dependencyCollection.AddSingleton<
+                Func<AdjacencyMatrix, 
+                int[,],
+                IList<VisualVertex>,
+                IList<VisualConnection>,
+                VerifyCreateMatrixTaskViewModel>
+            >((correctMatrix, userMatrix, vertices, connections) =>
+            {
+                return new VerifyCreateMatrixTaskViewModel(
+                    _serviceProvider.GetRequiredService<INavigationService>(),
+                    _serviceProvider.GetRequiredService<IAccessControlService>(),
+                    correctMatrix,
+                    userMatrix,
                     vertices,
                     connections
                 );

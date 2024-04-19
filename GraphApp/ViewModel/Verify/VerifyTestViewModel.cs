@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
-namespace GraphApp.ViewModel
+namespace GraphApp.ViewModel.Verify
 {
     /// <summary>
     /// Модель представления проверки теста.
@@ -31,7 +31,7 @@ namespace GraphApp.ViewModel
         /// Проверенные ответы по вопросам.
         /// </summary>
         public ObservableCollection<KeyValuePair<Question, List<VisualAnswer>>> QuestionVerifiedAnswerMap { get; private set; }
-        
+
         /// <summary>
         /// Сообщение.
         /// </summary>
