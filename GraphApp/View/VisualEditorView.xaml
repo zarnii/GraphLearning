@@ -71,12 +71,6 @@
 						CommandParameter="{x:Static model:MouseMode.Delete}"
 						Style="{StaticResource ButtonStyle}"
 						Height="25"/>
-				<Button
-					Margin="0,5,0,0"
-					Content="PNG"
-					Command="{Binding SaveGraphAsPng}"
-					Style="{StaticResource ButtonStyle}"
-					CommandParameter="{Binding ElementName=GraphCanvas}"/>
 			</StackPanel>
 		</Grid>
 

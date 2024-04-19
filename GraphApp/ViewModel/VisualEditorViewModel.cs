@@ -75,11 +75,6 @@ namespace GraphApp.ViewModel
         public ICommand CreateIncidenceMatrix { get; private set; }
 
         /// <summary>
-        /// Команда сохранение графа в виде png файла.
-        /// </summary>
-        public ICommand SaveGraphAsPng { get; private set; }
-
-        /// <summary>
         /// Ширина графического поля.
         /// </summary>
         public int CanvasWidth
@@ -207,7 +202,6 @@ namespace GraphApp.ViewModel
             ClickOnGraphElement = new RelayCommand(ClickOnGraphElementCommand);
             CreateAdjacencyMatrix = new RelayCommand(CreateAdjacencyMatrixCommand);
             CreateIncidenceMatrix = new RelayCommand(CreateIncidenceMatrixCommand);
-            SaveGraphAsPng = new RelayCommand(SaveGraphAsPngCommand);
         }
         #endregion
 
@@ -393,12 +387,6 @@ namespace GraphApp.ViewModel
             {
                 ((ConnectionViewModel)SelectedGraphElement).VisualConnection = (VisualConnection)parameter;
             }
-        }
-
-        private void SaveGraphAsPngCommand(object parameter)
-        {
-            var saver = new GraphImageSaver();
-            saver.SaveAsPng(Vertices, Connections, "F:\\img\\img.png", CanvasWidth, CanvasHeight);
         }
         #endregion
     }

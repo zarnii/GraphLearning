@@ -3,6 +3,8 @@ using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Model.Exception;
 using GraphApp.Model.Serializing;
+using GraphApp.Services;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,6 +48,11 @@ namespace GraphApp.ViewModel
         public ICommand LoadGraph { get; private set; }
 
         /// <summary>
+        /// Команда сохранения графа как изображение.
+        /// </summary>
+        public ICommand SaveGraphAsPng { get; private set; }
+
+        /// <summary>
         /// Переход назад.
         /// </summary>
         public ICommand GoBack { get; private set; }
@@ -78,6 +85,7 @@ namespace GraphApp.ViewModel
             SaveGraph = new RelayCommand(SaveGraphCommand);
             LoadGraph = new RelayCommand(LoadGraphCommand);
             GoBack = new RelayCommand(GoBackCommand);
+            SaveGraphAsPng = new RelayCommand(SaveGraphAsPngCommand);
         }
         #endregion
 
@@ -165,6 +173,24 @@ namespace GraphApp.ViewModel
                 );
             }
 
+        }
+
+        /// <summary>
+        /// Сохранение графа как изображение.
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void SaveGraphAsPngCommand(object parameter)
+        {
+            var dialog = new SaveFileDialog();
+            dialog.Filter = "Png files (*.png)|*.png";
+
+            if (dialog.ShowDialog() == false)
+            {
+                return;
+            }
+
+            var saver = new GraphImageSaver();
+            saver.SaveAsPng(Vertices, Connections, dialog.FileName, CanvasWidth, CanvasHeight);
         }
 
         /// <summary>

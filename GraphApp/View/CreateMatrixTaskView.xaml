@@ -10,9 +10,6 @@
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
-		<converters:MatrixToDataViewConverter
-			x:Key="MatrixToDataViewConverter"/>
-
 		<DataTemplate x:Key="ButtonCellTemplate">
 			<Button Content="{Binding}" Width="50" Height="20" />
 		</DataTemplate>

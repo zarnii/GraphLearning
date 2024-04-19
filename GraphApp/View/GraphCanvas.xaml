@@ -29,9 +29,6 @@
 		<converters:ConnectionVisibleConverter
 			x:Key="ConnectionVisibleConverter"/>
 
-		<converters:MatrixToDataViewConverter
-			x:Key="MatrixToDataViewConverter"/>
-
 		<converters:ConnectionNumberCoordinatesConverter
 			x:Key="ConnectionNumberCoordinatesConverter"/>
 	</UserControl.Resources>
