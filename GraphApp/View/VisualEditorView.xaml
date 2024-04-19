@@ -6,7 +6,8 @@
              xmlns:view="clr-namespace:GraphApp.View"
 			 xmlns:model="clr-namespace:GraphApp.Model"
 			 xmlns:converters="clr-namespace:GraphApp.Services.Converters"
-             mc:Ignorable="d" 
+             xmlns:dataGrid2d="http://gu.se/DataGrid2D"
+			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1000">
 	<UserControl.Resources>
 		<converters:VertexNameCoordinatesConverter 
@@ -26,9 +27,6 @@
 
 		<converters:ConnectionVisibleConverter
 			x:Key="ConnectionVisibleConverter"/>
-
-		<converters:MatrixToDataViewConverter
-			x:Key="MatrixToDataViewConverter"/>
 
 		<converters:ConnectionNumberCoordinatesConverter
 			x:Key="ConnectionNumberCoordinatesConverter"/>
@@ -104,11 +102,17 @@
 					VerticalScrollBarVisibility="Auto">
 					<StackPanel>
 						<DataGrid 
-							ItemsSource="{Binding AdjancencyMatrix, Converter={StaticResource MatrixToDataViewConverter}}"
-							IsReadOnly="True"/>
+							dataGrid2d:ItemsSource.Array2D="{Binding AdjancencyMatrix.Matrix}"
+							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding AdjancencyMatrix.ColumnsDescription}"
+							dataGrid2d:ItemsSource.RowHeadersSource="{Binding AdjancencyMatrix.RowsDescription}"
+							IsReadOnly="True"
+							SelectionUnit="Cell"/>
 						<DataGrid
-							ItemsSource="{Binding IncidenceMatrix, Converter={StaticResource MatrixToDataViewConverter}}"
-							IsReadOnly="True"/>
+							dataGrid2d:ItemsSource.Array2D="{Binding IncidenceMatrix.Matrix}"
+							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding IncidenceMatrix.ColumnsDescription}"
+							dataGrid2d:ItemsSource.RowHeadersSource="{Binding IncidenceMatrix.RowsDescription}"
+							IsReadOnly="True"
+							SelectionUnit="Cell"/>
 					</StackPanel>
 				</ScrollViewer>
 

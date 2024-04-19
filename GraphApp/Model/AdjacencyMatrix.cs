@@ -33,20 +33,15 @@ namespace GraphApp.Model
             var rows = new Vertex[vertexCollection.Count];
             Array.Copy(colums, rows, colums.Length);
 
-            Matrix = new int[colums.Length][];
-
-            for (var i = 0; i < Matrix.Length; i++)
-            {
-                Matrix[i] = new int[rows.Length];
-            }
+            Matrix = new int[colums.Length, rows.Length];
 
             foreach (var connection in connectionCollection)
             {
                 var firstIndex = connection.ConnectedVertices.Item1.Number - 1;
                 var secondIndex = connection.ConnectedVertices.Item2.Number - 1;
 
-                Matrix[firstIndex][secondIndex] = 1;
-                Matrix[secondIndex][firstIndex] = 1;
+                Matrix[firstIndex, secondIndex] = 1;
+                Matrix[secondIndex, firstIndex] = 1;
             }
 
             ColumnsDescription = colums.Select(v => v.Name).ToArray();

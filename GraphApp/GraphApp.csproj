@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.0.1" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
+    <PackageReference Include="Gu.Wpf.DataGrid2D" Version="0.2.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
   </ItemGroup>
@@ -23,8 +24,11 @@
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\EducationMaterialMap\EducationMaterialMap.json">
+    <None Update="Resources\CreateMatrix\1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\EducationMaterialMap\EducationMaterialMap.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Img\AdjacencyExample.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -72,5 +76,6 @@
 
   <ItemGroup>
     <Folder Include="Resources\EducationMaterialMap\" />
+    <Folder Include="Resources\CreateMatrix\" />
   </ItemGroup>
 </Project>

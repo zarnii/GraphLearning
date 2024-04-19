@@ -9,11 +9,6 @@ namespace GraphApp.Interfaces
 	public interface ITestProvider
 	{
 		/// <summary>
-		/// Текущий тест.
-		/// </summary>
-		Test CurrentTest { get; set; }
-
-		/// <summary>
 		/// Коллекция Тестов.
 		/// </summary>
 		List<Test> TestCollection { get; }

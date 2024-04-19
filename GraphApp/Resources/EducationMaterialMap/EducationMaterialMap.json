@@ -1,17 +1,1 @@
-[
-		{
-				"IndexNumber": 1,
-				"IsOpen": true,
-				"AttemptsNumber":  0
-		},
-		{
-				"IndexNumber": 2,
-				"IsOpen": false,
-				"AttemptsNumber": 0
-		},
-		{
-				"IndexNumber": 3,
-				"IsOpen": false,
-				"AttemptsNumber": 0
-		}
-]
+[{"IndexNumber":1,"IsOpen":true,"AttemptsNumber":0,"IsCompleted":false},{"IndexNumber":2,"IsOpen":false,"AttemptsNumber":0,"IsCompleted":false},{"IndexNumber":3,"IsOpen":false,"AttemptsNumber":0,"IsCompleted":false},{"IndexNumber":4,"IsOpen":false,"AttemptsNumber":0,"IsCompleted":false}]

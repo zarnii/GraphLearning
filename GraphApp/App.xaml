@@ -376,6 +376,10 @@
 		<DataTemplate DataType="{x:Type viewModel:VerifyPracticViewModel}">
 			<view:VerifyPracticView/>
 		</DataTemplate>
-		
+
+		<DataTemplate DataType="{x:Type viewModel:CreateMatrixTaskViewModel}">
+			<view:CreateMatrixTaskView/>
+		</DataTemplate>
+
 	</Application.Resources>
 </Application>

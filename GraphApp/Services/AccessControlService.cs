@@ -2,6 +2,8 @@
 using GraphApp.Model;
 using GraphApp.Model.Exception;
 using GraphApp.Model.Serializing;
+using GraphApp.Services.Providers;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -47,21 +49,27 @@ namespace GraphApp.Services
         /// <param name="testProvider">Поставщик тестов.</param>
         /// <param name="practicProvider">Поставщик практик.</param>
         public AccessControlService(
-            ITestProvider testProvider, 
-            IPracticProvider practicProvider,
+            [FromKeyedServices(typeof(TestProvider))]IEducationMaterialProvider testProvider, 
+            [FromKeyedServices(typeof(PracticProvider))]IEducationMaterialProvider practicProvider,
+            [FromKeyedServices(typeof(CreateMatrixTaskProvider))]IEducationMaterialProvider createMatrixTaskProvider,
             IDataHandlerService dataHandler, 
             IMapper mapper)
         {
             _dataHandler = dataHandler;
             _mapper = mapper;
 
-            EducationMaterialsCollection = new EducationMaterialNode[
-                testProvider.TestCollection.Count + practicProvider.PracticCollection.Count];
-            EducationMaterialMap = new Dictionary<EducationMaterialNode, EducationMaterialInfo>(
-                testProvider.TestCollection.Count + practicProvider.PracticCollection.Count);
+            var testCollection = testProvider.GetMaterialCollection();
+            var practicCollection = practicProvider.GetMaterialCollection();
+            var createMatrixTaskCollection = createMatrixTaskProvider.GetMaterialCollection();
 
-            InitNodesCollection(testProvider, practicProvider);
+            EducationMaterialsCollection = new EducationMaterialNode[
+                testCollection.Count + practicCollection.Count + createMatrixTaskCollection.Count];
+            EducationMaterialMap = new Dictionary<EducationMaterialNode, EducationMaterialInfo>(
+                testCollection.Count + practicCollection.Count + createMatrixTaskCollection.Count);
+
+            InitNodesCollection(testCollection, practicCollection, createMatrixTaskCollection);
             LoadMap(dataHandler, mapper);
+            //OnErrorLoadMap();
         }
 
         /// <summary>
@@ -128,35 +136,48 @@ namespace GraphApp.Services
         /// <summary>
         /// Инициализация полей.
         /// </summary>
-        private void InitNodesCollection(ITestProvider testProvider, IPracticProvider practicProvider)
+        private void InitNodesCollection(
+            IList<EducationMaterial> testCollection, 
+            IList<EducationMaterial> practicCollection,
+            IList<EducationMaterial> createMatrixCollection)
         {
             var iter = 0;
 
-            for (var i = 0; i < testProvider.TestCollection.Count; i++)
+            for (var i = 0; i < testCollection.Count; i++)
             {
                 var educationMaterialNode = new EducationMaterialNode(
-                    testProvider.TestCollection[i],
+                    testCollection[i],
                     CheckCanGetMaterial
                 );
 
                 EducationMaterialsCollection[iter] = educationMaterialNode;
-
                 iter++;
             }
 
-            for (var i = 0; i < practicProvider.PracticCollection.Count; i++)
+            for (var i = 0; i < practicCollection.Count; i++)
             {
                 var educationMaterialNode = new EducationMaterialNode(
-                    practicProvider.PracticCollection[i],
+                    practicCollection[i],
                     CheckCanGetMaterial
                 );
 
                 EducationMaterialsCollection[iter] = educationMaterialNode;
+                iter++;
+            }
 
+            for (var i = 0; i < createMatrixCollection.Count; i++)
+            {
+                var educationMaterialNode = new EducationMaterialNode(
+                    createMatrixCollection[i],
+                    CheckCanGetMaterial
+                );
+
+                EducationMaterialsCollection[iter] = educationMaterialNode;
                 iter++;
             }
 
             Array.Sort<EducationMaterialNode>(EducationMaterialsCollection);
+            
         }
 
         /// <summary>

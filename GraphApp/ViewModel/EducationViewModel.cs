@@ -218,6 +218,10 @@ namespace GraphApp.ViewModel
             {
                 _navigationService.NavigateTo<PracticViewModel>();
             }
+            else if (type == typeof(CreateMatrixTask))
+            {
+                _navigationService.NavigateTo<CreateMatrixTaskViewModel>();
+            }
         }
 
         /// <summary>

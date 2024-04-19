@@ -5,32 +5,16 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 
-namespace GraphApp.Services
+namespace GraphApp.Services.Providers
 {
     /// <summary>
     /// Поставщик практических заданий
     /// </summary>
-    public class PracticProvider : IPracticProvider
+    public class PracticProvider : IEducationMaterialProvider
     {
-        /// <summary>
-        /// Сервис загрузки данных.
-        /// </summary>
         private IDataLoader _dataLoader;
 
-        /// <summary>
-        /// Маппер.
-        /// </summary>
         private IMapper _mapper;
-
-        /// <summary>
-        /// Коллекция практических заданий.
-        /// </summary>
-        public List<PracticTask> PracticCollection { get; private set; }
-
-        /// <summary>
-        /// Текущее прктическое задание.
-        /// </summary>
-        public PracticTask CurrentPractic { get; set; }
 
         /// <summary>
         /// Конструктор.
@@ -41,29 +25,31 @@ namespace GraphApp.Services
         {
             _dataLoader = dataLoader;
             _mapper = mapper;
-            InitPractic();
         }
 
         /// <summary>
-        /// Инициализация практических заданий.
+        /// Получение коллекции обучающего материала.
         /// </summary>
-        private void InitPractic()
+        /// <returns>Коллекция обучающего материала.</returns>
+        public IList<EducationMaterial> GetMaterialCollection()
         {
             var pathToPratcits = ConfigurationManager.AppSettings["defaultPathToPracticTask"];
 
             if (!Directory.Exists(pathToPratcits))
             {
-                return;
+                return null;
             }
 
             var files = Directory.GetFiles(pathToPratcits, "*json");
-            PracticCollection = new List<PracticTask>(files.Length);
+            var practicCollection = new List<EducationMaterial>(files.Length);
 
             foreach (var file in files)
             {
-                var serPracticTask = _dataLoader.Load<SerializablePracticTask>(file);
-                PracticCollection.Add(_mapper.Map<PracticTask>(serPracticTask, null));
+                var serPracticTask =  _dataLoader.Load<SerializablePracticTask>(file);
+                practicCollection.Add(_mapper.Map<PracticTask>(serPracticTask, null));
             }
+
+            return practicCollection;
         }
     }
 }

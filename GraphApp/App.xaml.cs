@@ -4,6 +4,7 @@ using GraphApp.Model.Exception;
 using GraphApp.Model.Serializing;
 using GraphApp.Services;
 using GraphApp.Services.FactoryViewModel;
+using GraphApp.Services.Providers;
 using GraphApp.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -43,10 +44,11 @@ namespace GraphApp
             dependencyCollection.AddSingleton<IDataLoader, JsonLoaderService>();
             dependencyCollection.AddSingleton<IDataHandlerService, JsonDataHandlerService>();
             dependencyCollection.AddSingleton<INavigationService, NavigationService>();
-            dependencyCollection.AddSingleton<ITestProvider, TestProvider>();
+            dependencyCollection.AddKeyedSingleton<IEducationMaterialProvider, TestProvider>(typeof(TestProvider));
+            dependencyCollection.AddKeyedSingleton<IEducationMaterialProvider, PracticProvider>(typeof(PracticProvider));
+            dependencyCollection.AddKeyedSingleton<IEducationMaterialProvider, CreateMatrixTaskProvider>(typeof(CreateMatrixTaskProvider));
             dependencyCollection.AddSingleton<ITheoryService, TheoryService>();
             dependencyCollection.AddSingleton<IHealthPointService, HealthPointService>();
-            dependencyCollection.AddSingleton<IPracticProvider, PracticProvider>();
             dependencyCollection.AddTransient<IVisualEditorService, VisualEditorService>();
             dependencyCollection.AddSingleton<IQuestionProvider, QuestionProvider>();
             dependencyCollection.AddSingleton<ITestGenerator, TestGenerator>();
@@ -70,6 +72,7 @@ namespace GraphApp
             dependencyCollection.AddTransient<ConnectionViewModel>();
             dependencyCollection.AddSingleton<InstructionViewModel>();
             dependencyCollection.AddTransient<SettingsViewModel>();
+            dependencyCollection.AddTransient<CreateMatrixTaskViewModel>();
             #endregion
 
             #region factory
@@ -289,6 +292,34 @@ namespace GraphApp
                 };
 
                 return pt;
+            });
+
+            // SerializableCreateMatrixTask => CreateMatrixTask.
+            mapper.CreateMap<SerializableCreateMatrixTask, CreateMatrixTask>((tSource, param) =>
+            {
+                var scmt = (SerializableCreateMatrixTask)tSource;
+                var vertices = new List<VisualVertex>(scmt.Graph.Vertices.Count);
+
+                foreach (var vertex in scmt.Graph.Vertices)
+                {
+                    vertices.Add(mapper.Map<VisualVertex>(vertex, null));
+                }
+
+                var connections = new List<VisualConnection>(scmt.Graph.Connections.Count);
+
+                foreach (var connection in scmt.Graph.Connections)
+                {
+                    connections.Add(mapper.Map<VisualConnection>(connection, vertices));
+                }
+
+                return new CreateMatrixTask()
+                {
+                    Title = scmt.Title,
+                    IndexNumber = scmt.IndexNumber,
+                    LeadTime = scmt.LeadTime,
+                    Vertices = vertices,
+                    Connections = connections
+                };
             });
         }
     }
