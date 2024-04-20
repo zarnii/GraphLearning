@@ -71,6 +71,12 @@
 						CommandParameter="{x:Static model:MouseMode.Delete}"
 						Style="{StaticResource ButtonStyle}"
 						Height="25"/>
+				<Button 
+						Margin="0,5,0,0" 
+						Content="Очистить" 
+						Command="{Binding Clear}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
 			</StackPanel>
 		</Grid>
 

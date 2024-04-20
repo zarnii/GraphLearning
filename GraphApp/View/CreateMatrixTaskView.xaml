@@ -25,7 +25,7 @@
 			Command="{Binding GoBack}"/>
 
 		<Label
-			Content="Постройке матрицу смежности по рисунку"
+			Content="{Binding Title}"
 			Grid.Row="1"
 			Style="{StaticResource Header1Style}"/>
 
@@ -40,7 +40,7 @@
 			<Grid Grid.Column="1">
 				<DataGrid
 					x:Name="dg"
-					dataGrid2d:ItemsSource.Array2D="{Binding Matrix}"
+					dataGrid2d:ItemsSource.Array2D="{Binding UserMatrix}"
 					dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding ColumnsDescription}"
 					dataGrid2d:ItemsSource.RowHeadersSource="{Binding RowsDescription}"
 					dataGrid2d:Selected.Index="{Binding SelectedCell}"

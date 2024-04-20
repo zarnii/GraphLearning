@@ -115,20 +115,17 @@ namespace GraphApp
 
             // Фабрика VerifyCreateMatrixTaskViewModel.
             dependencyCollection.AddSingleton<
-                Func<AdjacencyMatrix, 
-                int[,],
-                IList<VisualVertex>,
-                IList<VisualConnection>,
+                Func<int[,],
+                (IList<VisualVertex>,
+                IList<VisualConnection>),
                 VerifyCreateMatrixTaskViewModel>
-            >((correctMatrix, userMatrix, vertices, connections) =>
+            >((userMatrix, graph) =>
             {
                 return new VerifyCreateMatrixTaskViewModel(
                     _serviceProvider.GetRequiredService<INavigationService>(),
                     _serviceProvider.GetRequiredService<IAccessControlService>(),
-                    correctMatrix,
                     userMatrix,
-                    vertices,
-                    connections
+                    graph
                 );
             });
             #endregion
@@ -229,6 +226,7 @@ namespace GraphApp
                 var s = new SerializableConnection()
                 {
                     ConnectedVerticesNumber = new int[2] { connectedVertices.Item1.Number, connectedVertices.Item2.Number },
+                    Number = vc.Number,
                     Thickness = vc.Thickness,
                     Weight = vc.Weight,
                     ConnectionType = vc.ConnectionType
@@ -338,6 +336,7 @@ namespace GraphApp
                     Title = scmt.Title,
                     IndexNumber = scmt.IndexNumber,
                     LeadTime = scmt.LeadTime,
+                    CreatableMatrixType = scmt.CreatableMatrixType,
                     Vertices = vertices,
                     Connections = connections
                 };

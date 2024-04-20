@@ -1,13 +1,9 @@
 ﻿using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Model.Serializing;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphApp.Services.Providers
 {
@@ -17,7 +13,7 @@ namespace GraphApp.Services.Providers
 
         private IMapper _mapper;
 
-        public CreateMatrixTaskProvider(IDataLoader dataLoader, IMapper mapper) 
+        public CreateMatrixTaskProvider(IDataLoader dataLoader, IMapper mapper)
         {
             _dataLoader = dataLoader;
             _mapper = mapper;

@@ -70,6 +70,11 @@ namespace GraphApp.ViewModel
         public ICommand CreateIncidenceMatrix { get; private set; }
 
         /// <summary>
+        /// Команда очистки поля.
+        /// </summary>
+        public ICommand Clear { get; private set; }
+
+        /// <summary>
         /// Ширина графического поля.
         /// </summary>
         public int CanvasWidth
@@ -197,6 +202,7 @@ namespace GraphApp.ViewModel
             ClickOnGraphElement = new RelayCommand(ClickOnGraphElementCommand);
             CreateAdjacencyMatrix = new RelayCommand(CreateAdjacencyMatrixCommand);
             CreateIncidenceMatrix = new RelayCommand(CreateIncidenceMatrixCommand);
+            Clear = new RelayCommand(ClearCommand);
         }
         #endregion
 
@@ -301,6 +307,11 @@ namespace GraphApp.ViewModel
                 (int)dragDeltaEventArgs.HorizontalChange,
                 (int)dragDeltaEventArgs.VerticalChange
             );
+        }
+
+        private void ClearCommand(object parameter)
+        {
+            _visualEditorService.Clear();
         }
 
         private void CreateAdjacencyMatrixCommand(object parameter)

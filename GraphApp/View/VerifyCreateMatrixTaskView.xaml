@@ -35,8 +35,8 @@
 					<DataGrid
 					x:Name="dg"
 					dataGrid2d:ItemsSource.Array2D="{Binding Matrix}"
-					dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding AdjacencyMatrix.ColumnsDescription}"
-					dataGrid2d:ItemsSource.RowHeadersSource="{Binding AdjacencyMatrix.RowsDescription}"
+					dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding ColumnsDescription}"
+					dataGrid2d:ItemsSource.RowHeadersSource="{Binding RowsDescription}"
 					SelectionUnit="Cell"
 					IsReadOnly="True"
 					Height="150"

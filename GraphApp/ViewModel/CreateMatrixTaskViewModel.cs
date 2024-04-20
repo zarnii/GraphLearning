@@ -28,17 +28,20 @@ namespace GraphApp.ViewModel
         /// </summary>
         private IAccessControlService _accessControlService;
 
+        /// <summary>
+        /// Фабрика VerifyCreateMatrixTask.
+        /// </summary>
         private IFactoryViewModel _factoryVerifyCreateMatrixTask;
 
         /// <summary>
         /// Матрица смежности.
         /// </summary>
-        private AdjacencyMatrix _adjacencyMatrix;
+        private BaseMatrix _matrix;
 
         /// <summary>
         /// Матрица, строимая пользователем.
         /// </summary>
-        private int[,] _matrix;
+        private int[,] _userMatrix;
         #endregion
 
         #region properties
@@ -74,7 +77,7 @@ namespace GraphApp.ViewModel
         {
             get
             {
-                return _adjacencyMatrix.ColumnsDescription;
+                return _matrix.ColumnsDescription;
             }
         }
 
@@ -85,23 +88,23 @@ namespace GraphApp.ViewModel
         {
             get
             {
-                return _adjacencyMatrix.RowsDescription;
+                return _matrix.RowsDescription;
             }
         }
 
         /// <summary>
         /// Матрица, строимая пользователем.
         /// </summary>
-        public int[,] Matrix
+        public int[,] UserMatrix
         {
             get
             {
-                return _matrix;
+                return _userMatrix;
             }
             private set
             {
-                _matrix = value;
-                OnPropertyChanged(nameof(Matrix));
+                _userMatrix = value;
+                OnPropertyChanged(nameof(UserMatrix));
             }
         }
 
@@ -111,9 +114,9 @@ namespace GraphApp.ViewModel
         public RowColumnIndex SelectedCell { get; set; }
 
         /// <summary>
-        /// Цвет заголовка.
+        /// заголовок.
         /// </summary>
-        public Brush TitleColor { get; private set; }
+        public string Title { get; private set; }
         #endregion
 
         #region constructor
@@ -135,20 +138,52 @@ namespace GraphApp.ViewModel
 
             GoBack = new RelayCommand(GoBackCommand);
             VerifyTask = new RelayCommand(VerifyTaskCommand);
-            SelectCell = new RelayCommand(SelectCellCommand);
 
-            _adjacencyMatrix = new AdjacencyMatrix(
-                Vertices.Select(v => v.Vertex).ToArray(),
-                Connections.Select(c => c.Connection).ToArray()
-            );
-            var rowCount = _adjacencyMatrix.Matrix.GetUpperBound(0) + 1;
-            var columnCount = _adjacencyMatrix.Matrix.Length / rowCount;
-            Matrix = new int[rowCount, rowCount];
+            Init();
             _factoryVerifyCreateMatrixTask = factoryVerifyCreateMatrixTask;
         }
         #endregion
 
         #region private methods
+        /// <summary>
+        /// Инициализация.
+        /// </summary>
+        private void Init()
+        {
+            var rowCount = 0;
+            var columnCount = 0;
+            var matrixType = ((CreateMatrixTask)_accessControlService
+                .CurrentEducationMaterial
+                .EducationMaterial).CreatableMatrixType;
+
+            if (matrixType == CreatableMatrixType.AdjacencyMatrix)
+            {
+                _matrix = new AdjacencyMatrix(
+                    Vertices.Select(v => v.Vertex).ToArray(),
+                    Connections.Select(c => c.Connection).ToArray()
+                );
+
+                rowCount = Vertices.Count;
+                columnCount = rowCount;
+                SelectCell = new RelayCommand(SelectCellAdjacencyMatrixCommand);
+                Title = "Постройте матрицу смежности по графу";
+            }
+            else
+            {
+                _matrix = new IncidenceMatrix(
+                    Vertices.Select(v => v.Vertex).ToArray(),
+                    Connections.Select(c => c.Connection).ToArray()
+                );
+
+                rowCount = Connections.Count;
+                columnCount = Vertices.Count;
+                SelectCell = new RelayCommand(SelectCellIncidenceMatrixCommand);
+                Title = "Постройте матрицу инцидентности по графу";
+            }
+
+            UserMatrix = new int[rowCount, columnCount];
+        }
+
         /// <summary>
         /// Проверка задания.
         /// </summary>
@@ -156,12 +191,10 @@ namespace GraphApp.ViewModel
         private void VerifyTaskCommand(object parameter)
         {
             _navigationService.NavigateTo(_factoryVerifyCreateMatrixTask, 
-                new object[4] 
-                { 
-                    _adjacencyMatrix, 
-                    Matrix,
-                    Vertices,
-                    Connections
+                new object[2] 
+                {
+                    UserMatrix,
+                    (Vertices, Connections)
                 }
             );
         }
@@ -170,9 +203,9 @@ namespace GraphApp.ViewModel
         /// Выбор ячейки.
         /// </summary>
         /// <param name="parameter"></param>
-        private void SelectCellCommand(object parameter)
+        private void SelectCellAdjacencyMatrixCommand(object parameter)
         {
-            var matrix = (int[,])Matrix.Clone();
+            var matrix = (int[,])UserMatrix.Clone();
 
             if (matrix[SelectedCell.Row, SelectedCell.Column] == 0)
             {
@@ -182,7 +215,31 @@ namespace GraphApp.ViewModel
             {
                 matrix[SelectedCell.Row, SelectedCell.Column] = 0;
             }
-            Matrix = matrix;
+            UserMatrix = matrix;
+        }
+
+        /// <summary>
+        /// Выбор ячейки.
+        /// </summary>
+        /// <param name="parameter"></param>
+        private void SelectCellIncidenceMatrixCommand(object parameter)
+        {
+            var matrix = (int[,])UserMatrix.Clone();
+
+            if (matrix[SelectedCell.Row, SelectedCell.Column] == -1)
+            {
+                matrix[SelectedCell.Row, SelectedCell.Column] = 0;
+            }
+            else if (matrix[SelectedCell.Row, SelectedCell.Column] == 0)
+            {
+                matrix[SelectedCell.Row, SelectedCell.Column] = 1;
+            }
+            else
+            {
+                matrix[SelectedCell.Row, SelectedCell.Column] = -1;
+            }
+
+            UserMatrix = matrix;
         }
 
         /// <summary>

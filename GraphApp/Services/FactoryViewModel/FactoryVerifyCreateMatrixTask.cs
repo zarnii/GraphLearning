@@ -8,9 +8,9 @@ namespace GraphApp.Services.FactoryViewModel
 {
     public class FactoryVerifyCreateMatrixTask : IFactoryViewModel
     {
-        private Func<AdjacencyMatrix, int[,], IList<VisualVertex>, IList<VisualConnection>, VerifyCreateMatrixTaskViewModel> _factory;
+        private Func<int[,], (IList<VisualVertex>, IList<VisualConnection>), VerifyCreateMatrixTaskViewModel> _factory;
 
-        public FactoryVerifyCreateMatrixTask(Func<AdjacencyMatrix, int[,], IList<VisualVertex>, IList<VisualConnection>, VerifyCreateMatrixTaskViewModel> factory)
+        public FactoryVerifyCreateMatrixTask(Func<int[,], (IList<VisualVertex>, IList<VisualConnection>), VerifyCreateMatrixTaskViewModel> factory)
         {
             _factory = factory;
         }
@@ -18,10 +18,8 @@ namespace GraphApp.Services.FactoryViewModel
         public ViewModel.ViewModel Create(object[] param)
         {
             return _factory.Invoke(
-                (AdjacencyMatrix)param[0], 
-                (int[,])param[1],
-                (IList<VisualVertex>)param[2],
-                (IList<VisualConnection>)param[3]
+                (int[,])param[0],
+                ((IList<VisualVertex>, IList<VisualConnection>))param[1]
             );
         }
     }
