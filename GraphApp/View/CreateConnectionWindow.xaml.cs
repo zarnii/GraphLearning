@@ -1,6 +1,7 @@
 ﻿using GraphApp.Model;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace GraphApp.View
@@ -71,6 +72,17 @@ namespace GraphApp.View
         /// <param name="e"></param>
         private void CheckInputSymbolIsDigit(object sender, TextCompositionEventArgs e)
         {
+            var textBox = (TextBox)sender;
+
+            if (e.Text == "-" && 
+                textBox.CaretIndex == 0 && 
+                (ConnectionWeightField.Text.Length == 0 || ConnectionWeightField.Text[0] != '-'))
+            {
+                e.Handled = false;
+
+                return;
+            }
+
             if (!char.IsDigit(e.Text, e.Text.Length - 1))
             {
                 e.Handled = true;
