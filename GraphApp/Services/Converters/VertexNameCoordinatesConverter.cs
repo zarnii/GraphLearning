@@ -20,14 +20,11 @@ namespace GraphApp.Services.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var coordinate = (double)values[0];
-            var diameter = (int)values[1] * 2;
+            var diameter = (int)values[1];
 
-            if ((string)parameter == "X")
-            {
-                return coordinate + diameter;
-            }
 
-            return coordinate - diameter;
+            return coordinate - 20;
+ 
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

@@ -19,7 +19,7 @@ namespace GraphApp.Services.Converters
 
             if (firstConnectedVertex == secondConnectedVertex)
             {
-                return (coord1 + firstConnectedVertex.Radius + coord2 + secondConnectedVertex.Radius) / 2;
+                return ((coord1 + firstConnectedVertex.Radius + coord2 + secondConnectedVertex.Radius) / 2) + 10;
             }
 
             return (coord1 + coord2) / 2;
