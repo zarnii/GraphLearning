@@ -96,5 +96,10 @@ namespace GraphApp.Interfaces
         /// </summary>
         /// <returns>Матрица инцидентности.</returns>
         IncidenceMatrix CreateIncidenceMatrix();
+
+        /// <summary>
+        /// Очистка поля.
+        /// </summary>
+        void Clear();
     }
 }

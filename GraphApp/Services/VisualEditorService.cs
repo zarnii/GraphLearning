@@ -210,6 +210,15 @@ namespace GraphApp.Services
 
             return new IncidenceMatrix(vertices, connection);
         }
+
+        /// <summary>
+        /// Очистка поля.
+        /// </summary>
+        public void Clear()
+        {
+            Vertices.Clear();
+            Connections.Clear();
+        }
         #endregion
 
         #region private methods
