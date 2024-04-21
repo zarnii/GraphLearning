@@ -84,7 +84,7 @@ namespace GraphApp.Services
                 return;
             }
 
-            if (!EducationMaterialMap[material].IsOpen)
+            if (!EducationMaterialMap[material].IsOpen.Value)
             {
                 throw new ArgumentException("Невозможно открыть следующий элемент, так как текущий элемент закрыт.");
             }
@@ -106,7 +106,7 @@ namespace GraphApp.Services
         /// <returns>True, если пройден.</returns>
         public bool CheckEducationMaterialIsPassed(EducationMaterialNode material)
         {
-            return EducationMaterialMap[material].IsCompleted;
+            return EducationMaterialMap[material].IsCompleted.Value;
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace GraphApp.Services
         /// <returns>True, если можно.</returns>
         private bool CheckCanGetMaterial(EducationMaterialNode material)
         {
-            if (EducationMaterialMap[material].IsOpen)
+            if (EducationMaterialMap[material].IsOpen.Value)
             {
                 return true;
             }
@@ -208,8 +208,21 @@ namespace GraphApp.Services
             {
                 var infoCollection = dataLoader.Load<EducationMaterialInfo[]>($"{pathToFile}/{fileName}");
 
+                if ( infoCollection.Length !=  EducationMaterialsCollection.Length)
+                {
+                    throw new LoadDataException();
+                }
+
                 foreach (var info in infoCollection)
                 {
+                    if (info.IndexNumber == null
+                        || info.IsOpen == null
+                        ||info.AttemptsNumber == null
+                        || info.IsCompleted == null)
+                    {
+                        throw new LoadDataException();
+                    }
+
                     var node = EducationMaterialsCollection
                         .Where(e => e.EducationMaterialIndexNumber == info.IndexNumber)
                         .FirstOrDefault();
@@ -236,6 +249,14 @@ namespace GraphApp.Services
             }
             catch(LoadDataException ex)
             {
+                MessageBox.Show(
+                    "При загрузке прогресса произошла ошибка. " +
+                    "Возможно, файлы были удалены или изменены не должным образом. Прогресс был сброшен.",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+
                 OnErrorLoadMap();
             }
         }
@@ -255,7 +276,8 @@ namespace GraphApp.Services
 
             if (!File.Exists($"{pathToFile}/{fileName}"))
             {
-                File.Create($"{pathToFile}/{fileName}");
+                var fileStream = File.Create($"{pathToFile}/{fileName}");
+                fileStream.Close();
             }
 
             var educationMaterialInfoCollection = new List<EducationMaterialInfo>(EducationMaterialsCollection.Length);
@@ -280,6 +302,7 @@ namespace GraphApp.Services
                     IndexNumber = node.EducationMaterialIndexNumber,
                     AttemptsNumber = 0,
                     IsOpen = false,
+                    IsCompleted = false,
                 };
             }
 

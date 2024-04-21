@@ -14,21 +14,21 @@ namespace GraphApp.Model
         /// <summary>
         /// Последовательный номер.
         /// </summary>
-        public int IndexNumber { get; set; }
+        public int? IndexNumber { get; set; }
 
         /// <summary>
         /// Флаг, показывающий отк
         /// </summary>
-        public bool IsOpen { get; set; }
+        public bool? IsOpen { get; set; }
 
         /// <summary>
         /// Номер попыткы с которой было пройдено задание. 
         /// </summary>
-        public int AttemptsNumber { get; set; }
+        public int? AttemptsNumber { get; set; }
 
         /// <summary>
         /// Флаг, показывающий выполнено ли задание.
         /// </summary>
-        public bool IsCompleted { get; set; }
+        public bool? IsCompleted { get; set; }
     }
 }
