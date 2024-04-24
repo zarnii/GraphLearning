@@ -24,11 +24,6 @@ namespace GraphApp.Services
         private IDataHandlerService _dataHandler;
 
         /// <summary>
-        /// Маппер.
-        /// </summary>
-        private IMapper _mapper;
-
-        /// <summary>
         /// Текущий обучающий материал.
         /// </summary>
         public EducationMaterialNode CurrentEducationMaterial { get; set; }
@@ -44,6 +39,11 @@ namespace GraphApp.Services
         public Dictionary<EducationMaterialNode, EducationMaterialInfo> EducationMaterialMap { get; private set; }
 
         /// <summary>
+        /// Событие изменение карты прогресса.
+        /// </summary>
+        public event EventHandler EducationMaterialMapChanged;
+
+        /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="testProvider">Поставщик тестов.</param>
@@ -52,11 +52,9 @@ namespace GraphApp.Services
             [FromKeyedServices(typeof(TestProvider))]IEducationMaterialProvider testProvider, 
             [FromKeyedServices(typeof(PracticProvider))]IEducationMaterialProvider practicProvider,
             [FromKeyedServices(typeof(CreateMatrixTaskProvider))]IEducationMaterialProvider createMatrixTaskProvider,
-            IDataHandlerService dataHandler, 
-            IMapper mapper)
+            IDataHandlerService dataHandler)
         {
             _dataHandler = dataHandler;
-            _mapper = mapper;
 
             var testCollection = testProvider.GetMaterialCollection();
             var practicCollection = practicProvider.GetMaterialCollection();
@@ -68,7 +66,7 @@ namespace GraphApp.Services
                 testCollection.Count + practicCollection.Count + createMatrixTaskCollection.Count);
 
             InitNodesCollection(testCollection, practicCollection, createMatrixTaskCollection);
-            LoadMap(dataHandler, mapper);
+            LoadMap(dataHandler);
             //OnErrorLoadMap();
         }
 
@@ -116,6 +114,12 @@ namespace GraphApp.Services
         public void AddAttempt(EducationMaterialNode material)
         {
             EducationMaterialMap[material].AttemptsNumber++;
+            EducationMaterialMapChanged?.Invoke(null, null);
+        }
+
+        public void ResetMap()
+        {
+            OnErrorLoadMap();
         }
 
         /// <summary>
@@ -184,8 +188,7 @@ namespace GraphApp.Services
         /// Загрузка прогресса пользователя.
         /// </summary>
         /// <param name="dataLoader">Сервис загрузки.</param>
-        /// <param name="mapper">Маппер.</param>
-        private void LoadMap(IDataLoader dataLoader, IMapper mapper)
+        private void LoadMap(IDataLoader dataLoader)
         {
             var pathToFile = ConfigurationManager.AppSettings["defaultPathToEducationMaterialMap"];
             var fileName = ConfigurationManager.AppSettings["defaultEducationMaterialMapFileName"];
@@ -288,6 +291,7 @@ namespace GraphApp.Services
             }
 
             _dataHandler.Save(educationMaterialInfoCollection, $"{pathToFile}/{fileName}");
+            EducationMaterialMapChanged?.Invoke(null, null);
         }
 
         /// <summary>

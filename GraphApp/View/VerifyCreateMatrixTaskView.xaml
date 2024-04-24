@@ -33,16 +33,19 @@
 
 				<Grid Grid.Column="1">
 					<DataGrid
-					x:Name="dg"
-					dataGrid2d:ItemsSource.Array2D="{Binding Matrix}"
-					dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding ColumnsDescription}"
-					dataGrid2d:ItemsSource.RowHeadersSource="{Binding RowsDescription}"
-					SelectionUnit="Cell"
-					IsReadOnly="True"
-					Height="150"
-					Width="150"
-					CanUserResizeColumns="False"
-					CanUserResizeRows="False">
+						x:Name="dg"
+						dataGrid2d:ItemsSource.Array2D="{Binding Matrix}"
+						dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding ColumnsDescription}"
+						dataGrid2d:ItemsSource.RowHeadersSource="{Binding RowsDescription}"
+						SelectionUnit="Cell"
+						IsReadOnly="True"
+						Height="300"
+						Width="300"
+						CanUserResizeColumns="False"
+						CanUserResizeRows="False"
+						ColumnHeaderHeight="30"
+						RowHeaderWidth="30"
+						FontSize="16">
 
 					</DataGrid>
 				</Grid>
@@ -52,7 +55,7 @@
 				Grid.Row="3"
 				Style="{StaticResource ButtonStyle}"
 				Content="Назад"
-				Width="100"
+				Width="200"
 				Command="{Binding GoBack}"/>
 		</Grid>
 	</Grid>

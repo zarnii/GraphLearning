@@ -18,9 +18,9 @@ namespace GraphApp.View
     /// <summary>
     /// Логика взаимодействия для SettingsView.xaml
     /// </summary>
-    public partial class SettingsView : UserControl
+    public partial class StatisticView : UserControl
     {
-        public SettingsView()
+        public StatisticView()
         {
             InitializeComponent();
         }

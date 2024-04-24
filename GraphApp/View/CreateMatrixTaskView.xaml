@@ -46,10 +46,13 @@
 					dataGrid2d:Selected.Index="{Binding SelectedCell}"
 					SelectionUnit="Cell"
 					IsReadOnly="True"
-					Height="150"
-					Width="150"
+					Height="300"
+					Width="300"
 					CanUserResizeColumns="False"
-					CanUserResizeRows="False">
+					CanUserResizeRows="False"
+					ColumnHeaderHeight="30"
+					RowHeaderWidth="30"
+					FontSize="16">
 					<i:Interaction.Triggers>
 						<i:EventTrigger EventName="MouseUp">
 							<i:InvokeCommandAction Command="{Binding SelectCell}"/>

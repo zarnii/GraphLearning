@@ -37,13 +37,13 @@
 					CommandParameter="{x:Type viewModel:InstructionViewModel}"
 					Style="{StaticResource ButtonStyle}"/>
 				<Button
-					Content="Настройки"
+					Content="Статистика"
 					Margin="0, 20, 0, 0"
 					HorizontalAlignment="Center"
 					Width="100"
 					Height="30"
 					Command="{Binding OpenWindow}"
-					CommandParameter="{x:Type viewModel:SettingsViewModel}"
+					CommandParameter="{x:Type viewModel:StatisticViewModel}"
 					Style="{StaticResource ButtonStyle}"/>
 			</StackPanel>
 		</Grid>

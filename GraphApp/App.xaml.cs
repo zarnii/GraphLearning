@@ -73,7 +73,7 @@ namespace GraphApp
             dependencyCollection.AddTransient<VertexViewModel>();
             dependencyCollection.AddTransient<ConnectionViewModel>();
             dependencyCollection.AddSingleton<InstructionViewModel>();
-            dependencyCollection.AddTransient<SettingsViewModel>();
+            dependencyCollection.AddSingleton<StatisticViewModel>();
             dependencyCollection.AddTransient<CreateMatrixTaskViewModel>();
             #endregion
 
@@ -145,9 +145,6 @@ namespace GraphApp
             rootWindow.Show();
 
             base.OnStartup(e);
-            var time = new TimeSpan(0, 3, 0);
-
-            var s = System.Text.Json.JsonSerializer.Serialize(time);
         }
 
         private void SettingMapper()

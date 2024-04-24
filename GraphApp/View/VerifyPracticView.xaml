@@ -35,7 +35,7 @@
 
 		<Button
 			Grid.Row="3"
-			Width="100"
+			Width="200"
 			Style="{StaticResource ButtonStyle}"
 			Content="Назад"
 			Command="{Binding GoBack}"/>

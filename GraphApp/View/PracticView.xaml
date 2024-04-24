@@ -64,7 +64,7 @@
 			<Button
 				Style="{StaticResource ButtonStyle}"
 				Content="Проверить"
-				Width="100"
+				Width="200"
 				Command="{Binding VerifyTask}"/>
 		</Grid>
 	</Grid>

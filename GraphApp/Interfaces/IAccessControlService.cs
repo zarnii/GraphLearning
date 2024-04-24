@@ -1,4 +1,5 @@
 ﻿using GraphApp.Model;
+using System;
 using System.Collections.Generic;
 
 namespace GraphApp.Interfaces
@@ -18,7 +19,15 @@ namespace GraphApp.Interfaces
         /// </summary>
         EducationMaterialNode[] EducationMaterialsCollection { get; }
 
+        /// <summary>
+        /// Карта прогресса.
+        /// </summary>
         Dictionary<EducationMaterialNode, EducationMaterialInfo> EducationMaterialMap { get;}
+
+        /// <summary>
+        /// Событие изменения карты прогресса.
+        /// </summary>
+        event EventHandler EducationMaterialMapChanged;
 
         /// <summary>
         /// Открыть слудующий материал.
@@ -38,5 +47,11 @@ namespace GraphApp.Interfaces
         /// </summary>
         /// <param name="material"></param>
         void AddAttempt(EducationMaterialNode material);
+
+
+        /// <summary>
+        /// Сбористь карту прогресса.
+        /// </summary>
+        void ResetMap();
     }
 }

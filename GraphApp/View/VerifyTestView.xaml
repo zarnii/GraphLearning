@@ -9,24 +9,17 @@
     <Grid Style="{StaticResource GridStyle}">
 
 		<Grid.RowDefinitions>
-			<RowDefinition Height="30"/>
 			<RowDefinition Height="50"/>
 			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
 		</Grid.RowDefinitions>
 
-		<Button Grid.Row="0"
-			Content="Назад"
-			Style="{StaticResource ButtonStyle}"
-			Width="100"
-			HorizontalAlignment="Left"
-			Command="{Binding OpenTestView}"/>
-
-		<Label Grid.Row="1"
+		<Label Grid.Row="0"
 			Content="{Binding Message}"
 			   Style="{StaticResource Header1Style}"
 			   Foreground="Red"/>
 
-		<Grid Grid.Row="2">
+		<Grid Grid.Row="1">
 			<ItemsControl ItemsSource="{Binding QuestionVerifiedAnswerMap}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
@@ -50,5 +43,13 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</Grid>
+
+		<Button Grid.Row="2"
+			Content="Назад"
+			Style="{StaticResource ButtonStyle}"
+			Width="200"
+			HorizontalAlignment="Center"
+			Command="{Binding OpenTestView}"/>
+
 	</Grid>
 </UserControl>
