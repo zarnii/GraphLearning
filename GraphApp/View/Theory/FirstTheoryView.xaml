@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="GraphApp.View.Theory.FirstTheoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GraphApp.View.Theory"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<Grid Style="{StaticResource GridStyle}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0">
+			<Label 
+				Content="Введение" 
+				Style="{StaticResource Header1Style}"/>
+		</Grid>
+
+		<Grid Grid.Row="1">
+			<ScrollViewer 
+				HorizontalScrollBarVisibility="Disabled"
+				VerticalScrollBarVisibility="Auto">
+				<ScrollViewer.Resources>
+					<Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+				</ScrollViewer.Resources>
+				<DockPanel>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						<Bold>Граф</Bold> - это модель, которая состоит из множества вершин и множества соединяющих их рёбер. 
+						При этом значение имеет только сам факт, какая вершина с какой соединена.
+						<LineBreak/>
+						<LineBreak/>
+						<Bold>Вершина</Bold> - это абстрактный объект, не имеющий как таковых характеристик. 
+						Является фундаментальным понятием в теории графов. На рисунке отображается точкой.
+						<LineBreak/>
+						<LineBreak/>
+						<Bold>Ребро</Bold> - связь между двумя вершинами. Само по себе ребро существовать не может.
+						<LineBreak/>
+						<LineBreak/>
+						<Bold>Петля</Bold> - ребро, связывающее одну вершину с самой собой.
+						<LineBreak/>
+						<LineBreak/>
+						<Bold>Смежность вершин</Bold> - две вершины называются смежными, если они связаны одним ребром.
+						<LineBreak/>
+						<LineBreak/>
+						Очень многие задачи могут быть решены используя богатую библиотеку алгоритмов теории графов. 
+						Для этого достаточно лишь принять объекты за вершины, а связь между ними - за рёбра, 
+						после чего весь арсенал алгоритмов теории графов к вашим услугам: 
+						нахождение маршрута от одного объекта к другому, поиск связанных компонент, 
+						вычисление кратчайших путей, поиск сети максимального потока и многое другое.
+					</TextBlock>
+					<Image DockPanel.Dock="Bottom" Source="pack://siteoforigin:,,,/Resources/Img/GraphExample.jpg" Height="300"/>
+				</DockPanel>
+			</ScrollViewer>
+		</Grid>
+	</Grid>
+</UserControl>

@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="GraphApp.View.CreateMatrixTaskView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:GraphApp.View"
+			 xmlns:converters="clr-namespace:GraphApp.Services.Converters"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+			 xmlns:dataGrid2d="http://gu.se/DataGrid2D"
+			 mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<Grid Style="{StaticResource GridStyle}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="50"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="30"/>
+		</Grid.RowDefinitions>
+
+		<Button
+			Style="{StaticResource ButtonStyle}"
+			Content="Назад"
+			Width="100"
+			HorizontalAlignment="Left"
+			Command="{Binding GoBack}"/>
+
+		<Label
+			Content="{Binding Title}"
+			Grid.Row="1"
+			Style="{StaticResource Header1Style}"/>
+
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<view:GraphCanvas/>
+
+			<Grid Grid.Column="1">
+				<DataGrid
+					x:Name="dg"
+					dataGrid2d:ItemsSource.Array2D="{Binding UserMatrix}"
+					dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding ColumnsDescription}"
+					dataGrid2d:ItemsSource.RowHeadersSource="{Binding RowsDescription}"
+					dataGrid2d:Selected.Index="{Binding SelectedCell}"
+					SelectionUnit="Cell"
+					IsReadOnly="True"
+					Height="300"
+					Width="300"
+					CanUserResizeColumns="False"
+					CanUserResizeRows="False"
+					ColumnHeaderHeight="30"
+					RowHeaderWidth="30"
+					FontSize="16">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="MouseUp">
+							<i:InvokeCommandAction Command="{Binding SelectCell}"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</DataGrid>
+			</Grid>
+		</Grid>
+		
+		<Button
+			Grid.Row="3"
+			Style="{StaticResource ButtonStyle}"
+			Content="Проверить"
+			Width="100"
+			Command="{Binding VerifyTask}"/>
+	</Grid>
+</UserControl>

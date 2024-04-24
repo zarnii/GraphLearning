@@ -1,0 +1,26 @@
+{
+	"Vertex": [
+		{
+			"_x": 1,
+			"_y": 1,
+			"_name": "my_vertex",
+			"_id": 1,
+			"_number": 1,
+		},
+		{
+			"_x": 1.5,
+			"_y": 4,
+			"_name": "my_second_vertex",
+			"_id": 2,
+			"_number": 2,
+		}
+	],
+	"Connections": [
+		{
+			"ConnectedVertices": ["Vertex", "Vertex"],
+			"Weight": 0,
+			"ConnectionType": "NonDirectional" 
+		}
+	]
+}
+

@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphApp.ViewModel
+namespace GraphApp.Interfaces
 {
     /// <summary>
-    /// Модель представления главного окна.
+    /// Поставщик вопросов.
     /// </summary>
-    class MainWindowViewModel
+    public interface IQuestionProvider
     {
         /// <summary>
-        /// Режим мыши.
+        /// Коллекция вопросов.
         /// </summary>
-        public MouseMode MouseMode { get; set; }
+        List<Question> QuestionsCollection { get; }
     }
 }

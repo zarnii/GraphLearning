@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="GraphApp.View.InstructionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GraphApp.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Style="{StaticResource GridStyle}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0">
+			<Button
+				Width="100"
+				Height="30"
+				Content="Назад"
+				Style="{StaticResource ButtonStyle}"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Command="{Binding GoBack}"/>
+			<Label
+				Content="Инструкция по использованию графического редаткора"
+				Style="{StaticResource Header1Style}"
+				FontSize="20"/>
+		</Grid>
+
+		<Grid Grid.Row="1">
+			<ScrollViewer 
+				HorizontalScrollBarVisibility="Disabled"
+				VerticalScrollBarVisibility="Auto">
+				<ScrollViewer.Resources>
+					<Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+				</ScrollViewer.Resources>
+				<StackPanel>
+					<TextBlock 
+						Style="{StaticResource TextStyle}"
+						DockPanel.Dock="Top">
+						Данная инструкция расскажет, как пользоваться графическим редактором в этом приложении.
+						<LineBreak/>
+						<LineBreak/>
+						Ниже на рисунке отмечены основные компоненты окна редактора.
+					</TextBlock>
+					<Image 
+						Source="pack://siteoforigin:,,,/Resources/Img/Instruction1.jpg"
+						Width="1100"/>
+					<TextBlock Style="{StaticResource TextStyle}">
+						Слева разположена колонка с кнопками для создания графа.
+						<LineBreak/>
+						<LineBreak/>
+						Кнопка <Bold>"Создать"</Bold> переключает мышь в режим создания вершин. 
+					</TextBlock>
+					<Image 
+						Source="pack://siteoforigin:,,,/Resources/Img/Instruction2.jpg"
+						Width="400"/>
+					<TextBlock Style="{StaticResource TextStyle}">
+						В поле "Название" хранится название вершины.
+						<LineBreak/>
+						Ползунок "Радиус" отвечает за радиус вершины в пикселях.
+						<LineBreak/>
+						В выподающем меню "Цвет" можно выбрать цвет вершины.
+						<LineBreak/>
+						Поле нажатия на кнопку "Создать" на поле появиться вершина.
+					</TextBlock>
+					<Image
+						Source="pack://siteoforigin:,,,/Resources/Img/Instruction3.jpg"
+						Width="200"/>
+					<TextBlock Style="{StaticResource TextStyle}">
+						Кнопка <Bold>"Соединить"</Bold> создает связь между двумя выбранными вершинами.
+						<LineBreak/>
+						После нажатия на эту кнопку выберете две вершины.
+					</TextBlock>
+					<Image
+						Source="pack://siteoforigin:,,,/Resources/Img/Instruction4.jpg"
+						Width="400"/>
+					<TextBlock Style="{StaticResource TextStyle}">
+						В поле "Вес связи" хранится вес связи.
+						<LineBreak/>
+						В выпадающем списке "Тип связи" предлагают выбрать тип связи.
+						<LineBreak/>
+						Ползунок "Толщина связи" отвечает за толщину связи.
+						<LineBreak/>
+						После нажатия на кнопку "Соединить" между вершинами появится связь.
+					</TextBlock>
+					<Image
+						Source="pack://siteoforigin:,,,/Resources/Img/Instruction5.jpg"
+						Width="200"/>
+					<TextBlock Style="{StaticResource TextStyle}">
+						Кнопка <Bold>"Курсор"</Bold> переключит мышь в режим выбора.
+						<LineBreak/>
+						Если в этом режиме вы нпжмете на любой элемент графа, то в правой часте
+						окна появится характеристики этого элемента. Отображаемые характеристики зависят от выбранного элемента.
+						В этом режиме мыши можно двигать вершины.
+						<LineBreak/>
+						Если выбрать вершину, то появятся те же параметры, что и при создании.
+					</TextBlock>
+					<Image
+						Source="pack://siteoforigin:,,,/Resources/Img/Instruction6.jpg"
+						Width="400"/>
+					<TextBlock Style="{StaticResource TextStyle}">
+						Если выбрать связь, то появятся те же параметры, что и при создании связи.
+						А также еще добавяться названия соединенных вершин.
+					</TextBlock>
+					<Image
+						Source="pack://siteoforigin:,,,/Resources/Img/Instruction7.jpg"
+						Width="400"/>
+					<TextBlock Style="{StaticResource TextStyle}">
+						Кнопка <Bold>"Удалить"</Bold> переключает мышь в режим удаление элементов графа.
+						Если нажать на любой элемент графа, то он удалиться. Если вы удаляете вершину, то
+						все ее связи удаляться вместе с ней.
+						<LineBreak/>
+					</TextBlock>
+				</StackPanel>
+			</ScrollViewer>
+		</Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="GraphApp.View.VisualEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:GraphApp.View"
+			 xmlns:model="clr-namespace:GraphApp.Model"
+			 xmlns:converters="clr-namespace:GraphApp.Services.Converters"
+             xmlns:dataGrid2d="http://gu.se/DataGrid2D"
+			 mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1000">
+	<UserControl.Resources>
+		<converters:VertexNameCoordinatesConverter 
+			x:Key="VertexNameCoordinatesConverter"/>
+		
+		<converters:ConnectionWeightCoordinatesConverter 
+			x:Key="ConnectionWeightCoordinatesConverter"/>
+		
+		<converters:RadiusConverter 
+			x:Key="RadiusConverter"/>
+
+		<converters:ConnectionTypeVisualisator 
+			x:Key="ConnectionTypeVisualisator"/>
+
+		<converters:ConnectionCoordinatesConverter 
+			x:Key="ConnectionCoordinatesConverter"/>
+
+		<converters:ConnectionVisibleConverter
+			x:Key="ConnectionVisibleConverter"/>
+
+		<converters:ConnectionNumberCoordinatesConverter
+			x:Key="ConnectionNumberCoordinatesConverter"/>
+	</UserControl.Resources>
+	<Grid>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="70"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="250"/>
+		</Grid.ColumnDefinitions>
+
+		<Grid Grid.Column="0" Style="{StaticResource GridStyle}" />
+
+		<Grid Grid.Column="0">
+			<StackPanel>
+				<Button 
+						Margin="0,5,0,0" 
+						Content="Курсор" 
+						Command="{Binding ChangeMouseMode}" 
+						CommandParameter="{x:Static model:MouseMode.Default}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
+				<Button 
+						Margin="0,5,0,0" 
+						Content="Создать" 
+						Command="{Binding ChangeMouseMode}" 
+						CommandParameter="{x:Static model:MouseMode.Create}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
+				<Button 
+						Margin="0,5,0,0" 
+						Content="Соединить" 
+						Command="{Binding ChangeMouseMode}" 
+						CommandParameter="{x:Static model:MouseMode.Connect}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
+				<Button 
+						Margin="0,5,0,0" 
+						Content="Удалить" 
+						Command="{Binding ChangeMouseMode}" 
+						CommandParameter="{x:Static model:MouseMode.Delete}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
+				<Button 
+						Margin="0,5,0,0" 
+						Content="Очистить" 
+						Command="{Binding Clear}"
+						Style="{StaticResource ButtonStyle}"
+						Height="25"/>
+			</StackPanel>
+		</Grid>
+
+		<view:GraphCanvas Grid.Column="1" x:Name="GraphCanvas"/>
+
+		<!--Отображение параметров вершин.-->
+		<Grid Grid.Column="2" Style="{StaticResource GridStyle}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="250"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			
+			<ContentControl Content="{Binding SelectedGraphElement}"/>
+
+			<Grid Grid.Row="1">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="30"/>
+				</Grid.RowDefinitions>
+
+				<ScrollViewer
+					HorizontalScrollBarVisibility="Auto"
+					VerticalScrollBarVisibility="Auto">
+					<StackPanel>
+						<DataGrid 
+							dataGrid2d:ItemsSource.Array2D="{Binding AdjancencyMatrix.Matrix}"
+							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding AdjancencyMatrix.ColumnsDescription}"
+							dataGrid2d:ItemsSource.RowHeadersSource="{Binding AdjancencyMatrix.RowsDescription}"
+							IsReadOnly="True"
+							SelectionUnit="Cell"/>
+						<DataGrid
+							dataGrid2d:ItemsSource.Array2D="{Binding IncidenceMatrix.Matrix}"
+							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding IncidenceMatrix.ColumnsDescription}"
+							dataGrid2d:ItemsSource.RowHeadersSource="{Binding IncidenceMatrix.RowsDescription}"
+							IsReadOnly="True"
+							SelectionUnit="Cell"/>
+					</StackPanel>
+				</ScrollViewer>
+
+				<Grid Grid.Row="1">
+					<Button
+						Width="100" 
+						HorizontalAlignment="Left"
+						Content="Матрица"
+						Command="{Binding CreateAdjacencyMatrix}"
+						Style="{StaticResource ButtonStyle}"/>
+					<Button
+						Width="100"
+						HorizontalAlignment="Right"
+						Content="Матрица 2"
+						Command="{Binding CreateIncidenceMatrix}"
+						Style="{StaticResource ButtonStyle}"/>
+				</Grid>
+			</Grid>
+		</Grid>
+	</Grid>
+</UserControl>

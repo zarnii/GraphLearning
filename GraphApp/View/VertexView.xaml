@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="GraphApp.View.VertexView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:GraphApp.Services.Converters"
+			 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:toolKit="http://schemas.xceed.com/wpf/xaml/toolkit"
+			 mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="250">
+	<UserControl.Resources>
+		<converters:ColorConverter x:Key="ColorConverter"/>
+	</UserControl.Resources>
+    <Grid Style="{StaticResource GridStyle}">
+		<StackPanel>
+			<DockPanel>
+				<Label 
+					Content="Название"
+					Foreground="White"
+					FontSize="16"/>
+				<TextBox Text="{Binding VisualVertex.Name, 
+					Mode=TwoWay,
+					UpdateSourceTrigger=PropertyChanged}"
+					FontSize="16"/>
+			</DockPanel>
+			<DockPanel Margin="0, 20, 0, 0">
+				<Label
+					Content="Радиус"
+					Foreground="White"
+					FontSize="16"/>
+				<Slider
+					Minimum="5"
+					Maximum="100"
+					Value="{Binding VisualVertex.Radius,
+						Mode=TwoWay,
+						UpdateSourceTrigger=PropertyChanged}"
+					AutoToolTipPlacement="TopLeft"
+					VerticalAlignment="Center"
+					Width="170"
+					HorizontalAlignment="Right">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="PreviewMouseUp">
+							<i:InvokeCommandAction Command="{Binding CheckCoordinates}"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</Slider>
+			</DockPanel>
+			<DockPanel Margin="0, 20, 0, 0">
+				<Label
+					Content="X"
+					Foreground="White"
+					FontSize="16"/>
+				<TextBox
+					Text="{Binding VisualVertex.X,
+						Mode=TwoWay,
+						UpdateSourceTrigger=PropertyChanged}"
+						FontSize="16"
+						PreviewTextInput="CheckInputSymbolIsDigit">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="KeyUp">
+							<i:InvokeCommandAction Command="{Binding CheckCoordinates}"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</TextBox>
+			</DockPanel>
+			<DockPanel Margin="0, 20, 0, 0">
+				<Label
+					Content="Y"
+					Foreground="White"
+					FontSize="16"/>
+				<TextBox
+					Text="{Binding VisualVertex.Y,
+						Mode=TwoWay,
+						UpdateSourceTrigger=PropertyChanged}"
+						FontSize="16"
+						PreviewTextInput="CheckInputSymbolIsDigit">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="KeyUp">
+							<i:InvokeCommandAction Command="{Binding CheckCoordinates}"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</TextBox>
+			</DockPanel>
+			<DockPanel Margin="0, 20, 0, 0">
+				<Label
+					Content="Цвет"
+					Foreground="White"
+					FontSize="16"/>
+				<toolKit:ColorPicker
+					Width="200"
+					HorizontalAlignment="Right"
+					x:Name="color"
+					SelectedColor="{Binding VisualVertex.Color, 
+						Mode=TwoWay,
+						UpdateSourceTrigger=PropertyChanged,
+						Converter={StaticResource ColorConverter}}"/>
+			</DockPanel>
+		</StackPanel>
+    </Grid>
+</UserControl>
