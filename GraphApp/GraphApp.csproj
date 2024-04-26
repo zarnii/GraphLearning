@@ -24,6 +24,9 @@
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\CreateMatrix\2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\CreateMatrix\1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -76,6 +79,5 @@
 
   <ItemGroup>
     <Folder Include="Resources\EducationMaterialMap\" />
-    <Folder Include="Resources\CreateMatrix\" />
   </ItemGroup>
 </Project>

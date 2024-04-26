@@ -142,6 +142,8 @@ namespace GraphApp
         protected override void OnStartup(StartupEventArgs e)
         {
             var rootWindow = _serviceProvider.GetRequiredService<RootWindow>();
+            rootWindow.MinHeight = 450;
+            rootWindow.MinWidth = 450;
             rootWindow.Show();
 
             base.OnStartup(e);

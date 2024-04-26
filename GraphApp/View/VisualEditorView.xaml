@@ -44,39 +44,48 @@
 		<Grid Grid.Column="0">
 			<StackPanel>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Курсор" 
-						Command="{Binding ChangeMouseMode}" 
-						CommandParameter="{x:Static model:MouseMode.Default}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Курсор" 
+					Command="{Binding ChangeMouseMode}" 
+					CommandParameter="{x:Static model:MouseMode.Default}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonCursor"/>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Создать" 
-						Command="{Binding ChangeMouseMode}" 
-						CommandParameter="{x:Static model:MouseMode.Create}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Создать" 
+					Command="{Binding ChangeMouseMode}" 
+					CommandParameter="{x:Static model:MouseMode.Create}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonCreate"
+					MouseLeftButtonDown="Button_MouseLeftButtonDown"/>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Соединить" 
-						Command="{Binding ChangeMouseMode}" 
-						CommandParameter="{x:Static model:MouseMode.Connect}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Соединить" 
+					Command="{Binding ChangeMouseMode}" 
+					CommandParameter="{x:Static model:MouseMode.Connect}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonConnect"
+					MouseLeftButtonDown="Button_MouseLeftButtonDown"/>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Удалить" 
-						Command="{Binding ChangeMouseMode}" 
-						CommandParameter="{x:Static model:MouseMode.Delete}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Удалить" 
+					Command="{Binding ChangeMouseMode}" 
+					CommandParameter="{x:Static model:MouseMode.Delete}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonDelete"
+					MouseLeftButtonDown="Button_MouseLeftButtonDown"/>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Очистить" 
-						Command="{Binding Clear}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Очистить" 
+					Command="{Binding Clear}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonClear"
+					MouseLeftButtonDown="Button_MouseLeftButtonDown"/>
 			</StackPanel>
 		</Grid>
 
