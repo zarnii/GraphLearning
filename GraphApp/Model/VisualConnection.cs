@@ -132,6 +132,11 @@ namespace GraphApp.Model
 			}
 			set
 			{
+				if (value < 1)
+				{
+					throw new ArgumentOutOfRangeException("Толщина не может меньше 1.");
+				}
+
 				_thickness = value;
 				OnPropertyChanged(nameof(Thickness));
 			}
@@ -227,12 +232,8 @@ namespace GraphApp.Model
 				throw new ArgumentNullException(nameof(connectedVertices), "Пустая соеденяемая вершина.");
 			}
 
-			if (thickness < 1)
-			{
-				throw new ArgumentNullException(nameof(thickness), "Толщина не может быть меньше 1.");
-			}
-
-			_connection = new Connection(
+            Thickness = thickness;
+            _connection = new Connection(
 				(connectedVertices.Item1.Vertex, connectedVertices.Item2.Vertex),
 				number,
 				weight,
@@ -242,7 +243,6 @@ namespace GraphApp.Model
 			ConnectedVertices = connectedVertices;
 			Weight = weight;
 			ConnectionType = connectionType;
-			Thickness = thickness;
 
 			ConnectedVertices.Item1.OnDelete += Delete;
 			ConnectedVertices.Item2.OnDelete += Delete;

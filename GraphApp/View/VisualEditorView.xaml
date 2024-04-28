@@ -5,32 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:view="clr-namespace:GraphApp.View"
 			 xmlns:model="clr-namespace:GraphApp.Model"
-			 xmlns:converters="clr-namespace:GraphApp.Services.Converters"
              xmlns:dataGrid2d="http://gu.se/DataGrid2D"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1000">
-	<UserControl.Resources>
-		<converters:VertexNameCoordinatesConverter 
-			x:Key="VertexNameCoordinatesConverter"/>
-		
-		<converters:ConnectionWeightCoordinatesConverter 
-			x:Key="ConnectionWeightCoordinatesConverter"/>
-		
-		<converters:RadiusConverter 
-			x:Key="RadiusConverter"/>
-
-		<converters:ConnectionTypeVisualisator 
-			x:Key="ConnectionTypeVisualisator"/>
-
-		<converters:ConnectionCoordinatesConverter 
-			x:Key="ConnectionCoordinatesConverter"/>
-
-		<converters:ConnectionVisibleConverter
-			x:Key="ConnectionVisibleConverter"/>
-
-		<converters:ConnectionNumberCoordinatesConverter
-			x:Key="ConnectionNumberCoordinatesConverter"/>
-	</UserControl.Resources>
 	<Grid>
 
 		<Grid.ColumnDefinitions>

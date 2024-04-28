@@ -7,27 +7,29 @@ namespace GraphApp.Services.Converters
     /// <summary>
     /// Конвертор кординат названия вершины.
     /// </summary>
-    public class VertexNameCoordinatesConverter : IMultiValueConverter
+    public class VertexNameCoordinatesConverter : IValueConverter
     {
         /// <summary>
-        /// Конвертирование.
+        /// Отклонение по умолчанию.
         /// </summary>
-        /// <param name="values">Координата (X или Y) и радиус.</param>
+        private const int DefaultRejection = 20;
+
+        /// <summary>
+        /// Конвертирование координаты вершины в координаты названия вершины.
+        /// </summary>
+        /// <param name="value">Координата.</param>
         /// <param name="targetType"></param>
-        /// <param name="parameter">Строка, показывающая какая коордианта была передана (X или Y).</param>
+        /// <param name="parameter"></param>
         /// <param name="culture"></param>
-        /// <returns>Координаты.</returns>
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        /// <returns></returns>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var coordinate = (double)values[0];
-            var diameter = (int)values[1];
+            var coordinate = (double)value;
 
-
-            return coordinate - 20;
- 
+            return coordinate - DefaultRejection;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
