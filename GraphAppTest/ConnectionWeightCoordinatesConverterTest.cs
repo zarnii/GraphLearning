@@ -30,7 +30,7 @@ namespace GraphAppTest
 
         private static IEnumerable<object?[]> GenerateData()
         {
-
+            var _1 = new VisualVertex(10, 10, 10, 1, Colors.Aqua);
 
             yield return new object[5]
             {
@@ -63,6 +63,14 @@ namespace GraphAppTest
                 new VisualVertex(10, 10, 20, 1, Colors.Red),
                 new VisualVertex(10, 10, 20, 1, Colors.Red),
                 654.5
+            };
+            yield return new object[5]
+            {
+                100,
+                100,
+                _1,
+                _1,
+                120
             };
         }
     }

@@ -9,9 +9,9 @@ namespace GraphAppTest
 
         [TestMethod]
         [DataRow(10, 10, 10,   10, "MyVertex")]
-        [DataRow(21, 12, 11,   -5, "--")]
+        [DataRow(21, 12, 11,   5, "--")]
         [DataRow(30, 20, 71,  100, "")]
-        [DataRow(35, 13,  5,  -11, "21312")]
+        [DataRow(35, 13,  5,  11, "21312")]
         [DataRow(-4, 16, 80,  320, "SecondVertex")]
         public void VisualVertex_Create_Success(double x, double y, int radius, int number, string name)
         {
@@ -25,10 +25,10 @@ namespace GraphAppTest
         }
 
         [TestMethod]
-        [DataRow(10, 10,  1, 10, "MyVertex")]
-        [DataRow(21, 12, -1, -5, "--")]
+        [DataRow(10, 10,  1,  10, "MyVertex")]
+        [DataRow(21, 12, -1,  5, "--")]
         [DataRow(30, 20,  2, 100, "")]
-        [DataRow(35, 13, -5, -11, "21312")]
+        [DataRow(35, 13, -5, 11, "21312")]
         [DataRow(-4, 16,  0, 320, "SecondVertex")]
         public void VisualVertex_Create_RadiusOutOfRange(double x, double y, int radius, int number, string name)
         {
