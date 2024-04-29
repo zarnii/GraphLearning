@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace GraphApp.ViewModel
 {
-    class InstructionViewModel: ViewModel
+    public class InstructionViewModel: ViewModel
     {
         private INavigationService _navigationService;
 
