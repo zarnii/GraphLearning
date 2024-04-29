@@ -24,7 +24,7 @@ namespace GraphApp.Services.Converters
 
             if (firstConnectedVertex == secondConnectedVertex)
             {
-                return ((coord1 + firstConnectedVertex.Radius + coord2 + secondConnectedVertex.Radius) / 2) + DefaultRejection;
+                return ((coord1 + coord2 + firstConnectedVertex.Radius * 2) / 2) + DefaultRejection;
             }
 
             return (coord1 + coord2) / 2;

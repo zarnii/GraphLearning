@@ -60,14 +60,14 @@ namespace GraphApp.Services
             var practicCollection = practicProvider.GetMaterialCollection();
             var createMatrixTaskCollection = createMatrixTaskProvider.GetMaterialCollection();
 
+            
             EducationMaterialsCollection = new EducationMaterialNode[
                 testCollection.Count + practicCollection.Count + createMatrixTaskCollection.Count];
             EducationMaterialMap = new Dictionary<EducationMaterialNode, EducationMaterialInfo>(
                 testCollection.Count + practicCollection.Count + createMatrixTaskCollection.Count);
-
+            
             InitNodesCollection(testCollection, practicCollection, createMatrixTaskCollection);
             LoadMap(dataHandler);
-            //OnErrorLoadMap();
         }
 
         /// <summary>
