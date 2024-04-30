@@ -237,6 +237,11 @@ namespace GraphApp.Services
 
                     EducationMaterialMap[node] = info;
                 }
+
+                if (EducationMaterialMap.Count != EducationMaterialsCollection.Length)
+                {
+                    throw new LoadDataException();
+                }
             }
             catch(ArgumentNullException ex)
             {

@@ -110,7 +110,7 @@ namespace GraphApp.ViewModel.Verify
                 return;
             }
 
-            ResultText = "Не верно";
+            ResultText = "Не верно!";
             ResultColor = new SolidColorBrush(Colors.Red);
         }
 

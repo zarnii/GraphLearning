@@ -253,7 +253,8 @@
 						<DataTemplate>
 							<Label 
 								Content="{Binding Name}"
-								Foreground="White"/>
+								Foreground="White"
+								FontSize="20"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

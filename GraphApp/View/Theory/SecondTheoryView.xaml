@@ -13,7 +13,7 @@
 		</Grid.RowDefinitions>
 
 		<Label
-			Content="Еще пару терминов"
+			Content="Основные понятия"
 			Style="{StaticResource Header1Style}"/>
 
 		<Grid Grid.Row="1">
@@ -23,19 +23,56 @@
 				</ScrollViewer.Resources>
 				<DockPanel>
 					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
-						<Bold>Инцидентность</Bold> - вершина и ребро называются инцидентными, если вершина является для этого ребра концевой. 
-						Обратите внимание, что термин “инцидентность” применим только к вершине и ребру.
+						<Bold>Граф</Bold> - это конечное множество точек (V) и линий (Е), которые
+						соеденяют некоторые пары из точек (V). Граф является топологической моделью.
+						Ниже на рисунке приведен пример графа.
 						<LineBreak/>
-						<LineBreak/>
-						<Bold>Смежность вершин</Bold> - две вершины называются смежными, если они инцидентны одному ребру.
-						<LineBreak/>
-						<LineBreak/>
-						<Bold>Смежность рёбер</Bold> - два ребра называются смежными, если они инцедентны одной вершине.
-						<LineBreak/>
-						<LineBreak/>
-						Говоря проще - две вершины смежные, если они соединены ребром, два ребра смежные - если они соединены вершиной.
 					</TextBlock>
-					<Image DockPanel.Dock="Bottom" Source="pack://siteoforigin:,,,/Resources/Img/AdjacencyExample.jpg" Height="300"/>
+					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/GraphExample.jpg" Height="300"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						Красные кружочки - это вершины, черные соединяющие линии - это ребра.
+						В графе не все вершины могут быть соединены.
+						Если вершина является началом или концом ребра, то говорят, что это вершина
+						<Bold>инцидентна</Bold> этому ребру.
+						
+						Две вершины называют <Bold>смежными</Bold>, если эти две вершины инцидентны
+						одному ребру, то есть соеденены одним ребром.
+						<LineBreak/>
+					</TextBlock>
+					<Image DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/AdjacencyExample.jpg" Height="300"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						На рисунке выше вершина 1 и вершина 2 являтся смежными, так как они соединены
+						одним ребром (инцидентны одному ребру).
+						Также есть понятие смежность ребер. Два ребра называются <Bold>смежными</Bold>,
+						если они инцидентны одной вершине.
+						<LineBreak/>
+					</TextBlock>
+					<Image DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/CycleExample.jpg" Height="300"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						На рисунке выше изображен граф с петлевой связью. <Bold>Петля</Bold> - это ребро,
+						инцидентное одной вершине, то есть ребро которое соединяет одну вершину саму с собой.
+						<LineBreak/>
+						Граф, в котором существуют подобные связи, называется <Bold>псевдографом</Bold>.
+						Ребра, имеющие одинаковые концевые вершины, называют <Bold>кратными</Bold>.
+						<LineBreak/>
+						<Bold>Мультиграф</Bold> - граф с кратными ребрами. <Bold>Псевдомультиграф</Bold> 
+						- граф с петлями и кратными рёбрами.
+						<LineBreak/>
+						<LineBreak/>
+						<Bold>Степень вершины</Bold> - это количество ребер, инцидентных указанной вершине.
+						Или по-другому - количество ребер, соедененных с этой вершиной.
+						<LineBreak/>
+						<Bold>Изолированная вершина</Bold> - это вершина с нулевой степенью. То есть
+						она не соединена ни с одним ребром.
+						<LineBreak/>
+						<Bold>Висячая вершина</Bold> - вершина, с которой соединено одно ребро.
+						<LineBreak/>
+					</TextBlock>
+					<Image DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/GraphExample2.jpg" Height="300"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						На рисунке выше вершина 1 имеет степень 2. Вершина 4 является весячей. А вершина 5 -
+						изолированная.
+					</TextBlock>
 				</DockPanel>
 			</ScrollViewer>
 		</Grid>

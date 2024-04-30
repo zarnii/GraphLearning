@@ -8,6 +8,6 @@ namespace GraphApp.Interfaces
 	{
 		Theory CurrentTheory { get; set; }
 
-		List<Theory> TheoryControls { get; }
+		List<Pair> TheoryControls { get; }
 	}
 }

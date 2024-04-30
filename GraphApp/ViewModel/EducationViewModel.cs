@@ -157,7 +157,7 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Коллекция теории.
         /// </summary>
-        public List<Theory> Theories
+        public List<Pair> Theories
         {
             get
             {
@@ -230,7 +230,7 @@ namespace GraphApp.ViewModel
         /// <param name="parameter">Открываемый раздел теории.</param>
         private void OpenTheoryCommand(object parameter)
         {
-            _userControlService.CurrentTheory = (Theory)parameter;
+            _userControlService.CurrentTheory = (Theory)((Pair)parameter).Item2;
             _navigationService.NavigateTo<TheoryViewModel>();
         }
 

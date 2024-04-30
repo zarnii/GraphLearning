@@ -149,7 +149,7 @@ namespace GraphApp.ViewModel.Verify
             }
             else
             {
-                Title = "Неверно";
+                Title = "Неверно!";
                 TitleColor = new SolidColorBrush(Colors.Red);
             }
         }

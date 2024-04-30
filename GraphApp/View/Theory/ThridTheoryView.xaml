@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="GraphApp.View.Theory.ThridTheoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GraphApp.View.Theory"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Style="{StaticResource GridStyle}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Label Content="Виды графов" Style="{StaticResource Header1Style}"/>
+		
+		<Grid Grid.Row="1">
+			<ScrollViewer VerticalScrollBarVisibility="Auto">
+				<ScrollViewer.Resources>
+					<Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+				</ScrollViewer.Resources>
+				<DockPanel>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						Существует некоторое количество видов графа. В предыдущей главе были
+						описаны такие виды, как <Bold>псевдограф</Bold>, <Bold>мультиграф</Bold> и
+						<Bold>псевдомультиграф</Bold>. Подробнее про них можно прочитать в прошлой главе.
+						Здесь будут разобраны другие виды графов.
+						<LineBreak/><LineBreak/>
+						Ниже на рисунке представлен неориентированный граф.
+						<LineBreak/>
+					</TextBlock>
+					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/NotOrientedGraph.jpg" Height="500"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						<Bold>Неориентированный граф</Bold> - это граф, в котором ни одно ребро не имеет направление. В таком графе
+						ребра могут быть изображены обычными линиями. Также этот граф является простым, так как он неориентированный,
+						без петель и без кратных ребер.
+						<LineBreak/>
+					</TextBlock>
+					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/OrientedGraph.jpg" Height="500"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						На рисунке выше представлен оринтированный граф.
+						<Bold>Ориентированный граф</Bold> - это граф, в котором все ребра имет направление. Также такие ребра еще называют дугами
+						Дуги могут быть направлены только в одну сторону или сразу в обе стороны. Такую дугу называют <Bold>двунаправленной</Bold>.
+						<LineBreak/><LineBreak/>
+						Гиже на рисунке представлен смешанный граф. <Bold>Смешанный граф</Bold> - это граф, состоящий из набора ориентированных ребер (дуг)
+						и неориентированных ребер.
+						<LineBreak/>
+					</TextBlock>
+					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/MixedGraph.jpg" Height="500"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						Ниже на рисунке представлен пустой граф. Если граф не имеет ребер, то такой граф называют <Bold>пустой</Bold>.
+						<LineBreak/>
+					</TextBlock>
+					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/EmptyGraph.jpg" Height="500"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						Ниже представлен полный граф. <Bold>Полный граф</Bold> - это простой граф, в котором каждая пара различных
+						вершин смежная. Также этот граф является <Bold>регулярным</Bold>,
+						так как все его вершины имеют одинаковую степень.
+						<LineBreak/>
+					</TextBlock>
+					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/CompleteGraph.jpg" Height="500"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						<Bold>Эйлеров граф</Bold> - это граф, в котором можно обойти все вершины и при этом
+						пройти одно ребро только один раз. Ниже на рисунке представлен такой граф.
+						<LineBreak/>
+					</TextBlock>
+					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/NotOrientedGraph.jpg" Height="500"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						<Bold>Взвешанный граф</Bold> - это граф, у которого каждому ребру присвоенно значение (вес).
+						Ниже на рисунке представлен такой граф.
+						<LineBreak/>
+					</TextBlock>
+					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/WeightGraph.jpg" Height="500"/>
+				</DockPanel>
+			</ScrollViewer>	
+		</Grid>
+	</Grid>
+</UserControl>

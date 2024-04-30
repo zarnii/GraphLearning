@@ -101,6 +101,11 @@ namespace GraphApp.View
                 throw new ArgumentOutOfRangeException("Толщина связи не может быть меньше 1.");
             }
 
+            if (String.IsNullOrWhiteSpace(ConnectionWeightField.Text))
+            {
+                return;
+            }
+
             ConnectionWeight = int.Parse(ConnectionWeightField.Text);
             ConnectionType = (ConnectionType)ConnectionTypeComboBox.SelectedItem;
             ConnectionThickness = ConnectionThicknessSlider.Value;

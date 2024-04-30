@@ -73,13 +73,14 @@ namespace GraphApp.Services
                 var name = new Label()
                 {
                     Foreground = new SolidColorBrush(Colors.White),
-                    Content = vertex.Name
+                    Content = vertex.Name,
+                    FontSize = 20
                 };
 
                 Canvas.SetLeft(
                     name,
                     (double)vertexNameCoordinatesConverter.Convert(
-                        new object[] { vertex.X, vertex.Radius },
+                        vertex.X,
                         null,
                         "X",
                         null
@@ -88,7 +89,7 @@ namespace GraphApp.Services
                 Canvas.SetTop(
                     name,
                     (double)vertexNameCoordinatesConverter.Convert(
-                        new object[] { vertex.Y, vertex.Radius },
+                        vertex.Y,
                         null,
                         "Y",
                         null
