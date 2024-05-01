@@ -71,6 +71,13 @@
 						<LineBreak/>
 					</TextBlock>
 					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/WeightGraph.jpg" Height="500"/>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						<Bold>Двудольный граф</Bold> - это граф, у которого множество вершин разделено на две части таким образом,
+						что каждое ребро графа соединяет вершину из одной части с какой-то вершиной из другой части. Ниже представлен
+						такой граф.
+						<LineBreak/>
+					</TextBlock>
+					<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/DicotyledonousGraph.jpg" Height="500"/>
 				</DockPanel>
 			</ScrollViewer>	
 		</Grid>

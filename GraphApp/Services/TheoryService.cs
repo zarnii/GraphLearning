@@ -58,11 +58,13 @@ namespace GraphApp.Services
         /// </summary>
         private void InitControl()
 		{
-            TheoryControls = new List<Pair>
-            {
+			TheoryControls = new List<Pair>
+			{
 				new Pair("Введение", new Theory(new FirstTheoryView())),
 				new Pair("Основные понятия", new Theory(new SecondTheoryView())),
-				new Pair("Виды графов", new Theory(new ThridTheoryView()))
+				new Pair("Виды графов", new Theory(new ThridTheoryView())),
+				new Pair("Матрица смежности", new Theory(new FourthTheotyView())),
+				new Pair("Матрица инцидентности", new Theory(new FifthTheoryView()))
             };
 		}
         #endregion

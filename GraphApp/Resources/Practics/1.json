@@ -58,5 +58,5 @@
 		"NeedCheckConnection": true,
 		"NeedCheckConnectionCount": true,
 		"NeedCheckConnectionWeight": false,
-		"NeedCheckConnectionType": true
+		"NeedCheckConnectionType": false
 }

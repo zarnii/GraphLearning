@@ -337,10 +337,10 @@ namespace GraphApp.ViewModel
             {
                 IncidenceMatrix = _visualEditorService.CreateIncidenceMatrix();
             }
-            catch (DuplicateNameException)
+            catch (InvalidOperationException ex)
             {
                 MessageBox.Show(
-                    "Нельза составить матрицу, так как есть дубликат в названии вершин",
+                    ex.Message,
                     "Ошибка",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error

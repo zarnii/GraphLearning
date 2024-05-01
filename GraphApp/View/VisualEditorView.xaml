@@ -92,13 +92,19 @@
 							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding AdjancencyMatrix.ColumnsDescription}"
 							dataGrid2d:ItemsSource.RowHeadersSource="{Binding AdjancencyMatrix.RowsDescription}"
 							IsReadOnly="True"
-							SelectionUnit="Cell"/>
+							SelectionUnit="Cell"
+							ColumnHeaderHeight="30"
+							RowHeaderWidth="30"
+							FontSize="16"/>
 						<DataGrid
 							dataGrid2d:ItemsSource.Array2D="{Binding IncidenceMatrix.Matrix}"
 							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding IncidenceMatrix.ColumnsDescription}"
 							dataGrid2d:ItemsSource.RowHeadersSource="{Binding IncidenceMatrix.RowsDescription}"
 							IsReadOnly="True"
-							SelectionUnit="Cell"/>
+							SelectionUnit="Cell"
+							ColumnHeaderHeight="30"
+							RowHeaderWidth="30"
+							FontSize="16"/>
 					</StackPanel>
 				</ScrollViewer>
 
