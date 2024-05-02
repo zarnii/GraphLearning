@@ -80,13 +80,18 @@
 			<Grid Grid.Row="1">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="*"/>
-					<RowDefinition Height="30"/>
+					<RowDefinition Height="50"/>
 				</Grid.RowDefinitions>
 
 				<ScrollViewer
 					HorizontalScrollBarVisibility="Auto"
 					VerticalScrollBarVisibility="Auto">
 					<StackPanel>
+						<Label
+							Content="Матрица смежности"
+							Style="{StaticResource LabelStyle}"
+							FontSize="16"
+							HorizontalAlignment="Center"/>
 						<DataGrid 
 							dataGrid2d:ItemsSource.Array2D="{Binding AdjancencyMatrix.Matrix}"
 							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding AdjancencyMatrix.ColumnsDescription}"
@@ -96,6 +101,11 @@
 							ColumnHeaderHeight="30"
 							RowHeaderWidth="30"
 							FontSize="16"/>
+						<Label
+							Content="Матрица инцидентности"
+							Style="{StaticResource LabelStyle}"
+							FontSize="16"
+							HorizontalAlignment="Center"/>
 						<DataGrid
 							dataGrid2d:ItemsSource.Array2D="{Binding IncidenceMatrix.Matrix}"
 							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding IncidenceMatrix.ColumnsDescription}"
@@ -109,18 +119,20 @@
 				</ScrollViewer>
 
 				<Grid Grid.Row="1">
-					<Button
-						Width="100" 
-						HorizontalAlignment="Left"
-						Content="Матрица"
-						Command="{Binding CreateAdjacencyMatrix}"
-						Style="{StaticResource ButtonStyle}"/>
-					<Button
-						Width="100"
-						HorizontalAlignment="Right"
-						Content="Матрица 2"
-						Command="{Binding CreateIncidenceMatrix}"
-						Style="{StaticResource ButtonStyle}"/>
+					<StackPanel>
+						<Button
+							Width="250"
+							Height="25"
+							Content="Матрица смежности"
+							Command="{Binding CreateAdjacencyMatrix}"
+							Style="{StaticResource ButtonStyle}"/>
+						<Button
+							Width="250"
+							Height="25"
+							Content="Матрица инцидентности"
+							Command="{Binding CreateIncidenceMatrix}"
+							Style="{StaticResource ButtonStyle}"/>
+					</StackPanel>
 				</Grid>
 			</Grid>
 		</Grid>

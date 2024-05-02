@@ -80,22 +80,6 @@
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 			</ScrollViewer>
-			<!--
-			<ListBox ItemContainerStyle="{DynamicResource ListBoxItemContainerStyle}" 
-				HorizontalContentAlignment="Center" 
-				BorderThickness="0" 
-				Background="{Binding ListBoxColor}" 
-				ItemsSource="{Binding Question.Answers}"
-				SelectedItem="{Binding SelectedAnswer}">
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock 
-							Text="{Binding Text}" 
-							Style="{StaticResource AnswerStyle}"/>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-			-->
 		</Grid>
 
 		<Grid Grid.Row="4">
