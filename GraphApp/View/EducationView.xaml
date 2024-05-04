@@ -18,12 +18,21 @@
 			<RowDefinition Height="150"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-
+		
 		<Button 
 			Content="Назад"
 			Command="{Binding OpenWindow}"
 			CommandParameter="{x:Type viewModel:MainMenuViewModel}"
 			HorizontalAlignment="Left"
+			Style="{StaticResource ButtonStyle}"
+			Width="100"
+			Height="30"/>
+
+		<Button 
+			Content="Открыть все"
+			Command="{Binding OpenAll}"
+			HorizontalAlignment="Right"
+			Opacity="{Binding OpenAllOpasity}"
 			Style="{StaticResource ButtonStyle}"
 			Width="100"
 			Height="30"/>

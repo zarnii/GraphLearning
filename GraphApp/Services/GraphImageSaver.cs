@@ -21,7 +21,9 @@ namespace GraphApp.Services
             ICollection<VisualConnection> connections, 
             string pathToSaveDir,
             double surfaceWidth,
-            double surfaceheigth)
+            double surfaceheigth,
+            int connectionWeightVisible,
+            int connectionNumberVisible)
         {
             if (vertices == null)
             {
@@ -44,7 +46,7 @@ namespace GraphApp.Services
                 Height = surfaceheigth,
                 Background = new SolidColorBrush(Colors.Gray)
             };
-            AddConnectionOnCanvas(canvas, connections);
+            AddConnectionOnCanvas(canvas, connections, connectionWeightVisible, connectionNumberVisible);
             AddVertexOnCanvas(canvas, vertices);
             SaveAsPng(canvas, pathToSaveDir);
         }
@@ -106,7 +108,11 @@ namespace GraphApp.Services
         /// </summary>
         /// <param name="canvas">Канвас.</param>
         /// <param name="connections">Коллекция связей.</param>
-        private void AddConnectionOnCanvas(Canvas canvas, ICollection<VisualConnection> connections)
+        private void AddConnectionOnCanvas(
+            Canvas canvas, 
+            ICollection<VisualConnection> connections,
+            int connectionWeightVisible,
+            int connectionNumberVisible)
         {
             var connectionCoordinatesConverter = new ConnectionCoordinatesConverter();
             var connectionNumberCoordinatesConverter = new ConnectionNumberCoordinatesConverter();
@@ -179,8 +185,16 @@ namespace GraphApp.Services
                 {
                     AddCycleConnection(canvas, connection);
                 }
-                AddConnectionWeight(canvas, connection, connectionWeightCoordinatesConverter);
-                AddConnectionNumber(canvas, connection, connectionNumberCoordinatesConverter);
+
+                if (connectionWeightVisible != 0)
+                {
+                    AddConnectionWeight(canvas, connection, connectionWeightCoordinatesConverter);
+                }
+                
+                if (connectionNumberVisible != 0)
+                {
+                    AddConnectionNumber(canvas, connection, connectionNumberCoordinatesConverter);
+                }
             }
         }
 

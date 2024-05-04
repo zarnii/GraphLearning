@@ -56,18 +56,30 @@ namespace GraphApp.Services
         {
             _dataHandler = dataHandler;
 
-            var testCollection = testProvider.GetMaterialCollection();
-            var practicCollection = practicProvider.GetMaterialCollection();
-            var createMatrixTaskCollection = createMatrixTaskProvider.GetMaterialCollection();
+            try 
+            {
+                var testCollection = testProvider.GetMaterialCollection();
+                var practicCollection = practicProvider.GetMaterialCollection();
+                var createMatrixTaskCollection = createMatrixTaskProvider.GetMaterialCollection();
 
-            
-            EducationMaterialsCollection = new EducationMaterialNode[
-                testCollection.Count + practicCollection.Count + createMatrixTaskCollection.Count];
-            EducationMaterialMap = new Dictionary<EducationMaterialNode, EducationMaterialInfo>(
-                testCollection.Count + practicCollection.Count + createMatrixTaskCollection.Count);
-            
-            InitNodesCollection(testCollection, practicCollection, createMatrixTaskCollection);
-            LoadMap(dataHandler);
+
+                EducationMaterialsCollection = new EducationMaterialNode[
+                    testCollection.Count + practicCollection.Count + createMatrixTaskCollection.Count];
+                EducationMaterialMap = new Dictionary<EducationMaterialNode, EducationMaterialInfo>(
+                    testCollection.Count + practicCollection.Count + createMatrixTaskCollection.Count);
+
+                InitNodesCollection(testCollection, practicCollection, createMatrixTaskCollection);
+                LoadMap(dataHandler);
+            }
+            catch(LoadDataException)
+            {
+                MessageBox.Show(
+                    "Ошибка при загрузке необходимых. Модуль доступа к обучающему материалу не может быть запущен.",
+                    "Критическая ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+               );
+            }
         }
 
         /// <summary>

@@ -143,6 +143,10 @@ namespace GraphApp.ViewModel
             }
         }
 
+        public ICommand OpenAll { get; private set; }
+
+        public int OpenAllOpasity { get; private set; }
+
         /// <summary>
         /// Коллекция тестов.
         /// </summary>
@@ -187,6 +191,11 @@ namespace GraphApp.ViewModel
             OpenMaterial = new RelayCommand(OpenMaterialCommand, CheckCanExecute);
             OpenTheory = new RelayCommand(OpenTheoryCommand);
             GenerateTest = new RelayCommand(GenerateTestCommand);
+            OpenAll = new RelayCommand(OpenAllCommand);
+
+#if DEBUG
+            OpenAllOpasity = 1;
+#endif
         }
         #endregion
 
@@ -270,6 +279,14 @@ namespace GraphApp.ViewModel
         private bool CheckCanExecute(object parameter)
         {
             return ((EducationMaterialNode)parameter).EducationMaterial != null;
+        }
+
+        private void OpenAllCommand(object parameter)
+        {
+            foreach (var node in EducationMaterials)
+            {
+                _accessControlService.OpenNext(node);
+            }
         }
         #endregion
 
