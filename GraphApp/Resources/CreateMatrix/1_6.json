@@ -1,0 +1,94 @@
+{
+		"Title": "\u041f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u0438\u0435\u0020\u043c\u0430\u0442\u0440\u0438\u0446\u044b\u0020\u0438\u043d\u0446\u0438\u0434\u0435\u043d\u0442\u043d\u043e\u0441\u0442\u0438\u0020\u2116\u0036",
+		"IndexNumber": 6,
+		"CreatableMatrixType": 1,
+		"Graph": {
+				"Vertices": [
+						{
+								"X": 288,
+								"Y": 254,
+								"Number": 1,
+								"Name": "1",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 625,
+								"Y": 417,
+								"Number": 2,
+								"Name": "2",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 390,
+								"Y": 447,
+								"Number": 3,
+								"Name": "3",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 514,
+								"Y": 317,
+								"Number": 4,
+								"Name": "4",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 429,
+								"Y": 207,
+								"Number": 5,
+								"Name": "5",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 603,
+								"Y": 251,
+								"Number": 6,
+								"Name": "6",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						}
+				],
+				"Connections": [
+						{
+								"ConnectedVerticesNumber": [ 4, 3 ],
+								"Number": 1,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 4, 2 ],
+								"Number": 2,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 4, 6 ],
+								"Number": 3,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 4, 5 ],
+								"Number": 4,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 4, 1 ],
+								"Number": 5,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						}
+				]
+		}
+}

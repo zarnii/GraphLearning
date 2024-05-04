@@ -64,7 +64,9 @@ namespace GraphApp.Services
 				new Pair("Основные понятия", new Theory(new SecondTheoryView())),
 				new Pair("Виды графов", new Theory(new ThridTheoryView())),
 				new Pair("Матрица смежности", new Theory(new FourthTheotyView())),
-				new Pair("Матрица инцидентности", new Theory(new FifthTheoryView()))
+				new Pair("Матрица инцидентности", new Theory(new FifthTheoryView())),
+				new Pair("Подграфы", new Theory(new SixthTheoryView())),
+				new Pair("Деревья", new Theory(new SeventhTheoryView()))
             };
 		}
         #endregion

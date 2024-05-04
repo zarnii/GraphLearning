@@ -191,7 +191,9 @@
 						<DataTemplate>
 							<Label
 								Content="{Binding Weight}"
-								Foreground="White"/>
+								Foreground="White"
+								Opacity="{Binding Path=DataContext.ConnectionWeightOpasity,
+									RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
@@ -231,7 +233,9 @@
 						<DataTemplate>
 							<Label
 								Content="{Binding Number}"
-								Foreground="White"/>
+								Foreground="White"
+								Opacity="{Binding Path=DataContext.ConnectionNumberOpasity, 
+									RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

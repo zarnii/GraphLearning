@@ -1,0 +1,107 @@
+{
+		"Title": "\u041f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u0438\u0435\u0020\u043c\u0430\u0442\u0440\u0438\u0446\u044b\u0020\u0438\u043d\u0446\u0438\u0434\u0435\u043d\u0442\u043d\u043e\u0441\u0442\u0438\u0020\u2116\u0033",
+		"IndexNumber": 6,
+		"CreatableMatrixType": 1,
+		"Graph": {
+				"Vertices": [
+						{
+								"X": 305,
+								"Y": 206,
+								"Number": 1,
+								"Name": "1",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 669,
+								"Y": 438,
+								"Number": 2,
+								"Name": "2",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 326,
+								"Y": 418,
+								"Number": 3,
+								"Name": "3",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 637,
+								"Y": 205,
+								"Number": 4,
+								"Name": "4",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 481,
+								"Y": 308,
+								"Number": 5,
+								"Name": "5",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						}
+				],
+				"Connections": [
+						{
+								"ConnectedVerticesNumber": [ 1, 4 ],
+								"Number": 1,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 4, 2 ],
+								"Number": 2,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 2, 3 ],
+								"Number": 3,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 3, 1 ],
+								"Number": 4,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 3, 5 ],
+								"Number": 5,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 2, 5 ],
+								"Number": 6,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 4, 5 ],
+								"Number": 7,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						},
+						{
+								"ConnectedVerticesNumber": [ 1, 5 ],
+								"Number": 8,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 1
+						}
+				]
+		}
+}

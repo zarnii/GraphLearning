@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="GraphApp.View.Theory.SixthTheoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GraphApp.View.Theory"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Style="{StaticResource GridStyle}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Label
+			Content="Подграфы"
+			Style="{StaticResource Header1Style}"/>
+
+		<ScrollViewer
+			Grid.Row="1"
+			VerticalScrollBarVisibility="Auto">
+			<ScrollViewer.Resources>
+				<Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+			</ScrollViewer.Resources>
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+					<Bold>Подграф</Bold> - это граф H, который состоить из множетсва вершин и ребер,
+					которые входят в множество вершин и ребер графа G. Довольно таки просто. Существует несколько
+					видов подграфов. Ниже они будут перечисленны.
+					<LineBreak/><LineBreak/>
+					<Bold>Индуцированный подграф</Bold> - это подграф H, состоящий из подмножества
+					вершин графа G и всех ребер, соединяющих пары вершин в этом подмножестве. Может звучать немного сложно.
+					Пусть есть граф G = (V, E) и пусть есть подмножетсво S ⊂ V. Тогда подграф H - 
+					это граф, состоящий из множества вершин S и множества ребер из множества E, которые имеют
+					оба конца в S.
+					<LineBreak/>
+				</TextBlock>
+				<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/Graph6.jpg" Height="500"/>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+					Выше на рисунке представлен граф. В данном графе можно выделить подграф из вершни a, b, c и ребер
+					1, 2, 3. Такой подграф будет индуцированным.
+					<LineBreak/>
+					Существует такой термин как "клика". <Bold>Клика</Bold> -это подмножество вершин графа,
+					в котором все вершины соединены ребром.
+					<LineBreak/>
+				</TextBlock>
+				<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/Graph7.jpg" Height="500"/>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+					На рисунке выше изображен граф. В этом графе есть клика из вершин a, e, b, соедененных
+					ребрами 4, 1, 7.
+					<LineBreak/>
+					Есть и аналог клики - независимое множество. <Bold>Независимое множество</Bold> - это
+					подмножество несмежных вершин в множестве вершин графа. 
+				</TextBlock>
+				<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/Graph8.jpg" Height="500"/>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+					На рисунке выше в графе есть независимое множество. Оно состоит из вершин a, e, b.
+					<LineBreak/><LineBreak/>
+					<Bold>Остовной подграф</Bold> - это подграф H, у которого множество вершин совпадает с
+					множеством вершин графа H.
+				</TextBlock>
+			</DockPanel>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

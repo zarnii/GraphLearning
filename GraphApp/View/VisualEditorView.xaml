@@ -87,6 +87,22 @@
 					HorizontalScrollBarVisibility="Auto"
 					VerticalScrollBarVisibility="Auto">
 					<StackPanel>
+						<CheckBox
+							Content="Отображение номера ребра"
+							Foreground="White"
+							FontSize="16"
+							VerticalContentAlignment="Center"
+							Command="{Binding ChangeConnectionNumberVisible}"
+							IsThreeState="False"
+							IsChecked="True"/>
+						<CheckBox
+							Content="Отображение веса ребра"
+							Foreground="White"
+							FontSize="16"
+							VerticalContentAlignment="Center"
+							Command="{Binding ChangeConnectionWeightVisible}"
+							IsThreeState="False"
+							IsChecked="True"/>
 						<Label
 							Content="Матрица смежности"
 							Style="{StaticResource LabelStyle}"
