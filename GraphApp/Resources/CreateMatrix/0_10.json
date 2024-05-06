@@ -1,0 +1,189 @@
+{
+		"Title": "\u041f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u0438\u0435\u0020\u043c\u0430\u0442\u0440\u0438\u0446\u044b\u0020\u0441\u043c\u0435\u0436\u043d\u043e\u0441\u0442\u0438\u0020\u2116\u0031\u0030",
+		"IndexNumber": 25,
+		"CreatableMatrixType": 0,
+		"Graph": {
+				"Vertices": [
+						{
+								"X": 528,
+								"Y": 415,
+								"Number": 1,
+								"Name": "1",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 655,
+								"Y": 307,
+								"Number": 2,
+								"Name": "2",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 668,
+								"Y": 471,
+								"Number": 3,
+								"Name": "3",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 532,
+								"Y": 530,
+								"Number": 4,
+								"Name": "4",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 343,
+								"Y": 441,
+								"Number": 5,
+								"Name": "5",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 408,
+								"Y": 324,
+								"Number": 6,
+								"Name": "6",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 530,
+								"Y": 288,
+								"Number": 7,
+								"Name": "7",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 778,
+								"Y": 446,
+								"Number": 8,
+								"Name": "8",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 632,
+								"Y": 617,
+								"Number": 9,
+								"Name": "9",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 303,
+								"Y": 529,
+								"Number": 10,
+								"Name": "10",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						}
+				],
+				"Connections": [
+						{
+								"ConnectedVerticesNumber": [ 4, 1 ],
+								"Number": 1,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 1, 10 ],
+								"Number": 2,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 1, 9 ],
+								"Number": 3,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 9, 3 ],
+								"Number": 4,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 3, 7 ],
+								"Number": 5,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 7, 1 ],
+								"Number": 6,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 1, 5 ],
+								"Number": 7,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 5, 6 ],
+								"Number": 8,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 5, 10 ],
+								"Number": 9,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 4, 4 ],
+								"Number": 10,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 3, 8 ],
+								"Number": 11,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 7, 6 ],
+								"Number": 12,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 6, 1 ],
+								"Number": 13,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 2, 3 ],
+								"Number": 14,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						}
+				]
+		}
+}

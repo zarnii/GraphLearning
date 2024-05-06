@@ -190,7 +190,7 @@ namespace GraphApp.ViewModel
             }
 
             var saver = new GraphImageSaver();
-            saver.SaveAsPng(Vertices, Connections, dialog.FileName, CanvasWidth, CanvasHeight);
+            saver.SaveAsPng(Vertices, Connections, dialog.FileName, CanvasWidth, CanvasHeight, ConnectionWeightOpasity, ConnectionNumberOpasity);
         }
 
         /// <summary>

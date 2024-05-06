@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="GraphApp.View.Theory.FourthTheotyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GraphApp.View.Theory"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Style="{StaticResource GridStyle}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Label
+			Content="Матрица вершин"
+			Style="{StaticResource Header1Style}"/>
+
+		<Grid Grid.Row="1">
+			<ScrollViewer 
+				HorizontalScrollBarVisibility="Disabled"
+				VerticalScrollBarVisibility="Auto">
+				<ScrollViewer.Resources>
+					<Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+				</ScrollViewer.Resources>
+				<DockPanel>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						<Bold>Матрица смежности</Bold> невзвешанного графа с числом вершин N - это квадратная матрица размером N * N,
+						в которой элемент Aij равен числу ребер исходящих из вершины i и входящих 
+						в вершину j. Матрица смежности простого графа содержит нули на главной диагонали.
+						Матрица смежности неориентированного графа симметрична, то есть элементы матрицы симметричны 
+						относительно главной диагонали.
+						<LineBreak/><LineBreak/>
+						Матрица смежности взвешанного графа с числом вершин N - это такая же матрица смежности, что и у невзвешанного
+						графа с одним исключением. Элемент матрицы Aij содержит занчение (вес) ребра, а не количество 
+						ребер исходящих из вершины i и входящих в вершину j.
+						<LineBreak/>
+					</TextBlock>
+					<WrapPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
+						<Image Margin="0, 0, 10, 0" Source="pack://siteoforigin:,,,/Resources/Img/Graph2.jpg" Height="300"/>
+						<Image Source="pack://siteoforigin:,,,/Resources/Img/AdjacencyMatrix.jpg" Height="300"/>
+					</WrapPanel>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						Выше на рисунках представлен невзвешанный граф и его матрица смежности.
+					</TextBlock>
+					<WrapPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
+						<Image Margin="0, 0, 10, 0" Source="pack://siteoforigin:,,,/Resources/Img/Graph3.jpg" Height="300"/>
+						<Image Source="pack://siteoforigin:,,,/Resources/Img/AdjacencyMatrix2.jpg" Height="300"/>
+					</WrapPanel>
+					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+						Выше на рисунках представлен взвешанный граф и его матрица смежности.
+						Также матрица смежности является одним из способов представления графа. Такие матрицы часто используются
+						для хранения графа в компьютерных программах. В случае с матрицей смежности невзвешанного графа матрица будет
+						занимать N * N байт в памяти, так как в одной ячейки достаточно хранить 1 или 0. Для этого
+						можно использовать такие типы данных, как int8_t, uint8_t, char, bool, так как они занимают 1 байт в памяти.  
+					</TextBlock>
+				</DockPanel>
+			</ScrollViewer>
+		</Grid>
+
+	</Grid>
+</UserControl>

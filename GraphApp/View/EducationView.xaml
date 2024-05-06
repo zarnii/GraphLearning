@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModel="clr-namespace:GraphApp.ViewModel"
+			 xmlns:converters="clr-namespace:GraphApp.Services.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1000">
+	<UserControl.Resources>
+		<converters:TupleDisplayConverter 
+			x:Key="TupleDisplayConverter"/>
+	</UserControl.Resources>
 	<Grid Style="{StaticResource GridStyle}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30"/>
@@ -13,12 +18,21 @@
 			<RowDefinition Height="150"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-
+		
 		<Button 
 			Content="Назад"
 			Command="{Binding OpenWindow}"
 			CommandParameter="{x:Type viewModel:MainMenuViewModel}"
 			HorizontalAlignment="Left"
+			Style="{StaticResource ButtonStyle}"
+			Width="100"
+			Height="30"/>
+
+		<Button 
+			Content="Открыть все"
+			Command="{Binding OpenAll}"
+			HorizontalAlignment="Right"
+			Opacity="{Binding OpenAllOpasity}"
 			Style="{StaticResource ButtonStyle}"
 			Width="100"
 			Height="30"/>
@@ -41,9 +55,10 @@
 						<DataTemplate>
 							<Button
 								Height="100"
-								Width="100"
+								Width="Auto"
+								MinWidth="100"
 								Margin="30, 0, 0, 0"
-								Content="Теория"
+								Content="{Binding Item1}"
 								Command="{Binding Path=DataContext.OpenTheory,
 									RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
 								CommandParameter="{Binding}"
@@ -70,8 +85,9 @@
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
 							<Button 
-								Height="100" 
-								Width="100" 
+								Height="100"
+								Width="Auto"
+								MinWidth="100" 
 								Margin="30, 0, 0, 0"
 								Content="{Binding EducationMaterialTitle}"
 								Command="{Binding Path=DataContext.OpenMaterial, 

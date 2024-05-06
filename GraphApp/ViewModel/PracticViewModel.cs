@@ -87,22 +87,6 @@ namespace GraphApp.ViewModel
         }
 
         /// <summary>
-        /// Текст ответа.
-        /// </summary>
-        public string ResultText 
-        {
-            get
-            {
-                return _resultText;
-            }
-            private set
-            {
-                _resultText = value;
-                OnPropertyChanged(nameof(ResultText));
-            }
-        }
-
-        /// <summary>
         /// Цвет ответа.
         /// </summary>
         public Brush ResultColor 
@@ -115,22 +99,6 @@ namespace GraphApp.ViewModel
             {
                 _resultColor = value;
                 OnPropertyChanged(nameof(ResultColor));
-            }
-        }
-
-        /// <summary>
-        /// Прозрачность ответа.
-        /// </summary>
-        public int ResultOpasity 
-        {
-            get
-            {
-                return _resultOpasity;
-            } 
-            private set
-            {
-                _resultOpasity = value;
-                OnPropertyChanged(nameof(ResultOpasity));
             }
         }
 
@@ -189,7 +157,6 @@ namespace GraphApp.ViewModel
 
             VerifyTask = new RelayCommand(VerifyTaskCommand);
             GoBack = new RelayCommand(GoBackCommand);
-            ResultOpasity = 0;
 
             if (CurrentPracticTask.LeadTime != null)
             {
@@ -199,6 +166,8 @@ namespace GraphApp.ViewModel
                     null,
                     UpdateTimer
                 );
+                _timer.Start();
+                _timerOpasity = 1;
             }
         }
         #endregion
@@ -228,22 +197,6 @@ namespace GraphApp.ViewModel
         {
             _timer?.Stop();
             _navigationService.NavigateTo<EducationViewModel>();
-        }
-
-        private void CheckResult(bool isDone)
-        {
-            if (isDone)
-            {
-                ResultText = "Верно";
-                ResultColor = new SolidColorBrush(Colors.Green);
-                ResultOpasity = 1;
-
-                return;
-            }
-
-            ResultText = "Не верно";
-            ResultColor = new SolidColorBrush(Colors.Red);
-            ResultOpasity = 1;
         }
 
         /// <summary>

@@ -8,14 +8,14 @@
              d:DesignHeight="450" d:DesignWidth="1000">
 	<Grid Style="{StaticResource GridStyle}">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
 			<RowDefinition Height="30"/>
+			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<UserControl Grid.Row="0" Content="{Binding TheoryView}"/>
+		<UserControl Grid.Row="1" Content="{Binding TheoryView}"/>
 
 		<Button 
-			Grid.Row="1" 
+			Grid.Row="0" 
 			Content="Назад" 
 			HorizontalAlignment="Left"
 			Command="{Binding GoBack}"

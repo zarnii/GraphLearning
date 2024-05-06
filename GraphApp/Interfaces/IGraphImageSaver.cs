@@ -16,11 +16,15 @@ namespace GraphApp.Interfaces
         /// <param name="pathToSaveDir">Путь до файла.</param>
         /// <param name="surfaceWidth">Ширина поверхности.</param>
         /// <param name="surfaceHeight">Высота поверхности.</param>
+        /// <param name="connectionWeightVisible">Прозрачность веса связи.</param>
+        /// <param name="connectionNumberVisible">Прозрачность номера связи.</param>
         void SaveAsPng(
             ICollection<VisualVertex> vertices,
             ICollection<VisualConnection> connections,
             string pathToSaveDir,
             double surfaceWidth,
-            double surfaceHeight);
+            double surfaceHeight,
+            int connectionWeightVisible,
+            int connectionNumberVisible);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,24 @@ namespace GraphApp.View
         public VisualEditorView()
         {
             InitializeComponent();
+
+            ButtonCursor.PreviewMouseUp += Button_MouseLeftButtonDown;
+            ButtonCreate.PreviewMouseUp += Button_MouseLeftButtonDown;
+            ButtonConnect.PreviewMouseUp += Button_MouseLeftButtonDown;
+            ButtonDelete.PreviewMouseUp += Button_MouseLeftButtonDown;
+        }
+
+        private void Button_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var defaultStyle = (Style)FindResource("ButtonStyle");
+            var selectedStyle = (Style)FindResource("ButtonStyleSelected");
+
+            ButtonCursor.Style = defaultStyle;
+            ButtonCreate.Style = defaultStyle;
+            ButtonConnect.Style = defaultStyle;
+            ButtonDelete.Style = defaultStyle;
+
+            ((Button)sender).Style = selectedStyle;
         }
     }
 }

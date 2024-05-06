@@ -191,7 +191,9 @@
 						<DataTemplate>
 							<Label
 								Content="{Binding Weight}"
-								Foreground="White"/>
+								Foreground="White"
+								Opacity="{Binding Path=DataContext.ConnectionWeightOpasity,
+									RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
@@ -231,7 +233,9 @@
 						<DataTemplate>
 							<Label
 								Content="{Binding Number}"
-								Foreground="White"/>
+								Foreground="White"
+								Opacity="{Binding Path=DataContext.ConnectionNumberOpasity, 
+									RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
@@ -245,33 +249,16 @@
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemContainerStyle>
 						<Style>
-							<Setter Property="Canvas.Left">
-								<Setter.Value>
-									<MultiBinding 
-										Converter="{StaticResource VertexNameCoordinatesConverter}"
-										ConverterParameter="X">
-										<Binding Path="X"/>
-										<Binding Path="Radius"/>
-									</MultiBinding>
-								</Setter.Value>
-							</Setter>
-							<Setter Property="Canvas.Top">
-								<Setter.Value>
-									<MultiBinding 
-										Converter="{StaticResource VertexNameCoordinatesConverter}"
-										ConverterParameter="Y">
-										<Binding Path="Y"/>
-										<Binding Path="Radius"/>
-									</MultiBinding>
-								</Setter.Value>
-							</Setter>
+							<Setter Property="Canvas.Left" Value="{Binding X, Converter={StaticResource VertexNameCoordinatesConverter}}"/>
+							<Setter Property="Canvas.Top" Value="{Binding Y, Converter={StaticResource VertexNameCoordinatesConverter}}"/>
 						</Style>
 					</ItemsControl.ItemContainerStyle>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
 							<Label 
 								Content="{Binding Name}"
-								Foreground="White"/>
+								Foreground="White"
+								/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

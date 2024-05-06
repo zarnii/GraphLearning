@@ -33,6 +33,12 @@
 						Content="{Binding PracticTaskTitle}"
 						Style="{StaticResource Header1Style}"/>
 
+					<Label
+						Content="{Binding TimerValue}"
+						HorizontalAlignment="Right"
+						Style="{StaticResource LabelStyle}"
+						Opacity="{Binding TimerOpasity}"/>
+					
 					<Button
 						Style="{StaticResource ButtonStyle}"
 						Content="Назад"
@@ -40,13 +46,6 @@
 						Height="30"
 						Width="70"
 						Command="{Binding GoBack}"/>
-
-					<Label 
-						Content="{Binding ResultText}"
-						Foreground="{Binding ResultColor}"
-						Opacity="{Binding ResultOpasity}"
-						HorizontalAlignment="Right"
-						Style="{StaticResource Header1Style}"/>
 
 					<TextBlock
 						Grid.Row="1"

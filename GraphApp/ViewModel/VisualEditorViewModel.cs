@@ -29,12 +29,28 @@ namespace GraphApp.ViewModel
         private ViewModel _vertexViewModel;
 
         /// <summary>
+        /// Прозрачность номера связи.
+        /// </summary>
+        private int _connectionNumberOpasity;
+
+        /// <summary>
+        /// Прозрачность веса связи.
+        /// </summary>
+        private int _connectionWeightOpasity;
+
+        /// <summary>
         /// Модель представления связи.
         /// </summary>
         private ViewModel _connectionViewModel;
 
+        /// <summary>
+        /// Матрица смежности.
+        /// </summary>
         private AdjacencyMatrix _adjacencyMatrix;
 
+        /// <summary>
+        /// Матрица инцидентности.
+        /// </summary>
         private IncidenceMatrix _incidenceMatrix;
         #endregion
 
@@ -75,6 +91,16 @@ namespace GraphApp.ViewModel
         public ICommand Clear { get; private set; }
 
         /// <summary>
+        /// Команда смены отображения номера связи.
+        /// </summary>
+        public ICommand ChangeConnectionNumberVisible { get; private set; }
+
+        /// <summary>
+        /// Команда смены отображения веса связи.
+        /// </summary>
+        public ICommand ChangeConnectionWeightVisible { get; private set; }
+
+        /// <summary>
         /// Ширина графического поля.
         /// </summary>
         public int CanvasWidth
@@ -101,6 +127,38 @@ namespace GraphApp.ViewModel
             set
             {
                 _visualEditorService.CanvasHeight = value;
+            }
+        }
+
+        /// <summary>
+        /// Прозрачность номера связи.
+        /// </summary>
+        public int ConnectionNumberOpasity 
+        {
+            get
+            {
+                return _connectionNumberOpasity;
+            }
+            private set
+            {
+                _connectionNumberOpasity = value;
+                OnPropertyChanged(nameof(ConnectionNumberOpasity));
+            }
+        }
+
+        /// <summary>
+        /// Прозрачность веса связи.
+        /// </summary>
+        public int ConnectionWeightOpasity
+        {
+            get
+            {
+                return _connectionWeightOpasity;
+            }
+            set
+            {
+                _connectionWeightOpasity = value;
+                OnPropertyChanged(nameof(ConnectionWeightOpasity));
             }
         }
 
@@ -202,7 +260,12 @@ namespace GraphApp.ViewModel
             ClickOnGraphElement = new RelayCommand(ClickOnGraphElementCommand);
             CreateAdjacencyMatrix = new RelayCommand(CreateAdjacencyMatrixCommand);
             CreateIncidenceMatrix = new RelayCommand(CreateIncidenceMatrixCommand);
+            ChangeConnectionNumberVisible = new RelayCommand(ChangeConnectionNumberVisibleCommand);
+            ChangeConnectionWeightVisible = new RelayCommand(ChangeConnectionWeightVisibleCommand);
             Clear = new RelayCommand(ClearCommand);
+
+            ConnectionNumberOpasity = 1;
+            ConnectionWeightOpasity = 1;
         }
         #endregion
 
@@ -337,10 +400,10 @@ namespace GraphApp.ViewModel
             {
                 IncidenceMatrix = _visualEditorService.CreateIncidenceMatrix();
             }
-            catch (DuplicateNameException)
+            catch (InvalidOperationException ex)
             {
                 MessageBox.Show(
-                    "Нельза составить матрицу, так как есть дубликат в названии вершин",
+                    ex.Message,
                     "Ошибка",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
@@ -393,6 +456,20 @@ namespace GraphApp.ViewModel
             {
                 ((ConnectionViewModel)SelectedGraphElement).VisualConnection = (VisualConnection)parameter;
             }
+        }
+
+        private void ChangeConnectionNumberVisibleCommand(object parameter)
+        {
+            ConnectionNumberOpasity = ConnectionNumberOpasity == 1
+                ? 0
+                : 1;
+        }
+
+        private void ChangeConnectionWeightVisibleCommand(object parameter)
+        {
+            ConnectionWeightOpasity = ConnectionWeightOpasity == 1
+                ? 0
+                : 1;
         }
         #endregion
     }

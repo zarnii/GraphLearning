@@ -10,6 +10,11 @@ namespace GraphApp.Services.Converters
     /// </summary>
     public class ConnectionWeightCoordinatesConverter : IMultiValueConverter
     {
+        /// <summary>
+        /// Отклонение по умолчанию.
+        /// </summary>
+        private const int DefaultRejection = 10;
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {   
             var coord1 = (double)values[0];
@@ -19,7 +24,7 @@ namespace GraphApp.Services.Converters
 
             if (firstConnectedVertex == secondConnectedVertex)
             {
-                return ((coord1 + firstConnectedVertex.Radius + coord2 + secondConnectedVertex.Radius) / 2) + 10;
+                return ((coord1 + coord2 + firstConnectedVertex.Radius * 2) / 2) + DefaultRejection;
             }
 
             return (coord1 + coord2) / 2;

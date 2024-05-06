@@ -40,8 +40,12 @@ namespace GraphApp.Model
                 var firstIndex = connection.ConnectedVertices.Item1.Number - 1;
                 var secondIndex = connection.ConnectedVertices.Item2.Number - 1;
 
-                Matrix[firstIndex, secondIndex] = 1;
-                Matrix[secondIndex, firstIndex] = 1;
+                var weight = connection.Weight == 0
+                    ? 1 
+                    : connection.Weight;
+
+                Matrix[firstIndex, secondIndex] = (int)weight;
+                Matrix[secondIndex, firstIndex] = (int)weight;
             }
 
             ColumnsDescription = colums.Select(v => v.Name).ToArray();

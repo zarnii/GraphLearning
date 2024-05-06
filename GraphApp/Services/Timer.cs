@@ -93,7 +93,7 @@ namespace GraphApp.Services
         /// <summary>
         /// Запуск таймера.
         /// </summary>
-        public async void Start()
+        public async Task Start()
         {
             _timerValue = _timerTime;
             _timerIsStopped = false;

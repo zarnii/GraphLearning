@@ -1,0 +1,146 @@
+{
+		"Title": "\u041f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u0438\u0435\u0020\u043c\u0430\u0442\u0440\u0438\u0446\u044b\u0020\u0441\u043c\u0435\u0436\u043d\u043e\u0441\u0442\u0438\u0020\u2116\u0034",
+		"IndexNumber": 13,
+		"CreatableMatrixType": 0,
+		"Graph": {
+				"Vertices": [
+						{
+								"X": 235,
+								"Y": 114,
+								"Number": 1,
+								"Name": "1",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 597,
+								"Y": 278,
+								"Number": 2,
+								"Name": "2",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 358,
+								"Y": 412,
+								"Number": 3,
+								"Name": "3",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 370,
+								"Y": 292,
+								"Number": 4,
+								"Name": "4",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 642,
+								"Y": 438,
+								"Number": 5,
+								"Name": "5",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 696,
+								"Y": 213,
+								"Number": 6,
+								"Name": "6",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 445,
+								"Y": 171,
+								"Number": 7,
+								"Name": "7",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 543,
+								"Y": 78,
+								"Number": 8,
+								"Name": "8",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						},
+						{
+								"X": 548,
+								"Y": 499,
+								"Number": 9,
+								"Name": "9",
+								"ColorString": "#FFFF0000",
+								"Radius": 10
+						}
+				],
+				"Connections": [
+						{
+								"ConnectedVerticesNumber": [ 9, 2 ],
+								"Number": 1,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 2, 5 ],
+								"Number": 2,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 2, 3 ],
+								"Number": 3,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 2, 6 ],
+								"Number": 4,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 6, 8 ],
+								"Number": 5,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 8, 1 ],
+								"Number": 6,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 3, 4 ],
+								"Number": 7,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 4, 7 ],
+								"Number": 8,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						},
+						{
+								"ConnectedVerticesNumber": [ 7, 1 ],
+								"Number": 9,
+								"Thickness": 4,
+								"Weight": 0,
+								"ConnectionType": 0
+						}
+				]
+		}
+}

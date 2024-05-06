@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="GraphApp.View.Theory.SeventhTheoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GraphApp.View.Theory"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Style="{StaticResource GridStyle}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Label
+			Content="Деревья"
+			Style="{StaticResource Header1Style}"/>
+
+		<ScrollViewer
+			Grid.Row="1"
+			VerticalScrollBarVisibility="Auto">
+			<ScrollViewer.Resources>
+				<Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+			</ScrollViewer.Resources>
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+					Деревья являются видом графов. но у самх деревьев имеется некое разнообразие.
+					<Bold>Дерево</Bold> - это связанный граф без циклов в котором между любыми
+					парами вершин имеется только один путь. Ниже на рисунке представлено дерево.
+					<LineBreak/>
+				</TextBlock>
+				<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/Three1.jpg" Height="500"/>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+					<Bold>Ориентированное дерево</Bold> - это ориентированный ациклический (без циклов) граф,
+					в котором только одная вершина имеет нулевую степень захода (в нее не ведут дуги), 
+					а все остальные вершины имеют степень захода 1 (в них ведёт ровно по одной дуге). 
+					Вершина с нулевой степенью захода называется корнем дерева, а вершины которые имеют нулевую степень исхода 
+					(из этих веришн не ведут дуги) называют литьями.
+					<LineBreak/>
+					<Bold>Лес</Bold> - это множество деревьев.
+					<LineBreak/>
+					Примером дерева может служить иерархия катологов на компьютере.
+					Дерево в программировании - это часто применяемая структура данных. Еще деревья 
+					можно встретить в машинном обучении как дерево решений. Ниже будут описаны некоторые виды деревьев.
+					<LineBreak/><LineBreak/>
+					<Bold>Двоичное дерево</Bold> - это дерево, в котором один узел (вершина) не может иметь более двух
+					потомков. Самый первый узел - это корень дерева. А узлы, которые вовсе не имеют потомков - это листья.
+					<Bold>Двоичное дерево поиска</Bold> - это особый тип дерева, поиск в котором выполняется особенно
+					эфективно. Узлы в двоичном деревре поиска не могут иметь более двух дочерних узлов.
+					Кроме того, узлы располагаются согласно их значению или ключу. Дочерние узлы слева от родителя
+					должны быть меньше него, а справа - больше. ниже представлено такое дерево.
+					<LineBreak/>
+				</TextBlock>
+				<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/Three2.jpg" Height="500"/>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+					<Bold>АВЛ-дерево</Bold> - это сбалансированное по высоте двоичное дерево поиска. Для каждой его 
+					вершины высота её двух поддеревьев различается не более чем на 1. АВЛ - аббревиатура, образованная 
+					первыми буквами создателей (советских учёных) Адельсон-Вельского Георгия Максимовича и Ландиса Евгения Михайловича.
+					Ниже представлено такое дерево.
+					<LineBreak/>
+				</TextBlock>
+				<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/Three3.jpg" Height="500"/>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
+					<Bold>Красно-чёрное дерево</Bold> - это вид самобалансирующихся двоичных деревьев поиска. У данного дерева
+					узлы имет особенную характеристику - цвет. Узел может быть либо черным, любо красным. Данный вид дерева придумал
+					Рудольф Байер. Существует 5 принципов организации такого дерева:
+					<LineBreak/>
+					- Узел может быть либо красным, либо черным и иметь двух потомков.
+					<LineBreak/>
+					- Корень, как правило черный.
+					<LineBreak/>
+					- Все листья, не содержащие данные - черные.
+					<LineBreak/>
+					- Оба потомка каждого красного узла - черные.
+					<LineBreak/>
+					- Любой простой путь от узла-предка до листа содержит одинаковое число черных узлов.
+					Это свойсва называется черной высотой.
+					<LineBreak/>
+					Благодоря этим правилам дерево будет сбалансированным.
+				</TextBlock>
+				<Image  DockPanel.Dock="Top" Source="pack://siteoforigin:,,,/Resources/Img/Three4.jpg" Height="500"/>
+			</DockPanel>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

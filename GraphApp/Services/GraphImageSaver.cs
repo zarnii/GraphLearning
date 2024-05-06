@@ -21,7 +21,9 @@ namespace GraphApp.Services
             ICollection<VisualConnection> connections, 
             string pathToSaveDir,
             double surfaceWidth,
-            double surfaceheigth)
+            double surfaceheigth,
+            int connectionWeightVisible,
+            int connectionNumberVisible)
         {
             if (vertices == null)
             {
@@ -44,7 +46,7 @@ namespace GraphApp.Services
                 Height = surfaceheigth,
                 Background = new SolidColorBrush(Colors.Gray)
             };
-            AddConnectionOnCanvas(canvas, connections);
+            AddConnectionOnCanvas(canvas, connections, connectionWeightVisible, connectionNumberVisible);
             AddVertexOnCanvas(canvas, vertices);
             SaveAsPng(canvas, pathToSaveDir);
         }
@@ -73,13 +75,14 @@ namespace GraphApp.Services
                 var name = new Label()
                 {
                     Foreground = new SolidColorBrush(Colors.White),
-                    Content = vertex.Name
+                    Content = vertex.Name,
+                    FontSize = 20
                 };
 
                 Canvas.SetLeft(
                     name,
                     (double)vertexNameCoordinatesConverter.Convert(
-                        new object[] { vertex.X, vertex.Radius },
+                        vertex.X,
                         null,
                         "X",
                         null
@@ -88,7 +91,7 @@ namespace GraphApp.Services
                 Canvas.SetTop(
                     name,
                     (double)vertexNameCoordinatesConverter.Convert(
-                        new object[] { vertex.Y, vertex.Radius },
+                        vertex.Y,
                         null,
                         "Y",
                         null
@@ -105,7 +108,11 @@ namespace GraphApp.Services
         /// </summary>
         /// <param name="canvas">Канвас.</param>
         /// <param name="connections">Коллекция связей.</param>
-        private void AddConnectionOnCanvas(Canvas canvas, ICollection<VisualConnection> connections)
+        private void AddConnectionOnCanvas(
+            Canvas canvas, 
+            ICollection<VisualConnection> connections,
+            int connectionWeightVisible,
+            int connectionNumberVisible)
         {
             var connectionCoordinatesConverter = new ConnectionCoordinatesConverter();
             var connectionNumberCoordinatesConverter = new ConnectionNumberCoordinatesConverter();
@@ -178,8 +185,16 @@ namespace GraphApp.Services
                 {
                     AddCycleConnection(canvas, connection);
                 }
-                AddConnectionWeight(canvas, connection, connectionWeightCoordinatesConverter);
-                AddConnectionNumber(canvas, connection, connectionNumberCoordinatesConverter);
+
+                if (connectionWeightVisible != 0)
+                {
+                    AddConnectionWeight(canvas, connection, connectionWeightCoordinatesConverter);
+                }
+                
+                if (connectionNumberVisible != 0)
+                {
+                    AddConnectionNumber(canvas, connection, connectionNumberCoordinatesConverter);
+                }
             }
         }
 

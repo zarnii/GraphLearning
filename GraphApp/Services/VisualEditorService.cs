@@ -96,6 +96,16 @@ namespace GraphApp.Services
             double weight = 0,
             ConnectionType connectionType = ConnectionType.NonDirectional)
         {
+            var conn = Connections
+                .Where(c => c.FirstConnectedVertex == connectedVertices.Item1 &&
+                    c.SecondConnectedVertex == connectedVertices.Item2)
+                .FirstOrDefault();
+
+            if (conn != null)
+            {
+                return;
+            }
+
             var connection = new VisualConnection(
                 connectedVertices,
                 Connections.Count + 1,

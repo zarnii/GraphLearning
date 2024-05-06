@@ -1,7 +1,6 @@
 ﻿using GraphApp.Command;
 using GraphApp.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -29,7 +28,7 @@ namespace GraphApp.ViewModel
 
             GoBack = new RelayCommand(GoBackCommand);
             Clear = new RelayCommand(ClearCommand);
-            
+
         }
 
         private void StatisticInit()

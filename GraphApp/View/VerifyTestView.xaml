@@ -20,28 +20,33 @@
 			   Foreground="Red"/>
 
 		<Grid Grid.Row="1">
-			<ItemsControl ItemsSource="{Binding QuestionVerifiedAnswerMap}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<StackPanel
+			<ScrollViewer>
+				<ScrollViewer.Resources>
+					<Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+				</ScrollViewer.Resources>
+				<ItemsControl ItemsSource="{Binding QuestionVerifiedAnswerMap}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<StackPanel
 							Margin="0, 0, 0, 20">
-							<TextBlock 
+								<TextBlock 
 								Text="{Binding Key.Text}"
 								Style="{StaticResource QuestionHeaderStyle}"/>
-							<ItemsControl ItemsSource="{Binding Value}">
-								<ItemsControl.ItemTemplate>
-									<DataTemplate>
-										<TextBlock 
+								<ItemsControl ItemsSource="{Binding Value}">
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<TextBlock 
 											Text="{Binding Text}" 
 											Background="{Binding Color}"
 											Style="{StaticResource VerifiedAnswerStyle}"/>
-									</DataTemplate>
-								</ItemsControl.ItemTemplate>
-							</ItemsControl>
-						</StackPanel>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
+							</StackPanel>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
 		</Grid>
 
 		<Button Grid.Row="2"

@@ -39,7 +39,7 @@ namespace GraphApp.Services
 		/// <summary>
 		/// Коллекция теорий.
 		/// </summary>
-		public List<Theory> TheoryControls { get; private set; }
+		public List<Pair> TheoryControls { get; private set; }
         #endregion
 
         #region constructor
@@ -58,13 +58,17 @@ namespace GraphApp.Services
         /// </summary>
         private void InitControl()
 		{
-            var theoryControlList = new List<Theory>
-            {
-                new Theory(new FirstTheoryView()),
-                new Theory(new SecondTheoryView())
+			TheoryControls = new List<Pair>
+			{
+				new Pair("Введение", new Theory(new FirstTheoryView())),
+				new Pair("Основные понятия", new Theory(new SecondTheoryView())),
+				new Pair("Виды графов", new Theory(new ThridTheoryView())),
+				new Pair("Матрица смежности", new Theory(new FourthTheotyView())),
+				new Pair("Матрица инцидентности", new Theory(new FifthTheoryView())),
+				new Pair("Подграфы", new Theory(new SixthTheoryView())),
+				new Pair("Деревья", new Theory(new SeventhTheoryView())),
+				new Pair("Маршруты, пути и циклы", new Theory(new EighthTheoryView())),
             };
-
-            TheoryControls = theoryControlList;
 		}
         #endregion
     }

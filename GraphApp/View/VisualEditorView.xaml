@@ -5,32 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:view="clr-namespace:GraphApp.View"
 			 xmlns:model="clr-namespace:GraphApp.Model"
-			 xmlns:converters="clr-namespace:GraphApp.Services.Converters"
              xmlns:dataGrid2d="http://gu.se/DataGrid2D"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1000">
-	<UserControl.Resources>
-		<converters:VertexNameCoordinatesConverter 
-			x:Key="VertexNameCoordinatesConverter"/>
-		
-		<converters:ConnectionWeightCoordinatesConverter 
-			x:Key="ConnectionWeightCoordinatesConverter"/>
-		
-		<converters:RadiusConverter 
-			x:Key="RadiusConverter"/>
-
-		<converters:ConnectionTypeVisualisator 
-			x:Key="ConnectionTypeVisualisator"/>
-
-		<converters:ConnectionCoordinatesConverter 
-			x:Key="ConnectionCoordinatesConverter"/>
-
-		<converters:ConnectionVisibleConverter
-			x:Key="ConnectionVisibleConverter"/>
-
-		<converters:ConnectionNumberCoordinatesConverter
-			x:Key="ConnectionNumberCoordinatesConverter"/>
-	</UserControl.Resources>
 	<Grid>
 
 		<Grid.ColumnDefinitions>
@@ -44,39 +21,48 @@
 		<Grid Grid.Column="0">
 			<StackPanel>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Курсор" 
-						Command="{Binding ChangeMouseMode}" 
-						CommandParameter="{x:Static model:MouseMode.Default}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Курсор" 
+					Command="{Binding ChangeMouseMode}" 
+					CommandParameter="{x:Static model:MouseMode.Default}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonCursor"/>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Создать" 
-						Command="{Binding ChangeMouseMode}" 
-						CommandParameter="{x:Static model:MouseMode.Create}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Создать" 
+					Command="{Binding ChangeMouseMode}" 
+					CommandParameter="{x:Static model:MouseMode.Create}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonCreate"
+					MouseLeftButtonDown="Button_MouseLeftButtonDown"/>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Соединить" 
-						Command="{Binding ChangeMouseMode}" 
-						CommandParameter="{x:Static model:MouseMode.Connect}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Соединить" 
+					Command="{Binding ChangeMouseMode}" 
+					CommandParameter="{x:Static model:MouseMode.Connect}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonConnect"
+					MouseLeftButtonDown="Button_MouseLeftButtonDown"/>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Удалить" 
-						Command="{Binding ChangeMouseMode}" 
-						CommandParameter="{x:Static model:MouseMode.Delete}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Удалить" 
+					Command="{Binding ChangeMouseMode}" 
+					CommandParameter="{x:Static model:MouseMode.Delete}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonDelete"
+					MouseLeftButtonDown="Button_MouseLeftButtonDown"/>
 				<Button 
-						Margin="0,5,0,0" 
-						Content="Очистить" 
-						Command="{Binding Clear}"
-						Style="{StaticResource ButtonStyle}"
-						Height="25"/>
+					Margin="0,5,0,0" 
+					Content="Очистить" 
+					Command="{Binding Clear}"
+					Style="{StaticResource ButtonStyle}"
+					Height="25"
+					x:Name="ButtonClear"
+					MouseLeftButtonDown="Button_MouseLeftButtonDown"/>
 			</StackPanel>
 		</Grid>
 
@@ -94,41 +80,75 @@
 			<Grid Grid.Row="1">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="*"/>
-					<RowDefinition Height="30"/>
+					<RowDefinition Height="50"/>
 				</Grid.RowDefinitions>
 
 				<ScrollViewer
 					HorizontalScrollBarVisibility="Auto"
 					VerticalScrollBarVisibility="Auto">
 					<StackPanel>
+						<CheckBox
+							Content="Отображение номера ребра"
+							Foreground="White"
+							FontSize="16"
+							VerticalContentAlignment="Center"
+							Command="{Binding ChangeConnectionNumberVisible}"
+							IsThreeState="False"
+							IsChecked="True"/>
+						<CheckBox
+							Content="Отображение веса ребра"
+							Foreground="White"
+							FontSize="16"
+							VerticalContentAlignment="Center"
+							Command="{Binding ChangeConnectionWeightVisible}"
+							IsThreeState="False"
+							IsChecked="True"/>
+						<Label
+							Content="Матрица смежности"
+							Style="{StaticResource LabelStyle}"
+							FontSize="16"
+							HorizontalAlignment="Center"/>
 						<DataGrid 
 							dataGrid2d:ItemsSource.Array2D="{Binding AdjancencyMatrix.Matrix}"
 							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding AdjancencyMatrix.ColumnsDescription}"
 							dataGrid2d:ItemsSource.RowHeadersSource="{Binding AdjancencyMatrix.RowsDescription}"
 							IsReadOnly="True"
-							SelectionUnit="Cell"/>
+							SelectionUnit="Cell"
+							ColumnHeaderHeight="30"
+							RowHeaderWidth="30"
+							FontSize="16"/>
+						<Label
+							Content="Матрица инцидентности"
+							Style="{StaticResource LabelStyle}"
+							FontSize="16"
+							HorizontalAlignment="Center"/>
 						<DataGrid
 							dataGrid2d:ItemsSource.Array2D="{Binding IncidenceMatrix.Matrix}"
 							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding IncidenceMatrix.ColumnsDescription}"
 							dataGrid2d:ItemsSource.RowHeadersSource="{Binding IncidenceMatrix.RowsDescription}"
 							IsReadOnly="True"
-							SelectionUnit="Cell"/>
+							SelectionUnit="Cell"
+							ColumnHeaderHeight="30"
+							RowHeaderWidth="30"
+							FontSize="16"/>
 					</StackPanel>
 				</ScrollViewer>
 
 				<Grid Grid.Row="1">
-					<Button
-						Width="100" 
-						HorizontalAlignment="Left"
-						Content="Матрица"
-						Command="{Binding CreateAdjacencyMatrix}"
-						Style="{StaticResource ButtonStyle}"/>
-					<Button
-						Width="100"
-						HorizontalAlignment="Right"
-						Content="Матрица 2"
-						Command="{Binding CreateIncidenceMatrix}"
-						Style="{StaticResource ButtonStyle}"/>
+					<StackPanel>
+						<Button
+							Width="250"
+							Height="25"
+							Content="Матрица смежности"
+							Command="{Binding CreateAdjacencyMatrix}"
+							Style="{StaticResource ButtonStyle}"/>
+						<Button
+							Width="250"
+							Height="25"
+							Content="Матрица инцидентности"
+							Command="{Binding CreateIncidenceMatrix}"
+							Style="{StaticResource ButtonStyle}"/>
+					</StackPanel>
 				</Grid>
 			</Grid>
 		</Grid>
