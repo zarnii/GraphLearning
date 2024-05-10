@@ -274,23 +274,23 @@ namespace GraphApp.Model
         /// <returns></returns>
         public int CompareTo(VisualConnection? other)
         {
-			var thisNumbers = new int[2] 
+			var thisVertexName = new string[2] 
 			{
-				ConnectedVertices.Item1.Number,
-				ConnectedVertices.Item2.Number
-			};
+				ConnectedVertices.Item1.Name,
+				ConnectedVertices.Item2.Name
+            };
 
 
-			var otherNumbers = new int[2]
+			var otherVertexName = new string[2]
 			{
-				other.ConnectedVertices.Item1.Number,
-				other.ConnectedVertices.Item2.Number
-			};
+				other.ConnectedVertices.Item1.Name,
+				other.ConnectedVertices.Item2.Name
+            };
 
-			Array.Sort(thisNumbers);
-			Array.Sort(otherNumbers);
+			Array.Sort(thisVertexName);
+			Array.Sort(otherVertexName);
 
-			return String.Compare($"{thisNumbers[0]}{thisNumbers[1]}", $"{otherNumbers[0]}{otherNumbers[1]}");
+			return String.Compare($"{thisVertexName[0]}{thisVertexName[1]}", $"{otherVertexName[0]}{otherVertexName[1]}");
         }
         #endregion
 

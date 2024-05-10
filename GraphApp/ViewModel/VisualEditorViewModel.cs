@@ -271,11 +271,11 @@ namespace GraphApp.ViewModel
 
         #region public methods
         /// <summary>
-        /// Добавление связи.
+        /// Добавление связи на событие "Удаление связи".
         /// </summary>
-        /// <param name="connection">Связью</param>
+        /// <param name="connection">Связь.</param>
         /// <exception cref="ArgumentNullException">NULL аргумент.</exception>
-        public void AddConnection(VisualConnection connection)
+        public void SubscribeConnectionOnDelete(VisualConnection connection)
         {
             if (connection == null)
             {

@@ -158,6 +158,20 @@ namespace GraphApp.ViewModel
             VerifyTask = new RelayCommand(VerifyTaskCommand);
             GoBack = new RelayCommand(GoBackCommand);
 
+            if (LastUserGraph.IndexNumber == CurrentPracticTask.IndexNumber)
+            {
+                
+                foreach (var vertices in LastUserGraph.Vertices)
+                {
+                    Vertices.Add(vertices);
+                }
+
+                foreach (var connection in LastUserGraph.Connections)
+                {
+                    Connections.Add(connection);
+                }
+            }
+
             if (CurrentPracticTask.LeadTime != null)
             {
                 _timer = new Timer(
@@ -183,6 +197,8 @@ namespace GraphApp.ViewModel
             var verifyPracticTaskService = new VerifyPracticTaskService();
             var result = verifyPracticTaskService.VerifyPracticTask(Vertices.ToList(), Connections.ToList(), CurrentPracticTask);
 
+            LastUserGraph.SetLastGraph(Vertices.ToArray(), Connections.ToArray(), CurrentPracticTask.IndexNumber);
+
             _navigationService.NavigateTo(
                 _factoryVerifyPracticTaskVm, 
                 new object[4] { result, CurrentPracticTask, Vertices.ToList(), Connections.ToList()}
@@ -196,6 +212,7 @@ namespace GraphApp.ViewModel
         private void GoBackCommand(object parameter)
         {
             _timer?.Stop();
+            LastUserGraph.SetLastGraph(null, null, -1);
             _navigationService.NavigateTo<EducationViewModel>();
         }
 

@@ -317,10 +317,14 @@
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
-			
+
 			<Style.Triggers>
 				<Trigger Property="IsMouseOver" Value="False">
 					<Setter Property="Background" Value="#2e2e2e"/>
+				</Trigger>
+
+				<Trigger Property="IsEnabled" Value="False">
+					<Setter Property="Background" Value="#FF252526"/>
 				</Trigger>
 			</Style.Triggers>
 		</Style>
