@@ -100,8 +100,9 @@ namespace GraphApp
                     PracticTask, 
                     IList<VisualVertex>, 
                     IList<VisualConnection>,
+                    int, int,
                     VerifyPracticViewModel>
-            >((verifiedTask, verifableTask, vertices, connections) =>
+            >((verifiedTask, verifableTask, vertices, connections, connectionNumberOpasity, connectionWeightOpasity) =>
             {
                 return new VerifyPracticViewModel(
                     _serviceProvider.GetRequiredService<INavigationService>(),
@@ -109,7 +110,9 @@ namespace GraphApp
                     verifiedTask,
                     verifableTask,
                     vertices,
-                    connections
+                    connections,
+                    connectionNumberOpasity,
+                    connectionWeightOpasity
                 );
             });
 

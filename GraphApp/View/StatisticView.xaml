@@ -26,7 +26,11 @@
 			Command="{Binding GoBack}"/>
 
 		<ScrollViewer
-			Grid.Row="1">
+			Grid.Row="1"
+			VerticalScrollBarVisibility="Auto">
+			<ScrollViewer.Resources>
+				<Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+			</ScrollViewer.Resources>
 			<StackPanel 
 			Orientation="Vertical">
 				<StackPanel 
@@ -42,6 +46,9 @@
 						IsReadOnly="True"
 						Width="400"
 						Height="200">
+						<DataGrid.Resources>
+							<Style TargetType="ScrollBar"/>
+						</DataGrid.Resources>
 						<DataGrid.Columns>
 							<DataGridTextColumn
 							Header="Название задания"

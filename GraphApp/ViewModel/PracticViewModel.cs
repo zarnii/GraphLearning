@@ -3,16 +3,9 @@ using GraphApp.Interfaces;
 using GraphApp.Model;
 using GraphApp.Services;
 using GraphApp.Services.FactoryViewModel;
-using GraphApp.View;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -89,7 +82,7 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Цвет ответа.
         /// </summary>
-        public Brush ResultColor 
+        public Brush ResultColor
         {
             get
             {
@@ -144,7 +137,7 @@ namespace GraphApp.ViewModel
         public PracticViewModel(
             VertexViewModel vertexViewModel,
             ConnectionViewModel connectionViewModel,
-            IVisualEditorService visualEditorService, 
+            IVisualEditorService visualEditorService,
             IAccessControlService accessControlService,
             INavigationService navigationService,
             [FromKeyedServices(typeof(FactoryVerifyPracticTaskViewModel))] IFactoryViewModel factoryVerifyPracticTaskVm)
@@ -160,7 +153,7 @@ namespace GraphApp.ViewModel
 
             if (LastUserGraph.IndexNumber == CurrentPracticTask.IndexNumber)
             {
-                
+
                 foreach (var vertices in LastUserGraph.Vertices)
                 {
                     Vertices.Add(vertices);
@@ -200,8 +193,8 @@ namespace GraphApp.ViewModel
             LastUserGraph.SetLastGraph(Vertices.ToArray(), Connections.ToArray(), CurrentPracticTask.IndexNumber);
 
             _navigationService.NavigateTo(
-                _factoryVerifyPracticTaskVm, 
-                new object[4] { result, CurrentPracticTask, Vertices.ToList(), Connections.ToList()}
+                _factoryVerifyPracticTaskVm,
+                new object[6] { result, CurrentPracticTask, Vertices.ToList(), Connections.ToList(), ConnectionNumberOpasity, ConnectionWeightOpasity }
             );
         }
 

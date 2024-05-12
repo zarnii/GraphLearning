@@ -107,7 +107,7 @@
 							Content="Матрица смежности"
 							Style="{StaticResource LabelStyle}"
 							FontSize="16"
-							HorizontalAlignment="Center"/>
+							HorizontalAlignment="Left"/>
 						<DataGrid 
 							dataGrid2d:ItemsSource.Array2D="{Binding AdjancencyMatrix.Matrix}"
 							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding AdjancencyMatrix.ColumnsDescription}"
@@ -121,7 +121,7 @@
 							Content="Матрица инцидентности"
 							Style="{StaticResource LabelStyle}"
 							FontSize="16"
-							HorizontalAlignment="Center"/>
+							HorizontalAlignment="Left"/>
 						<DataGrid
 							dataGrid2d:ItemsSource.Array2D="{Binding IncidenceMatrix.Matrix}"
 							dataGrid2d:ItemsSource.ColumnHeadersSource="{Binding IncidenceMatrix.ColumnsDescription}"

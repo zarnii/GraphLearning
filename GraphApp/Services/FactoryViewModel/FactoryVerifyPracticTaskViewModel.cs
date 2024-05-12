@@ -20,7 +20,8 @@ namespace GraphApp.Services.FactoryViewModel
         private Func<VerifiedPracticTask, 
             PracticTask, 
             IList<VisualVertex>, 
-            IList<VisualConnection>, 
+            IList<VisualConnection>,
+            int, int,
             VerifyPracticViewModel> _factory;
 
         /// <summary>
@@ -31,6 +32,7 @@ namespace GraphApp.Services.FactoryViewModel
             PracticTask, 
             IList<VisualVertex>, 
             IList<VisualConnection>,
+            int, int,
             VerifyPracticViewModel> factory) 
         {
             _factory = factory;
@@ -47,8 +49,10 @@ namespace GraphApp.Services.FactoryViewModel
             var verifableTask = (PracticTask)param[1];
             var vertices = (IList<VisualVertex>)param[2];
             var connection = (IList<VisualConnection>)param[3];
+            var connectionNumberOpasity = (int)param[4];
+            var connectionWeightOpasity = (int)param[5];
 
-            return _factory.Invoke(verifiedTask, verifableTask, vertices, connection);
+            return _factory.Invoke(verifiedTask, verifableTask, vertices, connection, connectionNumberOpasity, connectionWeightOpasity);
         }
     }
 }
