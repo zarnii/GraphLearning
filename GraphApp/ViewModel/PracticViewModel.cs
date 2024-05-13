@@ -162,6 +162,7 @@ namespace GraphApp.ViewModel
                 foreach (var connection in LastUserGraph.Connections)
                 {
                     Connections.Add(connection);
+                    SubscribeConnectionOnDelete(connection);
                 }
             }
 

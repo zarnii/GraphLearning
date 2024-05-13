@@ -196,6 +196,12 @@
     <None Update="Resources\Img\WeightGraph.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\Practics\7.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Practics\6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\Practics\5.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
