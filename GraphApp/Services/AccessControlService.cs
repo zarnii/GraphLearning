@@ -105,8 +105,9 @@ namespace GraphApp.Services
             if (materialIndex + 1 != EducationMaterialsCollection.Length)
             {
                 EducationMaterialMap[EducationMaterialsCollection[materialIndex + 1]].IsOpen = true;
-                SaveMap();
+               
             }
+            SaveMap();
         }
 
         /// <summary>
