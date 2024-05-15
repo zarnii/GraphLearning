@@ -71,6 +71,16 @@ namespace GraphApp.ViewModel
         public IList<VisualConnection> Connections { get; private set; }
 
         /// <summary>
+        /// Прозрачность номера связи.
+        /// </summary>
+        public int ConnectionNumberOpasity { get; private set; }
+
+        /// <summary>
+        /// Прозрачность веса связи.
+        /// </summary>
+        public int ConnectionWeightOpasity { get; private set; }
+
+        /// <summary>
         /// Описание колонок таблицы.
         /// </summary>
         public string[] ColumnsDescription 
@@ -133,6 +143,8 @@ namespace GraphApp.ViewModel
         {
             _navigationService = navigationService;
             _accessControlService = accessControlService;
+            ConnectionNumberOpasity = 1;
+            ConnectionWeightOpasity = 0;
             Vertices = ((CreateMatrixTask)_accessControlService.CurrentEducationMaterial.EducationMaterial).Vertices;
             Connections = ((CreateMatrixTask)_accessControlService.CurrentEducationMaterial.EducationMaterial).Connections;
 

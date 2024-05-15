@@ -50,9 +50,9 @@
 					Width="300"
 					CanUserResizeColumns="False"
 					CanUserResizeRows="False"
-					ColumnHeaderHeight="30"
+					ColumnHeaderHeight="40"
 					RowHeaderWidth="30"
-					FontSize="16">
+					FontSize="20">
 					<i:Interaction.Triggers>
 						<i:EventTrigger EventName="MouseUp">
 							<i:InvokeCommandAction Command="{Binding SelectCell}"/>
@@ -66,7 +66,7 @@
 			Grid.Row="3"
 			Style="{StaticResource ButtonStyle}"
 			Content="Проверить"
-			Width="100"
+			Width="200"
 			Command="{Binding VerifyTask}"/>
 	</Grid>
 </UserControl>
