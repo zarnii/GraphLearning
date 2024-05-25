@@ -1,48 +1,87 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="GraphApp.Model.Connection">
-    <Position X="3.5" Y="0.5" Width="1.75" />
+  <Class Name="GraphApp.Services.AccessControlService">
+    <Position X="0.5" Y="0.5" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAIAAAAAAKgCEAAAAAAAAAABAAAAA=</HashCode>
-      <FileName>Model\Connection.cs</FileName>
+      <HashCode>gAADAAAAAQAAACAAggAAAAGQAEAAAAABQAAAAAgAAAA=</HashCode>
+      <FileName>Services\AccessControlService.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="GraphApp.Model.Vertex">
-    <Position X="6" Y="0.5" Width="1.75" />
+  <Class Name="GraphApp.Model.EducationMaterialNode">
+    <Position X="5.5" Y="0.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAIAAQAAABAIECAAAQAgAEAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>Model\Vertex.cs</FileName>
+      <HashCode>AAIAAAAgAAAAAAQADAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\EducationMaterialNode.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="GraphApp.Model.VertexHeandler">
-    <Position X="9" Y="0.5" Width="1.5" />
+  <Class Name="GraphApp.Model.EducationMaterialInfo">
+    <Position X="5.5" Y="4" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAgAAAAABAQAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\VertexHeandler.cs</FileName>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAggAAAAAAA=</HashCode>
+      <FileName>Model\EducationMaterialInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GraphApp.Model.ConnectionHeandler">
-    <Position X="0.5" Y="0.5" Width="2.25" />
+  <Class Name="GraphApp.Model.EducationMaterial">
+    <Position X="8.5" Y="0.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAJAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
-      <FileName>Model\ConnectionHeandler.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAEQAAAAAAAAAAAAAAAAAAAAgAAAAIAA=</HashCode>
+      <FileName>Model\EducationMaterial.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GraphApp.ViewModel.VisualEditorViewModel">
+    <Position X="11.75" Y="0.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AhEAEoACAAIJAAgAEEICgAQJACAABAAAEiAEQKhMCEQ=</HashCode>
+      <FileName>ViewModel\VisualEditorViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Enum Name="GraphApp.Model.ConnectionType">
-    <Position X="1" Y="3.5" Width="1.5" />
+  <Class Name="GraphApp.ViewModel.VertexViewModel">
+    <Position X="17.75" Y="0.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAAAAAgAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\ConnectionType.cs</FileName>
+      <HashCode>AAAAAgAAAAABAAAAIAAAAQAIgAAgAAAAAAAAAAAAACA=</HashCode>
+      <FileName>ViewModel\VertexViewModel.cs</FileName>
     </TypeIdentifier>
-  </Enum>
-  <Enum Name="GraphApp.Model.MouseMode">
-    <Position X="9" Y="3.5" Width="1.5" />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GraphApp.ViewModel.ConnectionViewModel">
+    <Position X="17.75" Y="5.75" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAIIAAAAEAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\MouseMode.cs</FileName>
+      <HashCode>AAAAABAAAAAAAAAAIAAAAAAIgAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>ViewModel\ConnectionViewModel.cs</FileName>
     </TypeIdentifier>
-  </Enum>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GraphApp.Services.VisualEditorService">
+    <Position X="21.75" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AgAAJgAAAAABAAAAEAYiAAAAAAAAACADEAAAAKBACAA=</HashCode>
+      <FileName>Services\VisualEditorService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GraphApp.ViewModel.PlaygroundViewModel">
+    <Position X="18.25" Y="11.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AQAAACCAEAAAAgAAIAABAAAAAAAIAAECQAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\PlaygroundViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GraphApp.ViewModel.PracticViewModel">
+    <Position X="10" Y="11.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAABAEAAgAIAAIACoQAAAAgAAAAkDFAAAIAAEAAA=</HashCode>
+      <FileName>ViewModel\PracticViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="GraphApp.Interfaces.IVisualEditorService">
+    <Position X="4.25" Y="6.75" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AgAAJgAAAAABAAAAEAYiAAAAAAAAACAAEAAAAKBACAA=</HashCode>
+      <FileName>Interfaces\IVisualEditorService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

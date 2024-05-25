@@ -70,8 +70,8 @@ namespace GraphApp
             dependencyCollection.AddSingleton<ScrollTestViewModel>();
             dependencyCollection.AddTransient<VerifyTestViewModel>();
             dependencyCollection.AddTransient<PracticViewModel>();
-            dependencyCollection.AddTransient<VertexViewModel>();
-            dependencyCollection.AddTransient<ConnectionViewModel>();
+            dependencyCollection.AddSingleton<VertexViewModel>();
+            dependencyCollection.AddSingleton<ConnectionViewModel>();
             dependencyCollection.AddSingleton<InstructionViewModel>();
             dependencyCollection.AddSingleton<StatisticViewModel>();
             dependencyCollection.AddTransient<CreateMatrixTaskViewModel>();

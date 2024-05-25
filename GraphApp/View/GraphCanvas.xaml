@@ -240,29 +240,6 @@
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 
-				<!--Отображение название вершин.-->
-				<ItemsControl ItemsSource="{Binding Vertices}" x:Name="CanvasVertexName">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<Canvas/>
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemContainerStyle>
-						<Style>
-							<Setter Property="Canvas.Left" Value="{Binding X, Converter={StaticResource VertexNameCoordinatesConverter}}"/>
-							<Setter Property="Canvas.Top" Value="{Binding Y, Converter={StaticResource VertexNameCoordinatesConverter}}"/>
-						</Style>
-					</ItemsControl.ItemContainerStyle>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Label 
-								Content="{Binding Name}"
-								Foreground="White"
-								/>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-
 				<!--Отображение вершин.-->
 				<ItemsControl ItemsSource="{Binding Vertices}" x:Name="CanvasVertices">
 					<ItemsControl.ItemsPanel>
@@ -308,6 +285,30 @@
 									</i:EventTrigger>
 								</i:Interaction.Triggers>
 							</Thumb>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+
+				<!--Отображение название вершин.-->
+				<ItemsControl ItemsSource="{Binding Vertices}" x:Name="CanvasVertexName">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<Canvas/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemContainerStyle>
+						<Style>
+							<Setter Property="Canvas.Left" Value="{Binding X, Converter={StaticResource VertexNameCoordinatesConverter}}"/>
+							<Setter Property="Canvas.Top" Value="{Binding Y, Converter={StaticResource VertexNameCoordinatesConverter}}"/>
+						</Style>
+					</ItemsControl.ItemContainerStyle>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Label 
+								Content="{Binding Name}"
+								Foreground="White"
+								Opacity="{Binding Path=DataContext.VertexNameOpasity, 
+									RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
