@@ -36,7 +36,7 @@ namespace GraphApp.Services
         /// <summary>
         /// Карта сопоставления обучающего материала и доп информации. 
         /// </summary>
-        public Dictionary<EducationMaterialNode, EducationMaterialInfo> EducationMaterialMap { get; private set; }
+        public Dictionary<EducationMaterialNode, EducationMaterialInfo> EducationMaterialMap { get; private set; } 
 
         /// <summary>
         /// Событие изменение карты прогресса.
@@ -105,8 +105,9 @@ namespace GraphApp.Services
             if (materialIndex + 1 != EducationMaterialsCollection.Length)
             {
                 EducationMaterialMap[EducationMaterialsCollection[materialIndex + 1]].IsOpen = true;
-                SaveMap();
+               
             }
+            SaveMap();
         }
 
         /// <summary>
@@ -125,6 +126,11 @@ namespace GraphApp.Services
         /// <param name="material"></param>
         public void AddAttempt(EducationMaterialNode material)
         {
+            if (EducationMaterialMap[material].IsCompleted.Value)
+            {
+                throw new ArgumentException("Данное задание уже выполнено", nameof(material));
+            }
+
             EducationMaterialMap[material].AttemptsNumber++;
             EducationMaterialMapChanged?.Invoke(null, null);
         }

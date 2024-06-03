@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:converters="clr-namespace:GraphApp.Services.Converters"
+			 xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
@@ -24,40 +25,66 @@
 			HorizontalAlignment="Left"
 			Command="{Binding GoBack}"/>
 
-		<StackPanel 
-			Orientation="Vertical"
-			Grid.Row="1">
+		<ScrollViewer
+			Grid.Row="1"
+			VerticalScrollBarVisibility="Auto">
+			<ScrollViewer.Resources>
+				<Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBarStyle}"/>
+			</ScrollViewer.Resources>
 			<StackPanel 
-				Orientation="Vertical"
-				HorizontalAlignment="Center">
-				<Label
-					Content="Статистика"
-					Style="{StaticResource Header1Style}"/>
+			Orientation="Vertical">
+				<StackPanel 
+					Orientation="Vertical"
+					HorizontalAlignment="Center">
+					<Label
+						Content="Статистика"
+						Style="{StaticResource Header1Style}"/>
 
-				<DataGrid
-					ItemsSource="{Binding Statistic}"
-					AutoGenerateColumns="False"
-					IsReadOnly="True"
-					Width="400"
-					Height="200">
-					<DataGrid.Columns>
-						<DataGridTextColumn
+					<DataGrid
+						ItemsSource="{Binding Statistic}"
+						AutoGenerateColumns="False"
+						IsReadOnly="True"
+						Width="400"
+						Height="200">
+						<DataGrid.Resources>
+							<Style TargetType="ScrollBar"/>
+						</DataGrid.Resources>
+						<DataGrid.Columns>
+							<DataGridTextColumn
 							Header="Название задания"
 							Binding="{Binding Converter={StaticResource TupleDisplayConverter}, ConverterParameter=Item1}"
 							Width="267"/>
-						<DataGridTextColumn
+							<DataGridTextColumn
 							Header="Количество попыток"
 							Binding="{Binding Converter={StaticResource TupleDisplayConverter}, ConverterParameter=Item2}"/>
-					</DataGrid.Columns>
-				</DataGrid>
-				<Button
-					Content="Сбористь прогресс"
-					Style="{StaticResource ButtonStyle}"
-					Margin="0, 10, 0, 0"
-					Width="200"
-					Height="30"
-					Command="{Binding Clear}"/>
+						</DataGrid.Columns>
+					</DataGrid>
+
+					<lvc:CartesianChart 
+						Series="{Binding Chart}"
+						XAxes="{Binding XAxes}"
+						YAxes="{Binding YAxes}"
+						Width="700"
+						Height="300"
+						Margin="0, 30, 0, 10"
+						ZoomMode="X"/>
+
+					<lvc:PieChart
+						Series="{Binding PieChart}"
+						Height="300"
+						MinValue="0"
+						MaxValue="100"
+						InitialRotation="-90"/>
+					<Button
+						Content="Сбористь прогресс"
+						Style="{StaticResource ButtonStyle}"
+						Margin="0, 10, 0, 0"
+						Width="200"
+						Height="30"
+						Command="{Binding Clear}"/>
+				</StackPanel>
 			</StackPanel>
-		</StackPanel>
+		</ScrollViewer>
+
     </Grid>
 </UserControl>

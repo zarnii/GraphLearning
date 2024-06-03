@@ -39,6 +39,11 @@ namespace GraphApp.ViewModel
         private int _connectionWeightOpasity;
 
         /// <summary>
+        /// Прозрачность имени вершины.
+        /// </summary>
+        private int _vertexNameOpasity;
+
+        /// <summary>
         /// Модель представления связи.
         /// </summary>
         private ViewModel _connectionViewModel;
@@ -101,6 +106,11 @@ namespace GraphApp.ViewModel
         public ICommand ChangeConnectionWeightVisible { get; private set; }
 
         /// <summary>
+        /// Команда смены отображения имени вершины.
+        /// </summary>
+        public ICommand ChangeVertexNameVisible { get; private set; }
+
+        /// <summary>
         /// Ширина графического поля.
         /// </summary>
         public int CanvasWidth
@@ -159,6 +169,22 @@ namespace GraphApp.ViewModel
             {
                 _connectionWeightOpasity = value;
                 OnPropertyChanged(nameof(ConnectionWeightOpasity));
+            }
+        }
+
+        /// <summary>
+        /// Прозрачноть имени вершины.
+        /// </summary>
+        public int VertexNameOpasity
+        {
+            get
+            {
+                return _vertexNameOpasity;
+            }
+            set
+            {
+                _vertexNameOpasity = value;
+                OnPropertyChanged(nameof(VertexNameOpasity));
             }
         }
 
@@ -262,20 +288,22 @@ namespace GraphApp.ViewModel
             CreateIncidenceMatrix = new RelayCommand(CreateIncidenceMatrixCommand);
             ChangeConnectionNumberVisible = new RelayCommand(ChangeConnectionNumberVisibleCommand);
             ChangeConnectionWeightVisible = new RelayCommand(ChangeConnectionWeightVisibleCommand);
+            ChangeVertexNameVisible = new RelayCommand(ChangeVertexNameVisibleCommand);
             Clear = new RelayCommand(ClearCommand);
 
             ConnectionNumberOpasity = 1;
             ConnectionWeightOpasity = 1;
+            VertexNameOpasity = 1;
         }
         #endregion
 
         #region public methods
         /// <summary>
-        /// Добавление связи.
+        /// Добавление связи на событие "Удаление связи".
         /// </summary>
-        /// <param name="connection">Связью</param>
+        /// <param name="connection">Связь.</param>
         /// <exception cref="ArgumentNullException">NULL аргумент.</exception>
-        public void AddConnection(VisualConnection connection)
+        public void SubscribeConnectionOnDelete(VisualConnection connection)
         {
             if (connection == null)
             {
@@ -468,6 +496,13 @@ namespace GraphApp.ViewModel
         private void ChangeConnectionWeightVisibleCommand(object parameter)
         {
             ConnectionWeightOpasity = ConnectionWeightOpasity == 1
+                ? 0
+                : 1;
+        }
+
+        private void ChangeVertexNameVisibleCommand(object parameter)
+        {
+            VertexNameOpasity = VertexNameOpasity == 1
                 ? 0
                 : 1;
         }

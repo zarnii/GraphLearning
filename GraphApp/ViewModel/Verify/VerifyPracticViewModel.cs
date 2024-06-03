@@ -18,9 +18,11 @@ namespace GraphApp.ViewModel.Verify
 
         public ICommand GoBack { get; private set; }
 
-        public string ResultText { get; set; }
+        public string ResultText { get; private set; }
 
-        public string ResultDescription { get; set; }
+        public int ConnectionNumberOpasity { get; private set; }
+
+        public int ConnectionWeightOpasity { get; private set; }
 
         public Brush ResultColor { get; set; }
 
@@ -30,7 +32,9 @@ namespace GraphApp.ViewModel.Verify
             VerifiedPracticTask verifiedPracticTask,
             PracticTask verifablePracticTask,
             IList<VisualVertex> vertices,
-            IList<VisualConnection> connections)
+            IList<VisualConnection> connections,
+            int connectionNumberOpasity,
+            int connectionWeightOpasity)
         {
             _navigationService = navigationService;
             Vertices = vertices;
@@ -39,6 +43,8 @@ namespace GraphApp.ViewModel.Verify
             Verify(accessControlService, verifiedPracticTask, verifablePracticTask);
 
             GoBack = new RelayCommand(GoBackCommand);
+            ConnectionNumberOpasity = connectionNumberOpasity;
+            ConnectionWeightOpasity = connectionWeightOpasity;
         }
 
         private void Verify(

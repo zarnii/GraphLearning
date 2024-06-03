@@ -1,5 +1,6 @@
 ﻿using GraphApp.Interfaces;
 using GraphApp.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -96,12 +97,9 @@ namespace GraphApp.Services
             double weight = 0,
             ConnectionType connectionType = ConnectionType.NonDirectional)
         {
-            var conn = Connections
-                .Where(c => c.FirstConnectedVertex == connectedVertices.Item1 &&
-                    c.SecondConnectedVertex == connectedVertices.Item2)
-                .FirstOrDefault();
+            var verticesIsConnected = CheckVerticesIsConnected(connectedVertices);
 
-            if (conn != null)
+            if (verticesIsConnected)
             {
                 return;
             }
@@ -232,6 +230,18 @@ namespace GraphApp.Services
         #endregion
 
         #region private methods
+        /// <summary>
+        /// Проверка на наличие связи между двумя вершинами.
+        /// </summary>
+        /// <param name="vertices">Вершины.</param>
+        /// <returns>True, если две вершины уже соединены.</returns>
+        private bool CheckVerticesIsConnected((VisualVertex, VisualVertex) vertices)
+        {
+            var verticesTuples = Connections.Select(c => c.ConnectedVertices);
+            var flag = verticesTuples.Any(v => v == vertices || v == (vertices.Item2, vertices.Item1));
+
+            return flag;
+        }
         #endregion
     }
 }

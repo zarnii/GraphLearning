@@ -147,7 +147,7 @@ namespace GraphApp.ViewModel
                 {
                     var vertices = Vertices.ToList();
                     var connection = _mapper.Map<VisualConnection>(sConnection, vertices);
-                    AddConnection(connection);
+                    SubscribeConnectionOnDelete(connection);
                     Connections.Add(connection);
                 }
             }

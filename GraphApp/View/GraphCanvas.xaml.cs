@@ -24,6 +24,10 @@ namespace GraphApp.View
 
         private const int GridHeight = 900;
 
+        private const int ScaleXLimit = 5;
+
+        private const int ScaleYLimit = 5;
+
         public GraphCanvas()
         {
             InitializeComponent();
@@ -41,6 +45,11 @@ namespace GraphApp.View
 
 
             if (scaleTransformGrid.ScaleX + zoom < 0.1 || scaleTransformGrid.ScaleY + zoom < 0.1)
+            {
+                return;
+            }
+
+            if (scaleTransformGrid.ScaleX + zoom > ScaleXLimit || scaleTransformGrid.ScaleY + zoom > ScaleYLimit)
             {
                 return;
             }

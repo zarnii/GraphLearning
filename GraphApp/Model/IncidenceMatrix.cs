@@ -25,15 +25,9 @@ namespace GraphApp.Model
             var rows = connectionCollection.OrderBy(c => c.Number).ToArray();
 
             Matrix = new int[rows.Length, colums.Length];
-            var connectionType = rows[0].ConnectionType;
-
 
             foreach (var row in rows)
             {
-                if (row.ConnectionType != connectionType)
-                {
-                    throw new InvalidOperationException("Невозможно составить матрицу. Граф является смешанным.");
-                }
 
                 var firstIndex = row.ConnectedVertices.Item1.Number - 1;
                 var secondIndex = row.ConnectedVertices.Item2.Number - 1;
@@ -41,7 +35,7 @@ namespace GraphApp.Model
                 var firstValue = 1;
                 var secondValue = 1;
 
-                if (connectionType == ConnectionType.Unidirectional)
+                if (row.ConnectionType == ConnectionType.Unidirectional)
                 {
                     firstValue = -1;
                     secondValue = 1;

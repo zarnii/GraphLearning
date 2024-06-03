@@ -55,7 +55,7 @@
 		"NeedCheckVertexPosition": false,
 		"NeedCheckVertexSize": false,
 		"NeedCheckVertexName": false,
-		"NeedCheckConnection": true,
+		"NeedCheckConnection": false,
 		"NeedCheckConnectionCount": true,
 		"NeedCheckConnectionWeight": false,
 		"NeedCheckConnectionType": false

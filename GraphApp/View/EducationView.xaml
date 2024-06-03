@@ -93,7 +93,8 @@
 								Command="{Binding Path=DataContext.OpenMaterial, 
 									RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
 								CommandParameter="{Binding}"
-								Style="{StaticResource ButtonStyle}"/>
+								Style="{StaticResource ButtonStyle}">
+							</Button>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

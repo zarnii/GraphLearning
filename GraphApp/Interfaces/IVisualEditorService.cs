@@ -17,11 +17,6 @@ namespace GraphApp.Interfaces
         public MouseMode MouseMode { get; }
 
         /// <summary>
-        /// Связи.
-        /// </summary>
-        ObservableCollection<VisualConnection> Connections { get; }
-
-        /// <summary>
         /// Выбранный элемент графа.
         /// </summary>
         public ViewModel.ViewModel SelectedGraphElement { get; set; }
@@ -35,6 +30,11 @@ namespace GraphApp.Interfaces
         /// Вершины.
         /// </summary>
         ObservableCollection<VisualVertex> Vertices { get; }
+
+        /// <summary>
+        /// Связи.
+        /// </summary>
+        ObservableCollection<VisualConnection> Connections { get; }
 
         int CanvasWidth { get; set; }
 

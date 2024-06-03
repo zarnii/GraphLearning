@@ -3,6 +3,8 @@ using GraphApp.Interfaces;
 using GraphApp.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -27,6 +29,10 @@ namespace GraphApp.ViewModel.Verify
         /// Команда перехода назад.
         /// </summary>
         public ICommand GoBack { get; private set; }
+
+        public ICommand ShowCorrectMatrix { get; private set; }
+
+        public int ButtonOpasity { get; private set; }
 
         /// <summary>
         /// Заголовок.
@@ -62,6 +68,8 @@ namespace GraphApp.ViewModel.Verify
         /// Описание строк таблицы.
         /// </summary>
         public string[] RowsDescription { get; private set; }
+
+        private BaseMatrix m;
         #endregion
 
         #region constructor
@@ -109,6 +117,12 @@ namespace GraphApp.ViewModel.Verify
 
             Verify(correctMatrix.Matrix, userMatrix);
             GoBack = new RelayCommand(GoBackCommand);
+            ShowCorrectMatrix = new RelayCommand(ShowCorrectMatrixCommand);
+            m = correctMatrix;
+            ButtonOpasity = 0;
+#if DEBUG
+            ButtonOpasity = 1;
+#endif
         }
         #endregion
 
@@ -161,6 +175,27 @@ namespace GraphApp.ViewModel.Verify
         private void GoBackCommand(object parameter)
         {
             _navigationService.NavigateTo<CreateMatrixTaskViewModel>();
+        }
+
+        private void  ShowCorrectMatrixCommand(object parameter)
+        {
+            var matrix = m;
+            var str = new StringBuilder();
+            var rows = matrix.Matrix.GetUpperBound(0) + 1;
+            var colums = matrix.Matrix.Length / rows;
+
+            for (var i = 0; i < rows; i++)
+            {
+                for (var j = 0; j < colums; j++)
+                {
+                    str.Append(matrix.Matrix[i, j].ToString());
+                }
+                str.AppendLine();
+            }
+
+            MessageBox.Show(
+                str.ToString()    
+            );
         }
         #endregion
     }
