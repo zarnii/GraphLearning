@@ -46,7 +46,7 @@ namespace GraphApp.Interfaces
         /// <param name="connectedVertices">Соедененные вершины.</param>
         /// <param name="weight">Вес связи.</param>
         /// <param name="connectionType">Тип связи.</param>
-        void AddConnection((VisualVertex, VisualVertex) connectedVertices,
+        VisualConnection AddConnection((VisualVertex, VisualVertex) connectedVertices,
             double thickness,
             double weight = 0,
             ConnectionType connectionType = ConnectionType.NonDirectional);
@@ -57,7 +57,7 @@ namespace GraphApp.Interfaces
         /// <param name="point">Точка.</param>
         /// <param name="radius">Радиус.</param>
         /// <param name="name">Имя.</param>
-        void AddVertex(Point point, int radius, string name, Color color);
+        VisualVertex AddVertex(Point point, int radius, string name, Color color);
 
         /// <summary>
         /// Удаление связи.

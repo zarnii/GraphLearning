@@ -16,6 +16,8 @@ namespace GraphApp.ViewModel
         /// </summary>
         private VisualVertex _visualVertex;
 
+        private LimitedStack<ICommand> _undoCommandStack;
+
         /// <summary>
         /// Проверка ввода координат.
         /// </summary>
@@ -55,7 +57,7 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Конструктор.
         /// </summary>
-        public VertexViewModel()
+        public VertexViewModel(LimitedStack<ICommand> undoCommandStack)
         {
             CheckCoordinates = new RelayCommand(CheckCoordinatesCommand);
         }

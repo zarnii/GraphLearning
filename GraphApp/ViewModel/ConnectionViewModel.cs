@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GraphApp.ViewModel
 {
@@ -18,6 +19,8 @@ namespace GraphApp.ViewModel
         /// Соединение.
         /// </summary>
         private VisualConnection _visualConnection;
+
+        private LimitedStack<ICommand> _undoCommandStack;
 
         /// <summary>
         /// Типы соединения.
@@ -48,8 +51,10 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Конструктор.
         /// </summary>
-        public ConnectionViewModel()
+        public ConnectionViewModel(LimitedStack<ICommand> undoCommandStack)
         {
+            _undoCommandStack = undoCommandStack;
+
             ConnectionTypes = new ConnectionType[3] 
             { 
                 ConnectionType.NonDirectional, 

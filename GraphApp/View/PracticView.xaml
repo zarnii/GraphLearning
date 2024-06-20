@@ -4,48 +4,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GraphApp.View"
-			 xmlns:view="clr-namespace:GraphApp.View"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="1000">
 	<Grid Style="{StaticResource GridStyle}">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="100"/>
+			<RowDefinition Height="130"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="30"/>
 		</Grid.RowDefinitions>
 
 		<Grid Grid.Row="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="50"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<Button
+				Style="{StaticResource ButtonStyle}"
+				Content="Назад"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Height="30"
+				Width="70"
+				Command="{Binding GoBack}"/>
+
+			<Label 
+				Content="{Binding PracticTaskTitle}"
+				Style="{StaticResource Header1Style}"/>
+
 			<ScrollViewer
-			HorizontalScrollBarVisibility="Disabled"
-			VerticalScrollBarVisibility="Auto">
+				HorizontalScrollBarVisibility="Disabled"
+				VerticalScrollBarVisibility="Auto"
+				Grid.Row="1">
 				<ScrollViewer.Resources>
 					<Style
 						TargetType="ScrollBar"
 						BasedOn="{StaticResource VerticalScrollBarStyle}"/>
 				</ScrollViewer.Resources>
 				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="50"/>
-						<RowDefinition Height="*"/>
-					</Grid.RowDefinitions>
-					
-					<Label 
-						Content="{Binding PracticTaskTitle}"
-						Style="{StaticResource Header1Style}"/>
-
 					<Label
 						Content="{Binding TimerValue}"
 						HorizontalAlignment="Right"
 						Style="{StaticResource LabelStyle}"
 						Opacity="{Binding TimerOpasity}"/>
-					
-					<Button
-						Style="{StaticResource ButtonStyle}"
-						Content="Назад"
-						HorizontalAlignment="Left"
-						Height="30"
-						Width="70"
-						Command="{Binding GoBack}"/>
 
 					<TextBlock
 						Grid.Row="1"

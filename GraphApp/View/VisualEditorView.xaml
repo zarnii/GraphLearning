@@ -123,7 +123,7 @@
 							IsReadOnly="True"
 							SelectionUnit="Cell"
 							ColumnHeaderHeight="30"
-							RowHeaderWidth="30"
+							RowHeaderWidth="NaN"
 							FontSize="16"/>
 						<Label
 							Content="Матрица инцидентности"
@@ -137,7 +137,7 @@
 							IsReadOnly="True"
 							SelectionUnit="Cell"
 							ColumnHeaderHeight="30"
-							RowHeaderWidth="30"
+							RowHeaderWidth="NaN"
 							FontSize="16"/>
 					</StackPanel>
 				</ScrollViewer>

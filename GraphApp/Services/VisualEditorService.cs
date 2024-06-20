@@ -91,7 +91,7 @@ namespace GraphApp.Services
         /// <param name="connectedVertices">Соедененные вершины.</param>
         /// <param name="weight">Вес связи.</param>
         /// <param name="connectionType">Тип связи.</param>
-        public void AddConnection(
+        public VisualConnection AddConnection(
             (VisualVertex, VisualVertex) connectedVertices,
             double thickness,
             double weight = 0,
@@ -101,7 +101,7 @@ namespace GraphApp.Services
 
             if (verticesIsConnected)
             {
-                return;
+                return null;
             }
 
             var connection = new VisualConnection(
@@ -114,6 +114,8 @@ namespace GraphApp.Services
             connection.OnDelete += DeleteConnection;
 
             Connections.Add(connection);
+
+            return connection;
         }
 
         /// <summary>
@@ -122,15 +124,19 @@ namespace GraphApp.Services
         /// <param name="point">Точка.</param>
         /// <param name = "radius" > Радиус.</param>
         /// <param name="name">Имя.</param>
-        public void AddVertex(Point point, int radius, string name, Color color)
+        public VisualVertex AddVertex(Point point, int radius, string name, Color color)
         {
-            Vertices.Add(new VisualVertex(
+            var vertex = new VisualVertex(
                 ((int)point.X, (int)point.Y),
                 radius,
                 Vertices.Count + 1,
                 color,
                 name
-            ));
+            );
+
+            Vertices.Add(vertex);
+
+            return vertex;
         }
 
         /// <summary>

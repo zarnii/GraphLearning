@@ -69,13 +69,11 @@ namespace GraphApp.ViewModel
         /// <param name="navigationService">Сервис навигации.</param>
         /// <param name="mapper">Маппер.</param>
         public PlaygroundViewModel(
-            VertexViewModel vertexViewModel,
-            ConnectionViewModel connectionViewModel,
             IVisualEditorService visualEditorService,
             IDataHandlerService dataHandler,
             INavigationService navigationService,
             IMapper mapper)
-            : base(vertexViewModel, connectionViewModel, visualEditorService)
+            : base( visualEditorService)
         {
 
             _dataHandler = dataHandler;

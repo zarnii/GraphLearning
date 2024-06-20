@@ -135,13 +135,11 @@ namespace GraphApp.ViewModel
         /// <param name="navigationService">Сервис навигации.</param>
         /// <param name="factoryVerifyPracticTaskVm">Фабрика FactoryVerifyPracticTaskViewModel.</param>
         public PracticViewModel(
-            VertexViewModel vertexViewModel,
-            ConnectionViewModel connectionViewModel,
             IVisualEditorService visualEditorService,
             IAccessControlService accessControlService,
             INavigationService navigationService,
             [FromKeyedServices(typeof(FactoryVerifyPracticTaskViewModel))] IFactoryViewModel factoryVerifyPracticTaskVm)
-            : base(vertexViewModel, connectionViewModel, visualEditorService)
+            : base(visualEditorService)
         {
             _accessControlService = accessControlService;
             _navigationService = navigationService;
