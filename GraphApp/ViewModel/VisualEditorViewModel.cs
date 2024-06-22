@@ -282,8 +282,8 @@ namespace GraphApp.ViewModel
             IVisualEditorService visualEditorService)
         {
             _undoCommandStack = new LimitedStack<ICommand>(DefaultStackLimit);
-            _vertexViewModel = new VertexViewModel(_undoCommandStack);
-            _connectionViewModel = new ConnectionViewModel(_undoCommandStack);
+            _vertexViewModel = new VertexViewModel();
+            _connectionViewModel = new ConnectionViewModel();
             _visualEditorService = visualEditorService; 
 
             ChangeMouseMode = new RelayCommand(SetMouseMode);

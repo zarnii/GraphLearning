@@ -20,8 +20,6 @@ namespace GraphApp.ViewModel
         /// </summary>
         private VisualConnection _visualConnection;
 
-        private LimitedStack<ICommand> _undoCommandStack;
-
         /// <summary>
         /// Типы соединения.
         /// </summary>
@@ -51,10 +49,8 @@ namespace GraphApp.ViewModel
         /// <summary>
         /// Конструктор.
         /// </summary>
-        public ConnectionViewModel(LimitedStack<ICommand> undoCommandStack)
-        {
-            _undoCommandStack = undoCommandStack;
-
+        public ConnectionViewModel()
+        { 
             ConnectionTypes = new ConnectionType[3] 
             { 
                 ConnectionType.NonDirectional, 
