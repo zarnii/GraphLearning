@@ -14,10 +14,6 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<Grid.InputBindings>
-			<KeyBinding Key="Z" Modifiers="Ctrl" Command="{Binding UndoLastCommand}"/>
-		</Grid.InputBindings>
-
 		<Grid Grid.Row="0" Style="{StaticResource GridStyle}">
 
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">

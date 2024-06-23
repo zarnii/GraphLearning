@@ -10,6 +10,7 @@
 			 xmlns:converters="clr-namespace:GraphApp.Services.Converters"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
 	<UserControl.Resources>
 		<converters:VertexNameCoordinatesConverter 
 			x:Key="VertexNameCoordinatesConverter"/>
@@ -33,6 +34,10 @@
 			x:Key="ConnectionNumberCoordinatesConverter"/>
 	</UserControl.Resources>
 	<Grid>
+		<Grid.InputBindings>
+			<KeyBinding Key="Z" Modifiers="Ctrl" Command="{Binding UndoLastCommand}"/>
+		</Grid.InputBindings>
+
 		<ScrollViewer 
 			Grid.Column="1" 
 			HorizontalScrollBarVisibility="Auto"

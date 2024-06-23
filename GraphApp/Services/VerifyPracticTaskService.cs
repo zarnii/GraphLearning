@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GraphApp.Interfaces;
+﻿using GraphApp.Interfaces;
 using GraphApp.Model;
+using System;
+using System.Collections.Generic;
 
 namespace GraphApp.Services
 {
@@ -21,8 +18,8 @@ namespace GraphApp.Services
         /// <param name="practicTask">Проверяемое задание.</param>
         /// <returns>Проверенное задание.</returns>
         public VerifiedPracticTask VerifyPracticTask(
-            IList<VisualVertex> vertices, 
-            IList<VisualConnection> connections, 
+            IList<VisualVertex> vertices,
+            IList<VisualConnection> connections,
             PracticTask practicTask)
         {
             var verifiedPracticTask = new VerifiedPracticTask();
@@ -41,7 +38,7 @@ namespace GraphApp.Services
             Array.Sort<VisualConnection>(connectionsCopyActual);
             Array.Sort<VisualVertex>(verticesCopyExpectex);
             Array.Sort<VisualConnection>(connectionsCopyExpected);
-            
+
 
             verifiedPracticTask.VertexCountIsDone = VertexCountIsDone(verticesCopyActual, verticesCopyExpectex);
             verifiedPracticTask.VertexPositionIsDone = VertexPositionIsDone(verticesCopyActual, verticesCopyExpectex);
@@ -55,13 +52,13 @@ namespace GraphApp.Services
             return verifiedPracticTask;
         }
 
-        private bool VertexCountIsDone(IList<VisualVertex> actualVertices, 
+        private bool VertexCountIsDone(IList<VisualVertex> actualVertices,
             IList<VisualVertex> expectedVertex)
         {
             return actualVertices.Count == expectedVertex.Count;
         }
 
-        private bool VertexPositionIsDone(IList<VisualVertex> actualVertices, 
+        private bool VertexPositionIsDone(IList<VisualVertex> actualVertices,
             IList<VisualVertex> expectedVertices)
         {
             if (!VertexCountIsDone(actualVertices, expectedVertices))

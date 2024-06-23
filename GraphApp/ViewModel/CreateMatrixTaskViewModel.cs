@@ -143,7 +143,6 @@ namespace GraphApp.ViewModel
         {
             _navigationService = navigationService;
             _accessControlService = accessControlService;
-            ConnectionNumberOpasity = 1;
             ConnectionWeightOpasity = 0;
             Vertices = ((CreateMatrixTask)_accessControlService.CurrentEducationMaterial.EducationMaterial).Vertices;
             Connections = ((CreateMatrixTask)_accessControlService.CurrentEducationMaterial.EducationMaterial).Connections;
@@ -170,6 +169,7 @@ namespace GraphApp.ViewModel
 
             if (matrixType == CreatableMatrixType.AdjacencyMatrix)
             {
+                ConnectionNumberOpasity = 0;
                 _matrix = new AdjacencyMatrix(
                     Vertices.Select(v => v.Vertex).ToArray(),
                     Connections.Select(c => c.Connection).ToArray()
@@ -182,6 +182,7 @@ namespace GraphApp.ViewModel
             }
             else
             {
+                ConnectionNumberOpasity = 1;
                 _matrix = new IncidenceMatrix(
                     Vertices.Select(v => v.Vertex).ToArray(),
                     Connections.Select(c => c.Connection).ToArray()
