@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GraphApp.ViewModel
 {
@@ -49,7 +50,7 @@ namespace GraphApp.ViewModel
         /// Конструктор.
         /// </summary>
         public ConnectionViewModel()
-        {
+        { 
             ConnectionTypes = new ConnectionType[3] 
             { 
                 ConnectionType.NonDirectional, 

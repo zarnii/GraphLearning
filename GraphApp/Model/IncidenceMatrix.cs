@@ -28,26 +28,25 @@ namespace GraphApp.Model
 
             foreach (var row in rows)
             {
+                var rowIndex = row.Number - 1;
+                var firstColumnIndex = row.ConnectedVertices.Item1.Number - 1;
+                var secondColumnIndex = row.ConnectedVertices.Item2.Number - 1;
 
-                var firstIndex = row.ConnectedVertices.Item1.Number - 1;
-                var secondIndex = row.ConnectedVertices.Item2.Number - 1;
-
-                var firstValue = 1;
+                var firstValue = row.ConnectionType == ConnectionType.Unidirectional
+                    ? -1
+                    : 1;
                 var secondValue = 1;
 
-                if (row.ConnectionType == ConnectionType.Unidirectional)
-                {
-                    firstValue = -1;
-                    secondValue = 1;
-                }
 
-                if (firstIndex == secondIndex)
+                if (firstColumnIndex == secondColumnIndex)
                 {
-                    Matrix[firstIndex, secondIndex] = 2;
+                    Matrix[rowIndex, secondColumnIndex] = 2;
                 }
-
-                Matrix[row.Number - 1, firstIndex] = firstValue;
-                Matrix[row.Number - 1, secondIndex] = secondValue;
+                else
+                {
+                    Matrix[rowIndex, firstColumnIndex] = firstValue;
+                    Matrix[rowIndex, secondColumnIndex] = secondValue;
+                }
             }
 
             ColumnsDescription = colums.Select(v => v.Name).ToArray();

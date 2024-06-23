@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -18,6 +19,8 @@ namespace GraphApp.ViewModel
     public class VisualEditorViewModel : ViewModel
     {
         #region fields
+        private const int DefaultStackLimit = 20;
+
         /// <summary>
         /// Сервис графического редактора.
         /// </summary>
@@ -57,6 +60,8 @@ namespace GraphApp.ViewModel
         /// Матрица инцидентности.
         /// </summary>
         private IncidenceMatrix _incidenceMatrix;
+
+        private LimitedStack<ICommand> _undoCommandStack;
         #endregion
 
         #region properties
@@ -109,6 +114,8 @@ namespace GraphApp.ViewModel
         /// Команда смены отображения имени вершины.
         /// </summary>
         public ICommand ChangeVertexNameVisible { get; private set; }
+
+        public ICommand UndoLastCommand { get; private set; }
 
         /// <summary>
         /// Ширина графического поля.
@@ -272,13 +279,12 @@ namespace GraphApp.ViewModel
         /// <param name="connectionViewModel">Модель представления связи.</param>
         /// <param name="visualEditorService">Сервис графического редактора.</param>
         public VisualEditorViewModel(
-            VertexViewModel vertexViewModel,
-            ConnectionViewModel connectionViewModel,
             IVisualEditorService visualEditorService)
         {
-            _vertexViewModel = vertexViewModel;
-            _connectionViewModel = connectionViewModel;
-            _visualEditorService = visualEditorService;
+            _undoCommandStack = new LimitedStack<ICommand>(DefaultStackLimit);
+            _vertexViewModel = new VertexViewModel();
+            _connectionViewModel = new ConnectionViewModel();
+            _visualEditorService = visualEditorService; 
 
             ChangeMouseMode = new RelayCommand(SetMouseMode);
             ClickOnField = new RelayCommand(ClickOnFieldCommand);
@@ -290,6 +296,7 @@ namespace GraphApp.ViewModel
             ChangeConnectionWeightVisible = new RelayCommand(ChangeConnectionWeightVisibleCommand);
             ChangeVertexNameVisible = new RelayCommand(ChangeVertexNameVisibleCommand);
             Clear = new RelayCommand(ClearCommand);
+            UndoLastCommand = new RelayCommand(UndoCommand);
 
             ConnectionNumberOpasity = 1;
             ConnectionWeightOpasity = 1;
@@ -347,12 +354,17 @@ namespace GraphApp.ViewModel
                 point.X -= createVertexWindow.VertexRadius;
                 point.Y -= createVertexWindow.VertexRadius;
 
-                _visualEditorService.AddVertex(
+                 var newVertex = _visualEditorService.AddVertex(
                     point,
                     createVertexWindow.VertexRadius,
                     createVertexWindow.VertexName,
                     createVertexWindow.VertexColor
                 );
+
+                AddUndoCommand((vertex) => 
+                {
+                    _visualEditorService.DeleteVertex(newVertex);
+                });
             }
         }
 
@@ -373,12 +385,20 @@ namespace GraphApp.ViewModel
 
                 if ((bool)createConnectionWindow.ShowDialog())
                 {
-                    _visualEditorService.AddConnection(
+                    var newConnection = _visualEditorService.AddConnection(
                         (SelectedVerticesForConnection[0], SelectedVerticesForConnection[1]),
                         createConnectionWindow.ConnectionThickness,
                         createConnectionWindow.ConnectionWeight,
                         createConnectionWindow.ConnectionType
                     );
+
+                    if (newConnection != null )
+                    {
+                        AddUndoCommand((connection) =>
+                        {
+                            _visualEditorService.DeleteConnection(newConnection);
+                        });
+                    }
                 }
 
                 SelectedVerticesForConnection.Clear();
@@ -402,6 +422,19 @@ namespace GraphApp.ViewModel
 
         private void ClearCommand(object parameter)
         {
+            var graph = (_visualEditorService.Vertices.ToArray(), _visualEditorService.Connections.ToArray());
+            AddUndoCommand((_) =>
+            {
+                foreach (var vertex in graph.Item1)
+                {
+                    _visualEditorService.Vertices.Add(vertex);
+                }
+
+                foreach (var connection in graph.Item2)
+                {
+                    _visualEditorService.Connections.Add(connection);
+                }
+            });
             _visualEditorService.Clear();
         }
 
@@ -505,6 +538,23 @@ namespace GraphApp.ViewModel
             VertexNameOpasity = VertexNameOpasity == 1
                 ? 0
                 : 1;
+        }
+
+        private void UndoCommand(object parameter)
+        {
+            if (_undoCommandStack.Count == 0)
+            {
+                return;
+            }
+
+            var command = _undoCommandStack.Pop();
+            command.Execute(null);
+        }
+
+        private void AddUndoCommand(Action<object> action)
+        {
+            var undoCommand = new RelayCommand(action);
+            _undoCommandStack.Push(undoCommand);
         }
         #endregion
     }
