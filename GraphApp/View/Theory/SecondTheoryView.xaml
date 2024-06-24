@@ -23,7 +23,7 @@
 				</ScrollViewer.Resources>
 				<DockPanel>
 					<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextStyle}">
-						<Bold>Граф</Bold> - это конечное множество точек (V) и линий (Е), которые
+						<Bold>Граф</Bold> - это некоторое множество точек (V) и линий (Е), которые
 						соеденяют некоторые пары из точек (V). Граф является топологической моделью.
 						Ниже на рисунке приведен пример графа.
 						<LineBreak/>
